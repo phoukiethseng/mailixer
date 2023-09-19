@@ -1,0 +1,10 @@
+services:
+    db:
+        image: postgres
+        restart: always
+        ports:
+            - 8080:5432
+        environment:
+            POSTGRES_PASSWORD: example
+            POSTGRES_USER: app
+            POSTGRES_DB: mailixer
