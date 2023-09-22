@@ -24,3 +24,5 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [FrontendController::class, 'logoutPage']);
 
 Route::post('/logout', [AuthController::class, 'logout']);
+
+Route::get('/subscribe/{userId}', [FrontendController::class, 'subscribePage']);

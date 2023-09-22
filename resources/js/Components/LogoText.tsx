@@ -1,7 +1,9 @@
 import React from "react";
 import { cn } from "../lib/utils";
 
-export default function LogoText({ className }: { className?: string }) {
+export default function LogoText({
+    className,
+}: React.HTMLAttributes<HTMLHeadingElement>) {
     return (
         <h1
             className={cn(
