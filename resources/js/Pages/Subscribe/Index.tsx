@@ -1,5 +1,5 @@
-import { usePage } from "@inertiajs/react";
-import React, { Suspense } from "react";
+import { router, usePage } from "@inertiajs/react";
+import React, { Suspense, useState } from "react";
 import {
     Form,
     FormControl,
@@ -17,13 +17,16 @@ import {
 import { Button } from "../../Components/Button";
 import LogoText from "../../Components/LogoText";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Alert, AlertDescription, AlertTitle } from "../../Components/Alert";
 
 type SubscribePageProps = {
     user: {
         id: string;
         name: string;
     };
-
+    errors: {
+        message?: string;
+    };
     subscribePromptTemplate: string;
 };
 
@@ -35,7 +38,7 @@ type EmailForm = z.infer<typeof emailFormSchema>;
 
 export default function SubscribePage() {
     const { props } = usePage<SubscribePageProps>();
-    const { user, subscribePromptTemplate } = props;
+    const { user, subscribePromptTemplate, errors } = props;
 
     // Get SubscribePrompt Component base on user's preferred template name
     const SubscribePrompt: React.FunctionComponent<SubscribePromptProps> =
@@ -48,8 +51,11 @@ export default function SubscribePage() {
         resolver: zodResolver(emailFormSchema),
     });
 
-    function handleFormSubmit(data: EmailForm) {
-        // TODO: Call laravel backend
+    async function handleFormSubmit(data: EmailForm) {
+        router.post("/api/subscribe", {
+            user_id: "1",
+            email: data.email,
+        });
     }
 
     return (
@@ -87,6 +93,12 @@ export default function SubscribePage() {
                     </Button>
                 </form>
             </Form>
+            {errors?.message && (
+                <Alert variant={"destructive"}>
+                    <AlertTitle>Something went wrong</AlertTitle>
+                    <AlertDescription>{errors?.message}</AlertDescription>
+                </Alert>
+            )}
         </div>
     );
 }

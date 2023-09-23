@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\SubscriptionService;
 use Illuminate\Support\ServiceProvider;
+use App\Services\SubscriptionServiceImpl;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(SubscriptionService::class, SubscriptionServiceImpl::class);
     }
 
     /**

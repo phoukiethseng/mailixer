@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\SubscribeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,4 +26,6 @@ Route::get('/logout', [FrontendController::class, 'logoutPage']);
 
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::get('/subscribe/{userId}', [FrontendController::class, 'subscribePage']);
+Route::get('/subscribe/{userId}', [SubscribeController::class, 'subscribePage'])->name("subscribe.index");
+
+Route::get('/subscribe/{userId}/success', [SubscribeController::class, 'successPage'])->name('subscribe.success');
