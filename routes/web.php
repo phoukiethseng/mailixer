@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\SubscribeController;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [FrontendController::class, 'homePage'])->name('home')->middleware('auth');
+Route::get('/', [FrontendController::class, 'homePage'])->name('home');
 
 Route::get('/login', [FrontendController::class, 'loginPage'])->name('login');
 
@@ -26,6 +27,18 @@ Route::get('/logout', [FrontendController::class, 'logoutPage']);
 
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::get('/subscribe/{userId}', [SubscribeController::class, 'subscribePage'])->name("subscribe.index");
+Route::prefix('subscribe')->group(function () {
 
-Route::get('/subscribe/{userId}/success', [SubscribeController::class, 'successPage'])->name('subscribe.success');
+    Route::get('/{userId}', [SubscribeController::class, 'subscribePage'])->name("subscribe.index");
+
+    Route::get('/{userId}/success', [SubscribeController::class, 'successPage'])->name('subscribe.success');
+
+    Route::post('/', [SubscribeController::class, 'subscribe']);
+
+});
+
+
+Route::middleware('auth')->prefix('dashboard')->group(function () {
+    Route::get('/', [DashBoardController::class, 'index']);
+    Route::get('/page', [DashBoardController::class, 'page'])->name('dashboard.page');
+});

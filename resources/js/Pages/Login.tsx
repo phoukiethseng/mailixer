@@ -71,7 +71,7 @@ export default function LoginPage() {
                                                 placeholder="hello@example.com"
                                             />
                                         </FormControl>
-                                        <FormMessage className="text-sm text-right font-thin" />
+                                        <FormMessage className="text-sm text-right font-md" />
                                     </FormItem>
                                 )}
                             />
@@ -90,7 +90,7 @@ export default function LoginPage() {
                                                 />
                                             </div>
                                         </FormControl>
-                                        <FormMessage className="text-sm text-right font-thin" />
+                                        <FormMessage className="text-sm text-right font-md" />
                                     </FormItem>
                                 )}
                             />

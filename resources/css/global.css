@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: "Inclusive Sans";
-    src: url("/font.ttf");
+    font-family: "Inter";
+    src: url("/Inter-VariableFont.ttf");
 }
 
 @layer base {
@@ -54,6 +54,6 @@
     }
 
     html {
-        font-family: Inclusive Sans, system-ui, sans-serif;
+        font-family: Inter, system-ui, sans-serif;
     }
 }

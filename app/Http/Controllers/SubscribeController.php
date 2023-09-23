@@ -26,7 +26,12 @@ class SubscribeController extends Controller
         }
 
         return Inertia::render('Subscribe/Index', [
-            'user' => $user
+            'user' => $user,
+            'subscribe' => [
+                'description' => 'Subscribe to my newsletter to receive lastest news and activity'
+                // TODO: Implement personalized description text feature
+                // For now we use this default description text
+            ]
         ]);
     }
     public function successPage($userId) {
@@ -34,9 +39,9 @@ class SubscribeController extends Controller
             'user' => User::select('name')->where('id', $userId)->first()
         ]);
     }
-    public function subscribeTo(Request $request) {
+    public function subscribe(Request $request) {
         $data = $request->validate([
-            'user_id' => 'required|string',
+            'user_id' => 'required|numeric',
             'email' => 'required|string|email',
         ]);
 
@@ -48,7 +53,9 @@ class SubscribeController extends Controller
             ]);
         }
 
-        return redirect()->to("/subscribe" . "/" . $data["user_id"] . '/success');
+        return to_route('subscribe.success', [
+            'userId' => $data['user_id']
+        ]);
     }
 
 }
