@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SubscribePage;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -28,9 +29,7 @@ class SubscribeController extends Controller
         return Inertia::render('Subscribe/Index', [
             'user' => $user,
             'subscribe' => [
-                'description' => 'Subscribe to my newsletter to receive lastest news and activity'
-                // TODO: Implement personalized description text feature
-                // For now we use this default description text
+                'description' => SubscribePage::select('description')->where('user_id', $user->id)->first()->description
             ]
         ]);
     }

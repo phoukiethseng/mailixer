@@ -16,6 +16,7 @@ import {
     DropdownMenuItem,
 } from "../Components/DropDownMenu";
 import { Icons } from "../Components/Icons";
+import DashBoardHeader from "./DashBoardHeader";
 
 type DashBoardLayoutProps = {
     activePage: keyof DashBoardMenuItems; // Current active page, must be any key from `siteConfig.dashboard.subPages`
@@ -75,7 +76,7 @@ export default function DashBoardLayout({
                 </div>
             </aside>
             <div className="w-full min-h-screen">
-                <div className="w-full min-h-[100px]"></div>
+                <DashBoardHeader>{activePage}</DashBoardHeader>
                 {children}
             </div>
         </div>

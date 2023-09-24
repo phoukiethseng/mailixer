@@ -39,6 +39,7 @@ Route::prefix('subscribe')->group(function () {
 
 
 Route::middleware('auth')->prefix('dashboard')->group(function () {
-    Route::get('/', [DashBoardController::class, 'index']);
+    Route::get('/', [DashBoardController::class, 'index'])->name('dashboard.index');
     Route::get('/page', [DashBoardController::class, 'page'])->name('dashboard.page');
+    Route::post('/page/description', [DashBoardController::class, 'updatePageDescription']);
 });
