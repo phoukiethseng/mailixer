@@ -7,7 +7,7 @@ import {
     Layout,
     UserCheck,
     Clipboard,
-    CrossIcon,
+    X,
 } from "lucide-react";
 
 const Icons = {
@@ -19,7 +19,7 @@ const Icons = {
     Layout: Layout,
     UserCheck: UserCheck,
     Clipboard: Clipboard,
-    Cross2Icon: CrossIcon,
+    Cross2Icon: X,
 };
 
 export { Icons };

@@ -54,7 +54,9 @@ class DashBoardController extends Controller
                 'message' => "Couldn't update subscribe page description"
             ]);
         }
-        return back();
+        return back()->with([
+            'message' => 'Successfully updated page description'
+        ]);
     }
 
     public function index() {

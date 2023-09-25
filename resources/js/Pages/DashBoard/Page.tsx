@@ -63,6 +63,7 @@ const Page = ({
     preview,
     auth,
     errors,
+    message,
 }: DashBoardCustomizationPageProps) => {
     const { toast } = useToast();
     const descriptionTextareaId = useId();
@@ -97,7 +98,12 @@ const Page = ({
                 variant: "destructive",
             });
         }
-    }, [errors]);
+        if (message) {
+            toast({
+                description: message,
+            });
+        }
+    }, [errors, message]);
 
     return (
         <div className="flex flex-col justify-start items-stretch w-full gap-2 p-4">
@@ -223,6 +229,8 @@ const Page = ({
                             type="text"
                             readOnly
                             defaultValue={viewLiveUrl}
+                            onClick={() => router.visit(viewLiveUrl)}
+                            className="cursor-pointer"
                         />
                         <Button
                             variant={"outline"}

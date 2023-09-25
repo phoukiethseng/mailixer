@@ -27,6 +27,8 @@ class SubscribeController extends Controller
         }
 
         return Inertia::render('Subscribe/Index', [
+            'auth.user.name' => $user->name,
+            'auth.user.id' => $user->id,
             'subscribe' => [
                 'description' => $this->subscribePageService->getDescription($user->id)
             ]
