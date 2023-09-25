@@ -1,21 +1,25 @@
 import React from "react";
 import { InertiaSharedProps } from "../../config/site";
 import DashBoardLayout from "../../Layouts/DashBoardLayout";
+import { useErrorMessageToast } from "../../lib/useErrorMessageToast";
+import { useToast } from "../../Components/use-toast";
+import { DataTable } from "../../Components/DataTable";
+import { columns as subscriberTableCloumns } from "../../Components/SubscriberTable/Columns";
 
-type SubscribersPageProps = {
+export type SubscribersPageProps = {
     subscribers: {
         id: number;
         email: string;
+        createdAt: Date;
     }[];
 } & InertiaSharedProps;
 
-const SubscribersPage = ({ subscribers }: SubscribersPageProps) => {
-    console.log(subscribers);
+const SubscribersPage = ({ subscribers, ...props }: SubscribersPageProps) => {
+    const toasts = useToast();
+    useErrorMessageToast(props, toasts);
     return (
-        <div>
-            {subscribers.map((subscriber) => (
-                <p key={subscriber.id}>{subscriber.email}</p>
-            ))}
+        <div className="px-4">
+            <DataTable columns={subscriberTableCloumns} data={subscribers} />
         </div>
     );
 };

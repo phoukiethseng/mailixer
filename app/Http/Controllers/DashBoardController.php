@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateDescriptionRequest;
+use App\Models\Subscriber;
 use App\Services\SubscribePageService;
 use App\Services\SubscriptionService;
 use Exception;
@@ -25,7 +26,7 @@ class DashBoardController extends Controller
             ]);
         }
         return Inertia::render('DashBoard/Subscribers', [
-            'subscribers' => $subscribers
+            'subscribers' => collect($subscribers)->mapInto(SubscriberDTO::class)
         ]);
     }
     public function page(Request $request) {
@@ -61,5 +62,18 @@ class DashBoardController extends Controller
 
     public function index() {
         return redirect()->route('dashboard.page');
+    }
+}
+
+
+// Used for mapping backend data to frontend data
+class SubscriberDTO {
+    public $id;
+    public $email;
+    public $createdAt;
+    public function __construct(Subscriber $subscriber) {
+        $this->id = $subscriber->id;
+        $this->email = $subscriber->email;
+        $this->createdAt = $subscriber->created_at;
     }
 }
