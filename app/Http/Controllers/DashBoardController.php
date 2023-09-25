@@ -68,7 +68,9 @@ class DashBoardController extends Controller
                 'message' => "Couldn't unsubscribe {$this->subscriptionService->getSubscriber($subscriberId)}"
             ]);
         }
-        return back();
+        return back()->with([
+            'message' => 'Successfully unsubscribed'
+        ]);
     }
 
     public function index() {

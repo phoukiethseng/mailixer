@@ -29,7 +29,7 @@ export function DataTable<TData, TValue>({
         getCoreRowModel: getCoreRowModel(),
     });
     return (
-        <div className="rounded-md border">
+        <div className="rounded-md border text-foreground">
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
