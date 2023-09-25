@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SubscribePage;
 use App\Models\User;
+use App\Services\SubscribePageService;
 use Exception;
 use Illuminate\Http\Request;
 use App\Services\SubscriptionService;
@@ -11,14 +11,14 @@ use Inertia\Inertia;
 
 class SubscribeController extends Controller
 {
-    public function __construct(private SubscriptionService $subscriptionService) {
+    public function __construct(private SubscriptionService $subscriptionService, private SubscribePageService $subscribePageService) {
 
     }
     public function subscribePage($userId) {
 
         // Get user's name for requested page
         // TODO: Refactor this to use service instead
-        $user = User::select('name', 'id')->where('id', $userId)->take(1)->first();
+        $user = User::find($userId);
 
         if (!$user) {
             return Inertia::render('Error', [
@@ -27,16 +27,13 @@ class SubscribeController extends Controller
         }
 
         return Inertia::render('Subscribe/Index', [
-            'user' => $user,
             'subscribe' => [
-                'description' => SubscribePage::select('description')->where('user_id', $user->id)->first()->description
+                'description' => $this->subscribePageService->getDescription($user->id)
             ]
         ]);
     }
     public function successPage($userId) {
-        return Inertia::render('Subscribe/Success', [
-            'user' => User::select('name')->where('id', $userId)->first()
-        ]);
+        return Inertia::render('Subscribe/Success');
     }
     public function subscribe(Request $request) {
         $data = $request->validate([

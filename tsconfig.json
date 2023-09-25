@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
+        "lib": ["es2017", "dom"],
         "isolatedModules": true,
-        "target": "es6",
+        "target": "es2017",
         "module": "commonjs",
         "jsx": "react",
         "strict": true,
@@ -12,6 +13,9 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "baseUrl": "."
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./*"]
+        }
     }
 }

@@ -29,4 +29,10 @@ class SubscriptionServiceImpl implements SubscriptionService {
             'unsubscribe_token' => base64_encode($email),
         ]);
     }
+
+    public function getAllSubscribers($userId) {
+        $subscribers = User::find($userId)->subscribers;
+
+        return $subscribers;
+    }
 }

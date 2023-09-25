@@ -52,8 +52,8 @@
         --input: 240 3.7% 15.9%;
         --ring: 142.4 71.8% 29.2%;
     }
+}
 
-    html {
-        font-family: Inter, system-ui, sans-serif;
-    }
+html {
+    font-family: Inter, system-ui, sans-serif;
 }

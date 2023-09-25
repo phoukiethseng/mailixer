@@ -3,25 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateDescriptionRequest;
-use App\Models\SubscribePage;
+use App\Services\SubscribePageService;
+use App\Services\SubscriptionService;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DashBoardController extends Controller
 {
+
+    public function __construct(private SubscribePageService $subscribePageService, private SubscriptionService $subscriptionService) {
+
+    }
+    public function subscribersPage(Request $request) {
+        $user = $request->user();
+        try {
+            $subscribers = $this->subscriptionService->getAllSubscribers($user->id);
+        } catch (Exception) {
+            return back()->withErrors([
+                'message' => "Couldn't retrieve subscribers list" 
+            ]);
+        }
+        return Inertia::render('DashBoard/Subscribers', [
+            'subscribers' => $subscribers
+        ]);
+    }
     public function page(Request $request) {
         $user = $request->user();
-        $description = SubscribePage::select('description')->where('user_id', $user->id)->first()->description;
+        try {
+            $description = $this->subscribePageService->getDescription($user->id);
+            $pageUrl = $this->subscribePageService->getPageUrl($user->id);
+        } catch(Exception) {
+            return back()->withErrors([
+                'message' => "Couldn't retreive page description or preview url"
+            ]);
+        }
         return Inertia::render('DashBoard/Page', [
-            'description' => $description ? $description : ''
+            'description' => $description ? $description : '',
+            'preview.liveUrl' => $pageUrl
         ]);
     }
 
     public function updatePageDescription(UpdateDescriptionRequest $request) {
         $data = $request->validated();
-        $subscribePage = SubscribePage::where('user_id', $data['user_id'])->first();
-        $subscribePage->description = $data['description'];
-        $subscribePage->save();
+        $user = $request->user();
+        try {
+            $this->subscribePageService->updateDescription($user->id, $data['description']);
+        } catch(Exception) {
+            return back()->withErrors([
+                'message' => "Couldn't update subscribe page description"
+            ]);
+        }
         return back();
     }
 

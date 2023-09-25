@@ -19,4 +19,5 @@ class User extends Model
         return $this->hasOne(SubscribePage::class);
     }
     protected $table = 'users';
+    protected $primaryKey = 'id';
 }

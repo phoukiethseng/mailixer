@@ -1,4 +1,4 @@
-import React, { useId } from "react";
+import React, { useEffect, useId } from "react";
 import DashBoardLayout from "../../Layouts/DashBoardLayout";
 import {
     Card,
@@ -24,7 +24,21 @@ import {
     FormItem,
     FormMessage,
 } from "../../Components/Form";
-import { InertiaSharedData } from "resources/js/config/site";
+import { InertiaSharedProps } from "../../config/site";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTrigger,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogTitle,
+} from "../../Components/AlertDialog";
+import { Input } from "../../Components/Input";
+import { Icons } from "../../Components/Icons";
+import { useToast } from "../../Components/use-toast";
 
 const SubscribePageCustomizationFormSchema = z.object({
     description: z.string().nonempty(),
@@ -34,117 +48,201 @@ type PageCustomizationForm = z.infer<
     typeof SubscribePageCustomizationFormSchema
 >;
 
-const Page = () => {
-    const { props } = usePage<InertiaSharedData & { description: string }>();
+type DashBoardCustomizationPageProps = {
+    description: string;
+    preview: {
+        liveUrl: string;
+    };
+    errors: {
+        message?: string;
+    };
+} & InertiaSharedProps;
+
+const Page = ({
+    description,
+    preview,
+    auth,
+    errors,
+}: DashBoardCustomizationPageProps) => {
+    const { toast } = useToast();
     const descriptionTextareaId = useId();
     const customizationFormId = useId();
-    const descriptionDefaultText = props.description ?? "";
+    const descriptionText = description ?? "";
     const customizationForm = useForm<PageCustomizationForm>({
         defaultValues: {
-            description: descriptionDefaultText,
+            description: descriptionText,
         },
         resolver: zodResolver(SubscribePageCustomizationFormSchema),
     });
+    const viewLiveUrl = preview.liveUrl;
 
-    const description = useWatch({
+    const currentDescriptionText = useWatch({
         control: customizationForm.control,
         name: "description",
-        defaultValue: descriptionDefaultText,
+        defaultValue: descriptionText,
     });
 
     function handleDescriptionFormSubmit(data: PageCustomizationForm) {
         router.post("/dashboard/page/description", {
-            user_id: props.auth.user.id,
-            description,
+            user_id: auth.user.id,
+            description: data.description,
         });
     }
 
+    useEffect(() => {
+        if (errors?.message) {
+            toast({
+                title: "Uh Oh",
+                description: errors.message,
+                variant: "destructive",
+            });
+        }
+    }, [errors]);
+
     return (
-        <div className="px-4">
-            <Card>
-                <CardHeader></CardHeader>
-                <CardContent className="flex flex-row justify-center items-start gap-3">
-                    <Card className="min-w-[450px]">
-                        <CardHeader>
-                            <CardTitle>Customize</CardTitle>
-                            <CardDescription>
-                                Personalize your subscribe page
-                            </CardDescription>
-                        </CardHeader>
-                        <Separator />
-                        <CardContent>
-                            <div className="flex flex-col gap-2 justify-start items-stretch mt-3">
-                                <div className="flex flex-row justify-between items-stretch">
-                                    <Label
-                                        htmlFor={descriptionTextareaId}
-                                        className="text-base text-card-foreground font-semibold "
-                                    >
-                                        Description
-                                    </Label>
-                                </div>
-                                <Form {...customizationForm}>
-                                    <form
-                                        id={customizationFormId}
-                                        onSubmit={customizationForm.handleSubmit(
-                                            handleDescriptionFormSubmit
-                                        )}
-                                    >
-                                        <FormField
-                                            name="description"
-                                            control={customizationForm.control}
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormMessage />
-                                                    <Textarea
-                                                        {...field}
-                                                        id={
-                                                            descriptionTextareaId
-                                                        }
-                                                        className="min-h-[150px]"
-                                                    />
-                                                    <FormDescription className="text-xs text-muted-foreground">
-                                                        This will show up on
-                                                        your subscribe page
-                                                    </FormDescription>
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </form>
-                                </Form>
-                            </div>
-                        </CardContent>
-                        <CardFooter>
-                            <div className="flex flex-row justify-center">
-                                <Button
-                                    type="submit"
-                                    form={customizationFormId}
+        <div className="flex flex-col justify-start items-stretch w-full gap-2 p-4">
+            <div className="flex flex-row justify-center items-start gap-2">
+                <Card className="min-w-[200px] w-[350px]">
+                    <CardHeader>
+                        <CardTitle>Customize</CardTitle>
+                        <CardDescription>
+                            Personalize your subscribe page
+                        </CardDescription>
+                    </CardHeader>
+                    <Separator />
+                    <CardContent>
+                        <div className="flex flex-col gap-2 justify-start items-stretch mt-3">
+                            <div className="flex flex-row justify-between items-stretch">
+                                <Label
+                                    htmlFor={descriptionTextareaId}
+                                    className="text-base text-card-foreground font-semibold "
                                 >
-                                    Save
-                                </Button>
+                                    Description
+                                </Label>
                             </div>
-                        </CardFooter>
-                    </Card>
-                    <Separator orientation="vertical" decorative />
-                    <Card className="min-w-[600px]">
-                        <CardHeader>
-                            <CardTitle>Preview</CardTitle>
-                            <CardDescription>
-                                What will you subscribe page looks like
-                            </CardDescription>
-                        </CardHeader>
-                        <Separator />
-                        <CardContent className="flex justify-center items-center pt-6">
-                            <SubscribeCard
-                                user={{
-                                    name: props?.auth?.user?.name ?? "Unknown",
-                                }}
-                                subscribe={{ description: description }}
-                                onSubscribe={() => {}}
+                            <Form {...customizationForm}>
+                                <form
+                                    id={customizationFormId}
+                                    onSubmit={customizationForm.handleSubmit(
+                                        handleDescriptionFormSubmit
+                                    )}
+                                >
+                                    <FormField
+                                        name="description"
+                                        control={customizationForm.control}
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormMessage />
+                                                <Textarea
+                                                    {...field}
+                                                    id={descriptionTextareaId}
+                                                    className="min-h-[150px]"
+                                                />
+                                                <FormDescription className="text-xs text-muted-foreground">
+                                                    This will show up on your
+                                                    subscribe page
+                                                </FormDescription>
+                                            </FormItem>
+                                        )}
+                                    />
+                                </form>
+                            </Form>
+                        </div>
+                    </CardContent>
+                    <CardFooter>
+                        <div className="flex flex-row justify-center">
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <Button
+                                        disabled={
+                                            descriptionText ===
+                                            currentDescriptionText
+                                        }
+                                    >
+                                        Save
+                                    </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>
+                                            Are you sure?
+                                        </AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This will overwrite your exisitng
+                                            description
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>
+                                            Cancel
+                                        </AlertDialogCancel>
+                                        <AlertDialogAction
+                                            type="submit"
+                                            form={customizationFormId}
+                                        >
+                                            Confirm
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </div>
+                    </CardFooter>
+                </Card>
+                <Separator orientation="vertical" decorative />
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Preview</CardTitle>
+                        <CardDescription>
+                            What will you subscribe page looks like
+                        </CardDescription>
+                    </CardHeader>
+                    <Separator />
+                    <CardContent className="flex justify-center items-center pt-6">
+                        <SubscribeCard
+                            user={{
+                                name: auth.user.name ?? "Unknown",
+                            }}
+                            subscribe={{
+                                description: currentDescriptionText,
+                            }}
+                            onSubscribe={() => {}}
+                        />
+                    </CardContent>
+                </Card>
+                <Separator orientation="vertical" />
+                <Card>
+                    <CardHeader>
+                        <CardTitle>View Live</CardTitle>
+                        <CardDescription>
+                            Send this link your potential subscriber
+                        </CardDescription>
+                    </CardHeader>
+                    <Separator />
+                    <CardContent className="mt-4 flex flex-row gap-2 justify-between items-center">
+                        <Input
+                            type="text"
+                            readOnly
+                            defaultValue={viewLiveUrl}
+                        />
+                        <Button
+                            variant={"outline"}
+                            size={"icon"}
+                            onClick={() => {
+                                navigator.clipboard.writeText(viewLiveUrl);
+                                toast({
+                                    description: "Copied to clipboard",
+                                });
+                            }}
+                        >
+                            <Icons.Clipboard
+                                size={20}
+                                strokeWidth={1.5}
+                                className="text-card-foreground w-4 h-4"
                             />
-                        </CardContent>
-                    </Card>
-                </CardContent>
-            </Card>
+                        </Button>
+                    </CardContent>
+                </Card>
+            </div>
         </div>
     );
 };

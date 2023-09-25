@@ -61,15 +61,14 @@ export default function DashBoardLayout({
                     </DropdownMenuContent>
                 </DropdownMenu>
                 <div className="w-[90%] flex flex-col justify-start items-stretch gap-2 transition-color duration-150">
-                    {Object.keys(siteConfig.dashboard.subPages).map(
-                        (name, index) => (
+                    {Object.entries(siteConfig.dashboard.subPages).map(
+                        ([pageName, pageInfo], index) => (
                             <DashBoardNavigationItem
-                                icon={Icons.Layout}
+                                icon={pageInfo.icon}
                                 key={index}
-                                name={name}
-                                // @ts-expect-error
-                                url={siteConfig.dashboard.subPages[name]}
-                                isActive={name === activePage}
+                                name={pageName}
+                                url={pageInfo.url}
+                                isActive={pageName === activePage}
                             />
                         )
                     )}

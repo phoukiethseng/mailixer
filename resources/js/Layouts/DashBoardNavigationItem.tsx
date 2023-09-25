@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "../lib/utils";
+import { Link } from "@inertiajs/react";
 
 type DashBoardNavigationItemProps = {
     name: string;
@@ -17,7 +18,7 @@ export default function DashBoardNavigationItem({
 }: DashBoardNavigationItemProps) {
     const Icon = icon;
     return (
-        <a
+        <Link
             className={cn(
                 "w-full flex flex-row justify-start gap-3 text-left font-semibold pl-5 py-3 text-foreground rounded-md hover:bg-accent hover:text-accent-foreground hover:underline",
                 "items-center sm:items-start",
@@ -30,6 +31,6 @@ export default function DashBoardNavigationItem({
                 <Icon />
             </span>
             <span>{name}</span>
-        </a>
+        </Link>
     );
 }
