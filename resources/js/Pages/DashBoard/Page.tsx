@@ -39,6 +39,7 @@ import {
 import { Input } from "../../Components/Input";
 import { Icons } from "../../Components/Icons";
 import { useToast } from "../../Components/use-toast";
+import { useErrorMessageToast } from "../../lib/useErrorMessageToast";
 
 const SubscribePageCustomizationFormSchema = z.object({
     description: z.string().nonempty(),
@@ -53,9 +54,6 @@ type DashBoardCustomizationPageProps = {
     preview: {
         liveUrl: string;
     };
-    errors: {
-        message?: string;
-    };
 } & InertiaSharedProps;
 
 const Page = ({
@@ -65,7 +63,7 @@ const Page = ({
     errors,
     message,
 }: DashBoardCustomizationPageProps) => {
-    const { toast } = useToast();
+    const toasts = useToast();
     const descriptionTextareaId = useId();
     const customizationFormId = useId();
     const descriptionText = description ?? "";
@@ -75,6 +73,9 @@ const Page = ({
         },
         resolver: zodResolver(SubscribePageCustomizationFormSchema),
     });
+
+    useErrorMessageToast({ errors, message }, toasts);
+
     const viewLiveUrl = preview.liveUrl;
 
     const currentDescriptionText = useWatch({
@@ -89,21 +90,6 @@ const Page = ({
             description: data.description,
         });
     }
-
-    useEffect(() => {
-        if (errors?.message) {
-            toast({
-                title: "Uh Oh",
-                description: errors.message,
-                variant: "destructive",
-            });
-        }
-        if (message) {
-            toast({
-                description: message,
-            });
-        }
-    }, [errors, message]);
 
     return (
         <div className="flex flex-col justify-start items-stretch w-full gap-2 p-4">
@@ -237,7 +223,7 @@ const Page = ({
                             size={"icon"}
                             onClick={() => {
                                 navigator.clipboard.writeText(viewLiveUrl);
-                                toast({
+                                toasts.toast({
                                     description: "Copied to clipboard",
                                 });
                             }}

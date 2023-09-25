@@ -27,6 +27,9 @@ export type InertiaSharedProps = {
         };
     };
     message?: string;
+    errors: {
+        message?: string;
+    };
 };
 
 export default siteConfig;
