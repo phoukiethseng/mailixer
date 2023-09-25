@@ -8,6 +8,8 @@ import {
     UserCheck,
     Clipboard,
     X,
+    List,
+    UserMinus,
 } from "lucide-react";
 
 const Icons = {
@@ -20,6 +22,8 @@ const Icons = {
     UserCheck: UserCheck,
     Clipboard: Clipboard,
     Cross2Icon: X,
+    List: List,
+    UserMinus: UserMinus,
 };
 
 export { Icons };

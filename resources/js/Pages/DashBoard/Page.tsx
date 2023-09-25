@@ -92,7 +92,7 @@ const Page = ({
     }
 
     return (
-        <div className="flex flex-col justify-start items-stretch w-full gap-2 p-4">
+        <div className="flex flex-col justify-start items-stretch w-full gap-2 pt-4">
             <div className="flex flex-row justify-center items-start gap-2">
                 <Card className="min-w-[200px] w-[350px]">
                     <CardHeader>

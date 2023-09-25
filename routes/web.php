@@ -44,4 +44,5 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/subscribers', [DashBoardController::class, 'subscribersPage'])->name('dashboard.subscribers');
 
     Route::post('/page/description', [DashBoardController::class, 'updatePageDescription']);
+    Route::delete('/subscriber/{subscriberId}', [DashBoardController::class, 'unsubscribe']);
 });

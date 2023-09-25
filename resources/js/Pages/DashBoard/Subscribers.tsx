@@ -18,7 +18,7 @@ const SubscribersPage = ({ subscribers, ...props }: SubscribersPageProps) => {
     const toasts = useToast();
     useErrorMessageToast(props, toasts);
     return (
-        <div className="px-4">
+        <div>
             <DataTable columns={subscriberTableCloumns} data={subscribers} />
         </div>
     );

@@ -60,6 +60,17 @@ class DashBoardController extends Controller
         ]);
     }
 
+    public function unsubscribe($subscriberId) {
+        try {
+            $this->subscriptionService->unsubscribe($subscriberId);
+        } catch(Exception) {
+            return back()->withErrors([
+                'message' => "Couldn't unsubscribe {$this->subscriptionService->getSubscriber($subscriberId)}"
+            ]);
+        }
+        return back();
+    }
+
     public function index() {
         return redirect()->route('dashboard.page');
     }

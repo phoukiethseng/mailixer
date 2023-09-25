@@ -35,4 +35,11 @@ class SubscriptionServiceImpl implements SubscriptionService {
 
         return $subscribers;
     }
+    public function unsubscribe($subscriberId) {
+        $subscriber = Subscriber::find($subscriberId);
+        $subscriber->forceDelete();
+    }
+    public function getSubscriber($subscriberId) {
+        return Subscriber::find($subscriberId);
+    }
 }

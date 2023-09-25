@@ -6,10 +6,12 @@ const siteConfig = {
             "Subscribe Page": {
                 url: "/dashboard/page",
                 icon: Icons.Layout,
+                description: "Your own subscribe page",
             },
             Subscribers: {
                 url: "/dashboard/subscribers",
                 icon: Icons.UserCheck,
+                description: "People who subscribed to your newsletter",
             },
         },
     },
