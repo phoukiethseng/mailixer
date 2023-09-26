@@ -3,7 +3,7 @@ import { Icons } from "../Components/Icons";
 const siteConfig = {
     dashboard: {
         subPages: {
-            "Subscribe Page": {
+            "Customization": {
                 url: "/dashboard/customization_page",
                 icon: Icons.Layout,
                 description: "Your own subscribe page",

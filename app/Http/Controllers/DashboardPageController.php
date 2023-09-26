@@ -40,7 +40,7 @@ class DashboardPageController extends Controller
                 'message' => "Couldn't retreive page description or preview url"
             ]);
         }
-        return Inertia::render('DashBoard/Page', [
+        return Inertia::render('DashBoard/Customization', [
             'description' => $description ? $description : '',
             'preview.liveUrl' => $pageUrl
         ]);

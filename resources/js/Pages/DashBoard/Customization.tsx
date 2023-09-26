@@ -236,7 +236,7 @@ const Page = ({
 };
 
 Page.layout = (page: React.ReactNode) => (
-    <DashBoardLayout activePage="Subscribe Page">{page}</DashBoardLayout>
+    <DashBoardLayout activePage="Customization">{page}</DashBoardLayout>
 );
 
 export default Page;
