@@ -13,15 +13,17 @@ import {
     TableHeader,
     TableRow,
 } from "./Table";
+import { cn } from "../lib/utils";
 
 type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-};
+} & React.ComponentPropsWithoutRef<"div">;
 
 export function DataTable<TData, TValue>({
     data,
     columns,
+    className,
 }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
@@ -29,7 +31,7 @@ export function DataTable<TData, TValue>({
         getCoreRowModel: getCoreRowModel(),
     });
     return (
-        <div className="rounded-md border text-foreground">
+        <div className={cn("rounded-xl border text-foreground", className)}>
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (

@@ -42,4 +42,9 @@ class SubscriptionServiceImpl implements SubscriptionService {
     public function getSubscriber($subscriberId) {
         return Subscriber::find($subscriberId);
     }
+
+    public function getSubscribersCount($userId) {
+        $count = User::find($userId)->subscribers()->count();
+        return $count;
+    }
 }

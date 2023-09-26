@@ -92,9 +92,9 @@ const Page = ({
     }
 
     return (
-        <div className="flex flex-col justify-start items-stretch w-full gap-2 pt-4">
-            <div className="flex flex-row justify-center items-start gap-2">
-                <Card className="min-w-[200px] w-[350px]">
+        <div className="flex flex-col justify-start items-center w-full gap-2 pt-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3 items-start max-w-[1300px]">
+                <Card className="self-stretch">
                     <CardHeader>
                         <CardTitle>Customize</CardTitle>
                         <CardDescription>
@@ -102,85 +102,80 @@ const Page = ({
                         </CardDescription>
                     </CardHeader>
                     <Separator />
-                    <CardContent>
-                        <div className="flex flex-col gap-2 justify-start items-stretch mt-3">
-                            <div className="flex flex-row justify-between items-stretch">
-                                <Label
-                                    htmlFor={descriptionTextareaId}
-                                    className="text-base text-card-foreground font-semibold "
-                                >
-                                    Description
-                                </Label>
-                            </div>
-                            <Form {...customizationForm}>
-                                <form
-                                    id={customizationFormId}
-                                    onSubmit={customizationForm.handleSubmit(
-                                        handleDescriptionFormSubmit
+                    <CardContent className="flex flex-col gap-2 justify-start items-stretch pt-4">
+                        <div className="flex flex-row justify-between items-stretch">
+                            <Label
+                                htmlFor={descriptionTextareaId}
+                                className="text-base text-card-foreground font-semibold "
+                            >
+                                Description
+                            </Label>
+                        </div>
+                        <Form {...customizationForm}>
+                            <form
+                                id={customizationFormId}
+                                onSubmit={customizationForm.handleSubmit(
+                                    handleDescriptionFormSubmit
+                                )}
+                            >
+                                <FormField
+                                    name="description"
+                                    control={customizationForm.control}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormMessage />
+                                            <Textarea
+                                                {...field}
+                                                id={descriptionTextareaId}
+                                                className="min-h-[195px]"
+                                            />
+                                            <FormDescription className="text-xs text-muted-foreground">
+                                                This will show up on your
+                                                subscribe page
+                                            </FormDescription>
+                                        </FormItem>
                                     )}
-                                >
-                                    <FormField
-                                        name="description"
-                                        control={customizationForm.control}
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormMessage />
-                                                <Textarea
-                                                    {...field}
-                                                    id={descriptionTextareaId}
-                                                    className="min-h-[150px]"
-                                                />
-                                                <FormDescription className="text-xs text-muted-foreground">
-                                                    This will show up on your
-                                                    subscribe page
-                                                </FormDescription>
-                                            </FormItem>
-                                        )}
-                                    />
-                                </form>
-                            </Form>
-                        </div>
+                                />
+                            </form>
+                        </Form>
                     </CardContent>
-                    <CardFooter>
-                        <div className="flex flex-row justify-center">
-                            <AlertDialog>
-                                <AlertDialogTrigger asChild>
-                                    <Button
-                                        disabled={
-                                            descriptionText ===
-                                            currentDescriptionText
-                                        }
+                    <CardFooter className="flex flex-row justify-start">
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button
+                                    disabled={
+                                        descriptionText ===
+                                        currentDescriptionText
+                                    }
+                                >
+                                    Save
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        Are you sure?
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This will overwrite your exisitng
+                                        description
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                        Cancel
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                        type="submit"
+                                        form={customizationFormId}
                                     >
-                                        Save
-                                    </Button>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>
-                                            Are you sure?
-                                        </AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            This will overwrite your exisitng
-                                            description
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel>
-                                            Cancel
-                                        </AlertDialogCancel>
-                                        <AlertDialogAction
-                                            type="submit"
-                                            form={customizationFormId}
-                                        >
-                                            Confirm
-                                        </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
-                        </div>
+                                        Confirm
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </CardFooter>
                 </Card>
-                <Separator orientation="vertical" decorative />
                 <Card>
                     <CardHeader>
                         <CardTitle>Preview</CardTitle>
@@ -189,7 +184,7 @@ const Page = ({
                         </CardDescription>
                     </CardHeader>
                     <Separator />
-                    <CardContent className="flex justify-center items-center pt-6">
+                    <CardContent className="flex justify-center items-center pt-5">
                         <SubscribeCard
                             user={{
                                 name: auth.user.name ?? "Unknown",
@@ -201,7 +196,6 @@ const Page = ({
                         />
                     </CardContent>
                 </Card>
-                <Separator orientation="vertical" />
                 <Card>
                     <CardHeader>
                         <CardTitle>View Live</CardTitle>

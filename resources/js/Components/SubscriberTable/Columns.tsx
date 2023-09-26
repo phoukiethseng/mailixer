@@ -50,11 +50,11 @@ export const columns: ColumnDef<Subscriber>[] = [
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant={"outline"} size={"icon"}>
+                        <Button variant={"ghost"} size={"icon"}>
                             <Icons.List size={15} />
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent sideOffset={8}>
+                    <DropdownMenuContent sideOffset={8} align="end">
                         <DropdownMenuItem asChild>
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>

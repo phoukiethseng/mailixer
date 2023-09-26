@@ -20,14 +20,16 @@ class DashBoardController extends Controller
         $user = $request->user();
         try {
             $subscribers = $this->subscriptionService->getAllSubscribers($user->id);
+            $count = $this->subscriptionService->getSubscribersCount($user->id);
+            return Inertia::render('DashBoard/Subscribers', [
+                'subscribers' => collect($subscribers)->mapInto(SubscriberDTO::class),
+                'subscribersCount' => $count
+            ]);
         } catch (Exception) {
             return back()->withErrors([
                 'message' => "Couldn't retrieve subscribers list" 
             ]);
         }
-        return Inertia::render('DashBoard/Subscribers', [
-            'subscribers' => collect($subscribers)->mapInto(SubscriberDTO::class)
-        ]);
     }
     public function page(Request $request) {
         $user = $request->user();
