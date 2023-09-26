@@ -29,7 +29,7 @@ class DashboardActionController extends Controller
 
     public function unsubscribe($subscriberId) {
         try {
-            $this->subscriptionService->unsubscribe($subscriberId);
+            $this->subscriptionService->unsubscribeById($subscriberId);
         } catch(Exception) {
             return back()->withErrors([
                 'message' => "Couldn't unsubscribe {$this->subscriptionService->getSubscriber($subscriberId)}"
