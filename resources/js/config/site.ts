@@ -4,12 +4,12 @@ const siteConfig = {
     dashboard: {
         subPages: {
             "Subscribe Page": {
-                url: "/dashboard/page",
+                url: "/dashboard/customization_page",
                 icon: Icons.Layout,
                 description: "Your own subscribe page",
             },
             Subscribers: {
-                url: "/dashboard/subscribers",
+                url: "/dashboard/subscribers_page",
                 icon: Icons.UserCheck,
                 description: "People who subscribed to your newsletter",
             },

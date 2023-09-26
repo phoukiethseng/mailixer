@@ -17,6 +17,6 @@ class SubscribePageServiceImpl implements SubscribePageService {
         $subscribePage->save();
     }
     public function getPageUrl($userId) {
-        return url("/subscribe/{$userId}");
+        return route("subscribe.index", $userId);
     }
 }

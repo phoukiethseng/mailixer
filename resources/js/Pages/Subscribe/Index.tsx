@@ -14,7 +14,7 @@ export default function SubscribePage({ auth, subscribe }: SubscribePageProps) {
     const { errors } = props;
 
     async function handleFormSubmit(formData: EmailForm) {
-        router.post("/subscribe", {
+        router.post("/subscribe_page", {
             user_id: auth.user.id,
             email: formData.email,
         });

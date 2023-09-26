@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashBoardController;
-use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\AuthActionController;
+use App\Http\Controllers\AuthPageController;
+use App\Http\Controllers\DashboardPageController;
+use App\Http\Controllers\DashboardActionController;
+use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\SubscribeController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,32 +19,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [FrontendController::class, 'homePage'])->name('home');
+Route::prefix('/')->group(function () {
 
-Route::get('/login', [FrontendController::class, 'loginPage'])->name('login');
+    Route::get('/', [HomePageController::class, 'homePage']);
 
-Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/login', [AuthPageController::class, 'loginPage']);
+    Route::get('/logout', [AuthPageController::class, 'logoutPage']);
 
-Route::get('/logout', [FrontendController::class, 'logoutPage']);
+    Route::post('/login', [AuthActionController::class, 'login']);
+    Route::post('/logout', [AuthActionController::class, 'logout']);
+});
 
-Route::post('/logout', [AuthController::class, 'logout']);
-
-Route::prefix('subscribe')->group(function () {
+Route::prefix('subscribe_page')->group(function () {
 
     Route::get('/{userId}', [SubscribeController::class, 'subscribePage'])->name("subscribe.index");
-
     Route::get('/{userId}/success', [SubscribeController::class, 'successPage'])->name('subscribe.success');
-
     Route::post('/', [SubscribeController::class, 'subscribe']);
 
 });
 
 
 Route::middleware('auth')->prefix('dashboard')->group(function () {
-    Route::get('/', [DashBoardController::class, 'index'])->name('dashboard.index');
-    Route::get('/page', [DashBoardController::class, 'page'])->name('dashboard.page');
-    Route::get('/subscribers', [DashBoardController::class, 'subscribersPage'])->name('dashboard.subscribers');
+    // Dashboard pages
+    Route::get('/', [DashboardPageController::class, 'indexPage'])->name('dashboard.index');
+    Route::get('/customization_page', [DashboardPageController::class, 'customizationPage'])->name('dashboard.customization');
+    Route::get('/subscribers_page', [DashboardPageController::class, 'subscribersPage'])->name('dashboard.subscribers');
 
-    Route::post('/page/description', [DashBoardController::class, 'updatePageDescription']);
-    Route::delete('/subscriber/{subscriberId}', [DashBoardController::class, 'unsubscribe']);
+    // Dashboard actions
+    Route::post('/page/description', [DashboardActionController::class, 'updatePageDescription']);
+    Route::delete('/subscriber/{subscriberId}', [DashboardActionController::class, 'unsubscribe']);
 });

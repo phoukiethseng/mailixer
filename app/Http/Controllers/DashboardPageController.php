@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateDescriptionRequest;
 use App\Models\Subscriber;
 use App\Services\SubscribePageService;
 use App\Services\SubscriptionService;
@@ -10,7 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class DashBoardController extends Controller
+class DashboardPageController extends Controller
 {
 
     public function __construct(private SubscribePageService $subscribePageService, private SubscriptionService $subscriptionService) {
@@ -31,7 +30,7 @@ class DashBoardController extends Controller
             ]);
         }
     }
-    public function page(Request $request) {
+    public function customizationPage(Request $request) {
         $user = $request->user();
         try {
             $description = $this->subscribePageService->getDescription($user->id);
@@ -47,36 +46,9 @@ class DashBoardController extends Controller
         ]);
     }
 
-    public function updatePageDescription(UpdateDescriptionRequest $request) {
-        $data = $request->validated();
-        $user = $request->user();
-        try {
-            $this->subscribePageService->updateDescription($user->id, $data['description']);
-        } catch(Exception) {
-            return back()->withErrors([
-                'message' => "Couldn't update subscribe page description"
-            ]);
-        }
-        return back()->with([
-            'message' => 'Successfully updated page description'
-        ]);
-    }
 
-    public function unsubscribe($subscriberId) {
-        try {
-            $this->subscriptionService->unsubscribe($subscriberId);
-        } catch(Exception) {
-            return back()->withErrors([
-                'message' => "Couldn't unsubscribe {$this->subscriptionService->getSubscriber($subscriberId)}"
-            ]);
-        }
-        return back()->with([
-            'message' => 'Successfully unsubscribed'
-        ]);
-    }
-
-    public function index() {
-        return redirect()->route('dashboard.page');
+    public function indexPage() {
+        return redirect()->route('dashboard.customization');
     }
 }
 
