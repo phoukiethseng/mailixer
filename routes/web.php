@@ -5,7 +5,8 @@ use App\Http\Controllers\AuthPageController;
 use App\Http\Controllers\DashboardPageController;
 use App\Http\Controllers\DashboardActionController;
 use App\Http\Controllers\HomePageController;
-use App\Http\Controllers\SubscribeController;
+use App\Http\Controllers\SubscribePageController;
+use App\Http\Controllers\SubscribeActionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,9 +33,10 @@ Route::prefix('/')->group(function () {
 
 Route::prefix('subscribe_page')->group(function () {
 
-    Route::get('/{userId}', [SubscribeController::class, 'subscribePage'])->name("subscribe.index");
-    Route::get('/{userId}/success', [SubscribeController::class, 'successPage'])->name('subscribe.success');
-    Route::post('/', [SubscribeController::class, 'subscribe']);
+    Route::get('/{userId}', [SubscribePageController::class, 'subscribePage'])->name("subscribe.index");
+    Route::get('/{userId}/success', [SubscribePageController::class, 'successPage'])->name('subscribe.success');
+
+    Route::post('/', [SubscribeActionController::class, 'subscribe']);
 
 });
 
