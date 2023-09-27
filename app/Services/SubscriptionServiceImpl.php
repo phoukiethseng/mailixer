@@ -7,6 +7,8 @@ use App\Models\User;
 
 use App\Services\SubscriptionService;
 use Exception;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class SubscriptionServiceImpl implements SubscriptionService {
@@ -37,7 +39,10 @@ class SubscriptionServiceImpl implements SubscriptionService {
         return $subscribers;
     }
     public function unsubscribeById($subscriberId) {
-        $subscriber = Subscriber::find($subscriberId);
+        $subscriber = Subscriber::find($subscriberId)->first();
+        if (!$subscriber) {
+            throw new Exception("Couldn't find subscriber");
+        }
         $subscriber->forceDelete();
     }
     public function getSubscriber($subscriberId) {
@@ -49,6 +54,35 @@ class SubscriptionServiceImpl implements SubscriptionService {
         return $count;
     }
     public function unsusbscribeByToken($unsubscribeToken) {
-        
+       $subscriberId = Subscriber::select('id')->where('unsubscribe_token', $unsubscribeToken)->first(); 
+       if ($subscriberId) {
+            $this->unsubscribeById($subscriberId);
+       } else {
+            throw new Exception('Invalid unsubscribe token');
+       }
+    }
+    public function getUnsubscribeUrlById($subscriberId) {
+        $subscriber = $this->getSubscriberById($subscriberId);
+        if ($subscriber) {
+            return Route::signedRoute('unsubscribe', [$subscriber->unsubscribe_token]);
+        } else {
+            throw new Exception("Couldn't generate unsubscribe url");
+        }
+    }
+    public function getUnsubscribeUrlByEmail($email) {
+        $subscriber = $this->getSubscriberByEmail($email);
+        $token = $subscriber->unsubscribe_token;
+        if ($token) {
+            return $token; 
+        } else {
+            throw new Exception('Email is invalid or not subscribed');
+        }
+    }
+    public function getSubscriberByEmail($email) {
+        return Subscriber::where('email', $email)->first();
+    }
+
+    public function getSubscriberById($subscriberId) {
+        return Subscriber::find($subscriberId)->first();
     }
 }

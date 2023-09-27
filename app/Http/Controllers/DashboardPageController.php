@@ -57,10 +57,12 @@ class DashboardPageController extends Controller
 class SubscriberDTO {
     public $id;
     public $email;
+    public $unsubscribe_token;
     public $createdAt;
     public function __construct(Subscriber $subscriber) {
         $this->id = $subscriber->id;
         $this->email = $subscriber->email;
         $this->createdAt = $subscriber->created_at;
+        $this->unsubscribe_token = $subscriber->unsubscribe_token;
     }
 }

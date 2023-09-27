@@ -35,6 +35,4 @@ class SubscribePageController extends Controller
     public function successPage($userId) {
         return Inertia::render('Subscribe/Success');
     }
-    
-
 }

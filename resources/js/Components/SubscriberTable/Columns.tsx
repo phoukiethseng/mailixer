@@ -20,6 +20,7 @@ import {
     AlertDialogTrigger,
 } from "../AlertDialog";
 import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
+import { useToast } from "../use-toast";
 
 type Subscriber = SubscribersPageProps["subscribers"][number];
 export const columns: ColumnDef<Subscriber>[] = [
@@ -41,6 +42,31 @@ export const columns: ColumnDef<Subscriber>[] = [
                 Date.parse(createdAt)
             ).toLocaleDateString();
             return <div>{formatted}</div>;
+        },
+    },
+    {
+        accessorKey: "unsubscribe_token",
+        header: "Unsubscribe Token",
+        cell: ({ row }) => {
+            const token: string = row.getValue("unsubscribe_token");
+            const toasts = useToast();
+            return (
+                <div className="flex flex-row gap-1 justify-start items-center">
+                    <p>{token}</p>
+                    <Button
+                        variant={"link"}
+                        onClick={() => {
+                            navigator.clipboard.writeText(token);
+                            toasts.toast({
+                                description:
+                                    "Unsubscribe token has been copied to clipboard",
+                            });
+                        }}
+                    >
+                        Copy
+                    </Button>
+                </div>
+            );
         },
     },
     // TODO: Implement `unsubscribe` feature

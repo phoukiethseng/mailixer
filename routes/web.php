@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardActionController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\SubscribePageController;
 use App\Http\Controllers\SubscribeActionController;
+use App\Http\Controllers\UnsubscribePageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +39,10 @@ Route::prefix('subscribe_page')->group(function () {
 
     Route::post('/', [SubscribeActionController::class, 'subscribe']);
 
+});
+
+Route::prefix('/unsubscribe')->group(function () {
+    Route::get('/{unsubscribeToken}', [UnsubscribePageController::class, 'unsubscribePage'])->name('unsubscribe');
 });
 
 

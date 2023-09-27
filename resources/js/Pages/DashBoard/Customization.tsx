@@ -16,7 +16,7 @@ import { Label } from "../../Components/Label";
 import { Textarea } from "../../Components/TextArea";
 import { Button } from "../../Components/Button";
 import SubscribeCard from "../../Components/SubscribeCard";
-import { router, usePage } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import {
     Form,
     FormDescription,

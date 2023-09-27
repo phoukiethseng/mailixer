@@ -19,6 +19,7 @@ export type SubscribersPageProps = {
         id: number;
         email: string;
         createdAt: Date;
+        unsubscribe_token: string;
     }[];
     subscribersCount: number;
 } & InertiaSharedProps;
