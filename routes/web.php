@@ -22,10 +22,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/')->group(function () {
 
-    Route::get('/', [HomePageController::class, 'homePage']);
+    Route::get('/', [HomePageController::class, 'homePage'])->name('home');
 
-    Route::get('/login', [AuthPageController::class, 'loginPage']);
-    Route::get('/logout', [AuthPageController::class, 'logoutPage']);
+    Route::get('/login', [AuthPageController::class, 'loginPage'])->name('login');
+    Route::get('/logout', [AuthPageController::class, 'logoutPage'])->name('logout');
 
     Route::post('/login', [AuthActionController::class, 'login']);
     Route::post('/logout', [AuthActionController::class, 'logout']);

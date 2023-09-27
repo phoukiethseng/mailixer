@@ -7,6 +7,7 @@ use App\Models\User;
 
 use App\Services\SubscriptionService;
 use Exception;
+use Illuminate\Support\Str;
 
 class SubscriptionServiceImpl implements SubscriptionService {
     public function subscribe($userId, $email) {
@@ -26,7 +27,7 @@ class SubscriptionServiceImpl implements SubscriptionService {
         Subscriber::create([
             'email' => $email,
             'user_id' => $user->id,
-            'unsubscribe_token' => base64_encode($email),
+            'unsubscribe_token' => Str::random(20),
         ]);
     }
 
@@ -46,5 +47,8 @@ class SubscriptionServiceImpl implements SubscriptionService {
     public function getSubscribersCount($userId) {
         $count = User::find($userId)->subscribers()->count();
         return $count;
+    }
+    public function unsusbscribeByToken($unsubscribeToken) {
+        
     }
 }

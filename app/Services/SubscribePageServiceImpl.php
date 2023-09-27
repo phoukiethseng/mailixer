@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Services\SubscribePageService;
+use Illuminate\Support\Facades\URL;
 use Exception;
 
 class SubscribePageServiceImpl implements SubscribePageService {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Services\SubscribePageService;
 use App\Services\SubscriptionService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class SubscribePageController extends Controller
@@ -13,7 +14,6 @@ class SubscribePageController extends Controller
 
     }
     public function subscribePage($userId) {
-
         // Get user's name for requested page
         // TODO: Refactor this to use service instead
         $user = User::find($userId);
