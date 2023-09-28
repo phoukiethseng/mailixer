@@ -42,7 +42,7 @@ Route::prefix('subscribe_page')->group(function () {
 });
 
 Route::prefix('/unsubscribe')->group(function () {
-    Route::get('/{unsubscribeToken}', [UnsubscribePageController::class, 'unsubscribePage'])->name('unsubscribe');
+    Route::middleware('signed')->get('/{unsubscribeToken}', [UnsubscribePageController::class, 'unsubscribePage'])->name('unsubscribe');
 });
 
 
@@ -55,4 +55,5 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     // Dashboard actions
     Route::post('/page/description', [DashboardActionController::class, 'updatePageDescription']);
     Route::delete('/subscriber/{subscriberId}', [DashboardActionController::class, 'unsubscribe']);
+    Route::get('/unsubscribe_url/{subscriberId}', [DashboardActionController::class, 'getUnsubscribeUrl']);
 });

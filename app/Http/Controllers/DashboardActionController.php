@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateDescriptionRequest;
 use App\Services\SubscribePageService;
 use App\Services\SubscriptionService;
-use Illuminate\Http\Request;
+use Exception;
 
 class DashboardActionController extends Controller
 {
@@ -38,5 +38,20 @@ class DashboardActionController extends Controller
         return back()->with([
             'message' => 'Successfully unsubscribed'
         ]);
+    }
+    
+    public function getUnsubscribeUrl($subscriberId) {
+        
+        try {
+            $url = $this->subscriptionService->getUnsubscribeUrlById($subscriberId);
+            return response()->json([
+                'url' => $url
+            ]);
+        } catch (Exception $e) {
+            return response(status: 500)->json([
+                'message' => 'Error while generating unsubscribe url'
+            ]);
+        }
+
     }
 }

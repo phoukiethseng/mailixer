@@ -7,7 +7,6 @@ use App\Models\User;
 
 use App\Services\SubscriptionService;
 use Exception;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
@@ -64,7 +63,8 @@ class SubscriptionServiceImpl implements SubscriptionService {
     public function getUnsubscribeUrlById($subscriberId) {
         $subscriber = $this->getSubscriberById($subscriberId);
         if ($subscriber) {
-            return Route::signedRoute('unsubscribe', [$subscriber->unsubscribe_token]);
+            $url = URL::signedRoute('unsubscribe', [$subscriber->unsubscribe_token]);
+            return $url;
         } else {
             throw new Exception("Couldn't generate unsubscribe url");
         }
