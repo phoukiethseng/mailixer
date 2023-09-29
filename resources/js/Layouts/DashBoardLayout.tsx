@@ -75,7 +75,7 @@ export default function DashBoardLayout({
                     )}
                 </div>
             </aside>
-            <div className="w-full min-h-screen p-6 gap-6 flex flex-col justify-start items-stretch">
+            <div className="w-full overflow-x-scroll h-screen p-6 gap-6 flex flex-col justify-start items-stretch">
                 <DashBoardSubPageHeader
                     title={activePage}
                     description={
