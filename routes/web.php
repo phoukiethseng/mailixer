@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthPageController;
 use App\Http\Controllers\DashboardPageController;
 use App\Http\Controllers\DashboardActionController;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\NewsletterPageController;
 use App\Http\Controllers\SubscribePageController;
 use App\Http\Controllers\SubscribeActionController;
 use App\Http\Controllers\UnsubscribePageController;
@@ -51,6 +52,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/', [DashboardPageController::class, 'indexPage'])->name('dashboard.index');
     Route::get('/customization_page', [DashboardPageController::class, 'customizationPage'])->name('dashboard.customization');
     Route::get('/subscribers_page', [DashboardPageController::class, 'subscribersPage'])->name('dashboard.subscribers');
+    Route::get('/newsletter_page', [NewsletterPageController::class, 'newsletterPage'])->name('dashboard.newsletter');
 
     // Dashboard actions
     Route::post('/page/description', [DashboardActionController::class, 'updatePageDescription']);

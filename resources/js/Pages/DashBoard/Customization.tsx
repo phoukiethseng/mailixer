@@ -9,7 +9,7 @@ import {
     CardTitle,
 } from "../../Components/Card";
 import { Separator } from "../../Components/Separator";
-import { useForm, useWatch } from "react-hook-form";
+import { useController, useForm, useWatch } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "../../Components/Label";
@@ -84,6 +84,14 @@ const Page = ({
         defaultValue: descriptionText,
     });
 
+    const customizationFormDescriptionController = useController({
+        name: "description",
+        control: customizationForm.control,
+    });
+
+    const descriptionTextHasChanged =
+        descriptionText !== currentDescriptionText;
+
     function handleDescriptionFormSubmit(data: PageCustomizationForm) {
         router.post("/dashboard/page/description", {
             user_id: auth.user.id,
@@ -106,9 +114,12 @@ const Page = ({
                         <div className="flex flex-row justify-between items-stretch">
                             <Label
                                 htmlFor={descriptionTextareaId}
-                                className="text-base text-card-foreground font-semibold "
+                                className="flex flex-row gap-1 text-base text-card-foreground font-semibold "
                             >
                                 Description
+                                {descriptionTextHasChanged && (
+                                    <span className="text-destructive">*</span>
+                                )}
                             </Label>
                         </div>
                         <Form {...customizationForm}>
@@ -139,15 +150,10 @@ const Page = ({
                             </form>
                         </Form>
                     </CardContent>
-                    <CardFooter className="flex flex-row justify-start">
+                    <CardFooter className="flex flex-row justify-start gap-2">
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
-                                <Button
-                                    disabled={
-                                        descriptionText ===
-                                        currentDescriptionText
-                                    }
-                                >
+                                <Button disabled={!descriptionTextHasChanged}>
                                     Save
                                 </Button>
                             </AlertDialogTrigger>
@@ -174,6 +180,23 @@ const Page = ({
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
+                        {descriptionTextHasChanged && (
+                            <Button
+                                variant={"ghost"}
+                                size={"icon"}
+                                onClick={() =>
+                                    customizationFormDescriptionController.field.onChange(
+                                        descriptionText
+                                    )
+                                }
+                            >
+                                <Icons.Undo2
+                                    size={18}
+                                    strokeWidth={1.5}
+                                    className="text-muted-foreground"
+                                />
+                            </Button>
+                        )}
                     </CardFooter>
                 </Card>
                 <Card>

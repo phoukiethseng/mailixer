@@ -2,8 +2,9 @@ import { Icons } from "../Components/Icons";
 
 const siteConfig = {
     dashboard: {
+        // Dashboard subpages Name as key
         subPages: {
-            "Customization": {
+            Customization: {
                 url: "/dashboard/customization_page",
                 icon: Icons.Layout,
                 description: "Your own subscribe page",
@@ -12,6 +13,12 @@ const siteConfig = {
                 url: "/dashboard/subscribers_page",
                 icon: Icons.UserCheck,
                 description: "People who subscribed to your newsletter",
+            },
+            Newsletter: {
+                url: "/dashboard/newsletter_page",
+                icon: Icons.Newspaper,
+                description:
+                    "Keep your subscribers updated by composing newsletter",
             },
         },
     },

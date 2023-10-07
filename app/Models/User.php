@@ -18,6 +18,9 @@ class User extends Model
     public function subscribePage(): HasOne {
         return $this->hasOne(SubscribePage::class);
     }
+    public function newsletters(): HasMany {
+        return $this->hasMany(Newsletter::class);
+    }
     protected $table = 'users';
     protected $primaryKey = 'id';
 }

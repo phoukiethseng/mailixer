@@ -10,6 +10,8 @@ import {
     X,
     List,
     UserMinus,
+    Newspaper,
+    Undo2,
 } from "lucide-react";
 
 const Icons = {
@@ -24,6 +26,8 @@ const Icons = {
     Cross2Icon: X,
     List: List,
     UserMinus: UserMinus,
+    Newspaper: Newspaper,
+    Undo2: Undo2,
 };
 
 export { Icons };

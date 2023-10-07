@@ -21,21 +21,44 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         DB::table('users')->upsert([
-            [
-                'name' => '科森',
-                'email' => 'puseng123@gmail.com',
-                'password' => Hash::make('012858378'),
-            ]
-        ],
+                [
+                    'name' => '科森',
+                    'email' => 'puseng123@gmail.com',
+                    'password' => Hash::make('012858378'),
+                ]
+            ],
             ['email'],
             ['name', 'password']
         );
 
         DB::table('subscribe_pages')->upsert([
-            'user_id' => DB::table('users')->select('id')->where('email', 'puseng123@gmail.com')->first()->id
-        ],
-        ['user_id'],
-        []
-    );
+                'user_id' => DB::table('users')->select('id')->where('email', 'puseng123@gmail.com')->first()->id
+            ],
+            ['user_id'],
+            ['user_id']
+        );
+
+        DB::table('newsletter_content_type')->upsert(
+            [
+                ['name' => 'html', 'id' => 1],
+                ['name' => 'markdown', 'id' => 2]
+
+            ],
+            ['id'],
+            ['name', 'id']
+        );
+        DB::table('newsletters')->upsert(
+            [
+                [
+                    'user_id' => 1,
+                    'subject' => 'Test Newsletter',
+                    'content' => '<h1>This is header 1</h1>',
+                    'content_type_id' => 1,
+                ]
+
+            ],
+            ['id'],
+            ['subject', 'content', 'content_type_id']
+        );
     }
 }
