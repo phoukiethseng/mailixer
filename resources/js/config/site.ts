@@ -41,4 +41,11 @@ export type InertiaSharedProps = {
     };
 };
 
+// Enum for Newsletter Content Type
+export const newsletterContentType = ["HTML", "Markdown", "Plaintext"] as const;
+export type NewsletterContentType = (typeof newsletterContentType)[number];
+export function getNewsletterContentTypeId(type: NewsletterContentType) {
+    return newsletterContentType.indexOf(type) + 1;
+}
+
 export default siteConfig;

@@ -36,7 +36,7 @@ class NewsletterServiceImpl implements NewsletterService {
         return $newsletters;
     }
 
-    public function getNewsletterById($id) {
+    public function getNewsletterById(int $id): Newsletter {
         $newsletters = Newsletter::find($id);
         return $newsletters;
     }

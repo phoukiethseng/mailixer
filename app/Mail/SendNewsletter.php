@@ -30,7 +30,7 @@ class SendNewsletter extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Newsletter from {$this->publisher->name}",
+            subject: $this->newsletter->subject,
             to: $this->subscriber->email,
             from: $this->publisher->email,
         );
@@ -75,7 +75,10 @@ class SendNewsletter extends Mailable implements ShouldQueue
 
         // Fallback to plain text
         return new Content(
-            text: $content
+            text: "email.plaintext_template",
+            with: [
+                'content' => $content
+            ]
         );
     }
 }

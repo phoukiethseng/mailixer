@@ -8,7 +8,6 @@ import { columns as subscriberTableCloumns } from "../../Components/SubscriberTa
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "../../Components/Card";

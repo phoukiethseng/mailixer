@@ -41,7 +41,8 @@ class DatabaseSeeder extends Seeder
         DB::table('newsletter_content_type')->upsert(
             [
                 ['name' => 'html', 'id' => 1],
-                ['name' => 'markdown', 'id' => 2]
+                ['name' => 'markdown', 'id' => 2],
+                ['name' => 'plaintext', 'id' => 3]
 
             ],
             ['id'],

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthPageController;
 use App\Http\Controllers\DashboardPageController;
 use App\Http\Controllers\DashboardActionController;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\NewsletterActionController;
 use App\Http\Controllers\NewsletterPageController;
 use App\Http\Controllers\SubscribePageController;
 use App\Http\Controllers\SubscribeActionController;
@@ -58,4 +59,5 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::post('/page/description', [DashboardActionController::class, 'updatePageDescription']);
     Route::delete('/subscriber/{subscriberId}', [DashboardActionController::class, 'unsubscribe']);
     Route::get('/unsubscribe_url/{subscriberId}', [DashboardActionController::class, 'getUnsubscribeUrl']);
+    Route::post('/newsletter', [NewsletterActionController::class, 'sendNewsletter']);
 });

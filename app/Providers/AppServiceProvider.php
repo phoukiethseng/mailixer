@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(SubscriptionService::class, SubscriptionServiceImpl::class);
         $this->app->bind(SubscribePageService::class, SubscribePageServiceImpl::class);
-        $this->app->bind(NewsletterService::class, \NewsletterServiceImpl::class);
+        $this->app->bind(NewsletterService::class, NewsletterServiceImpl::class);
     }
 
     /**

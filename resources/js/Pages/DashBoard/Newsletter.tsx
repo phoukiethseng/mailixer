@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DashBoardLayout from "../../Layouts/DashBoardLayout";
 import {
     Card,
@@ -30,20 +30,44 @@ import {
     SelectValue,
 } from "../../Components/Select";
 
+import {
+    InertiaSharedProps,
+    getNewsletterContentTypeId,
+    newsletterContentType,
+} from "../../config/site";
+import { Markdown } from "../../Components/Markdown";
+import { router } from "@inertiajs/react";
+import { useToast } from "../../Components/use-toast";
+
 const composeNewsletterSchema = z.object({
     subject: z.string().nonempty().default("Mailixer Newsletter"),
-    content_type: z.enum(["1", "2"]).transform((value) => parseInt(value)),
+    content_type: z.enum(newsletterContentType),
     content: z.string(),
 });
 
 type ComposeNewsletter = z.infer<typeof composeNewsletterSchema>;
+type NewsletterPageProps = {} & InertiaSharedProps;
 
-const NewsletterPage = () => {
+const NewsletterPage = ({ auth, message, errors }: NewsletterPageProps) => {
+    const { toast } = useToast();
+    useEffect(() => {
+        if (message) {
+            toast({
+                description: message,
+            });
+        }
+        if (errors?.message) {
+            toast({
+                variant: "destructive",
+                description: JSON.stringify(errors),
+            });
+        }
+    }, [message, errors]);
     const form = useForm<ComposeNewsletter>({
         resolver: zodResolver(composeNewsletterSchema),
         defaultValues: {
             subject: "Mailixer Newsletter",
-            content_type: 1,
+            content_type: "Plaintext",
             content: "",
         },
     });
@@ -53,12 +77,23 @@ const NewsletterPage = () => {
         name: "content",
     });
 
-    const contentType = useWatch({
+    const emailContentType = useWatch({
         control: form.control,
         name: "content_type",
     });
 
-    function handleComposeNewsletterSubmit(data: ComposeNewsletter) {}
+    const emailSubject = useWatch({
+        control: form.control,
+        name: "subject",
+    });
+
+    function handleComposeNewsletterSubmit(data: ComposeNewsletter) {
+        router.post("/dashboard/newsletter", {
+            subject: data.subject,
+            content_type_id: getNewsletterContentTypeId(data.content_type),
+            content: data.content,
+        });
+    }
     return (
         <div className="h-full w-full grid grid-cols-1 xl:grid-cols-5 gap-3">
             <Card className="col-span-2">
@@ -99,7 +134,7 @@ const NewsletterPage = () => {
                                         <FormLabel>Content Type</FormLabel>
                                         <Select
                                             onValueChange={field.onChange}
-                                            value={`${field.value}`} // Had to transform `number` type value to numberic string (-_-)
+                                            value={field.value}
                                         >
                                             <FormControl>
                                                 <SelectTrigger>
@@ -107,10 +142,13 @@ const NewsletterPage = () => {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="1">
+                                                <SelectItem value="Plaintext">
+                                                    Plain Text
+                                                </SelectItem>
+                                                <SelectItem value="HTML">
                                                     HTML
                                                 </SelectItem>
-                                                <SelectItem value="2">
+                                                <SelectItem value="Markdown">
                                                     Markdown
                                                 </SelectItem>
                                             </SelectContent>
@@ -138,6 +176,7 @@ const NewsletterPage = () => {
                                 )}
                             />
                             <Button type="submit">Send</Button>
+                            <Button variant={"outline"}>Save as draft</Button>
                         </form>
                     </Form>
                 </CardContent>
@@ -150,11 +189,32 @@ const NewsletterPage = () => {
                     </CardDescription>
                 </CardHeader>
                 <Separator />
-                <CardContent className="pt-3">
-                    <div className="w-full h-full">
-                        {emailContent}
-                        <br />
-                        {contentType}
+                <CardContent className="flex flex-col gap-4 pt-3">
+                    <Card>
+                        <CardContent className="py-2 text-sm">
+                            <p>
+                                <span className="font-semibold">From: </span>
+                                {`${auth.user.name} <no-reply@mailixer.com>`}
+                            </p>
+                            <p>
+                                <span className="font-semibold">Subject: </span>
+                                {emailSubject}
+                            </p>
+                        </CardContent>
+                    </Card>
+                    <Separator />
+                    <div className="p-2">
+                        {emailContentType === "HTML" && (
+                            <iframe srcDoc={emailContent} />
+                        )}
+                        {emailContentType === "Markdown" && (
+                            <Markdown className="prose dark:prose-invert">
+                                {emailContent}
+                            </Markdown>
+                        )}
+                        {emailContentType === "Plaintext" && (
+                            <p>{emailContent}</p>
+                        )}
                     </div>
                 </CardContent>
             </Card>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\NewsletterContentType;
 use App\Services\NewsletterService;
 use Illuminate\Http\Request;
@@ -14,16 +15,19 @@ class NewsletterActionController extends Controller
     }
     public function sendNewsletter(Request $request) {
         $data = $request->validate([
-            'user_id' => 'numeric|required',
             'subject' => 'string|required',
-            'content' => 'strring|required',
-            'content_type' => [new Enum(NewsletterContentType::class)],
+            'content' => 'string|required',
+            'content_type_id' => [new Enum(NewsletterContentType::class)],
         ]);
 
-        $user = $request->user();
+        $user = User::find($request->user()->id);
 
-        $newsletter = $this->newsletterService->createNewsletter($data['content_type'], $data['subject'], $data['content'], $user);
+        $newsletter = $this->newsletterService->createNewsletter(NewsletterContentType::from($data['content_type_id']), $data['subject'], $data['content'], $user);
 
         $this->newsletterService->sendNewsletter($newsletter, $user);
+
+        return back()->with([
+            'message' => 'Successfully sent newsletter',
+        ]);
     }
 }
