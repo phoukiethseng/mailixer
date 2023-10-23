@@ -51,14 +51,12 @@ type PageCustomizationForm = z.infer<
 
 type DashBoardCustomizationPageProps = {
     description: string;
-    preview: {
-        liveUrl: string;
-    };
+    subscribeUrl: string;
 } & InertiaSharedProps;
 
 const Page = ({
     description,
-    preview,
+    subscribeUrl,
     auth,
     errors,
     message,
@@ -76,7 +74,7 @@ const Page = ({
 
     useErrorMessageToast({ errors, message }, toasts);
 
-    const viewLiveUrl = preview.liveUrl;
+    const viewLiveUrl = subscribeUrl;
 
     const currentDescriptionText = useWatch({
         control: customizationForm.control,

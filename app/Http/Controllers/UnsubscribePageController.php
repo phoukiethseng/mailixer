@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Subscriber;
-use App\Models\User;
-use App\Services\SubscribePageService;
-use App\Services\SubscriptionService;
+use App\Services\Interfaces\SubscribePageService;
+use App\Services\Interfaces\SubscriptionService;
 use Exception;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UnsubscribePageController extends Controller
@@ -17,18 +14,17 @@ class UnsubscribePageController extends Controller
 
     }
     public function unsubscribePage($unsubscribeToken) {
-        $name = Subscriber::where('unsubscribe_token', $unsubscribeToken)->first()->user()->name ?? '';
         try {
+            $author = $this->subscriptionService->getSubscriberAuthorByUnsubscribeToken($unsubscribeToken);
+            $name = $author->name;
             $this->subscriptionService->unsusbscribeByToken($unsubscribeToken);
+        return Inertia::render('Unsubscribe/Success',[
+                'author.name' => $name,
+        ]);
         } catch(Exception $e) {
             return Inertia::render('Unsubscribe/Error', [
-                'message' => $e->getMessage()
+                'message' => "Couldn't unsubscribe newsletter"
             ]);
         }
-
-        return Inertia::render('Unsubscribe/Success',[
-                'auth.user.name' => $name,
-        ]);
-        
     }
 }

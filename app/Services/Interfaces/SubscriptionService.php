@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Interfaces;
 
-interface SubscriptionService {
+interface SubscriptionService
+{
     public function subscribe($userId, $email);
     public function unsubscribeById($subscriberId);
     public function unsusbscribeByToken($unsubscribeToken);
-    public function getUnsubscribeUrlByEmail($email);
-    public function getUnsubscribeUrlById($subscriberId);
-    public function getAllSubscribers($userId);
+    public function getUnsubscribeTokenById($subscriberId);
+    public function getAllSubscribersByUserId($userId);
     public function getSubscribersCount($userId);
     public function getSubscriberById($subscriberId);
-    public function getSubscriberByEmail($email);
+    public function getSubscriberAuthorByUnsubscribeToken($unsubscribeToken);
 }

@@ -2,9 +2,13 @@ import React from "react";
 import LogoText from "../../Components/LogoText";
 import { InertiaSharedProps } from "../../config/site";
 
-type UnsubscribeSuccessPageProps = {} & InertiaSharedProps;
+type UnsubscribeSuccessPageProps = {
+    author: {
+        name: string;
+    };
+} & InertiaSharedProps;
 
-export default function SuccessPage({ auth }: InertiaSharedProps) {
+export default function SuccessPage({ author }: UnsubscribeSuccessPageProps) {
     return (
         <div className="w-full min-h-screen flex gap-3 flex-col justify-center items-center">
             <LogoText />
@@ -13,8 +17,7 @@ export default function SuccessPage({ auth }: InertiaSharedProps) {
             </h1>
             <p>
                 You will not be receiving any{" "}
-                {auth?.user?.name && `${auth.user.name}'s `}newsletter in the
-                future
+                {author?.name && `${author.name}'s `}newsletter in the future
             </p>
         </div>
     );

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Interfaces;
 
-interface SubscribePageService {
+interface SubscribePageService
+{
     public function getDescription($userId);
     public function updateDescription($userId, $description);
 
-    public function getPageUrl($userId);
 }

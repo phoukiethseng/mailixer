@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Services\SubscribePageService;
-use App\Services\SubscriptionService;
-use Illuminate\Http\Request;
+use App\Repositories\Interfaces\UserRepository;
+use App\Services\Interfaces\SubscribePageService;
+use App\Services\Interfaces\SubscriptionService;
 use Inertia\Inertia;
 
 class SubscribePageController extends Controller
 {
-    public function __construct(private SubscriptionService $subscriptionService, private SubscribePageService $subscribePageService) {
+    public function __construct(
+        private SubscriptionService $subscriptionService,
+        private SubscribePageService $subscribePageService,
+        private UserRepository $userRepository
+    ) {
 
     }
-    public function subscribePage($userId) {
-        // Get user's name for requested page
-        // TODO: Refactor this to use service instead
-        $user = User::find($userId);
+    public function subscribePage($userId)
+    {
+        $user = $this->userRepository->findById($userId);
+        $pageDescription = $this->subscribePageService->getDescription($user->id);
 
         if (!$user) {
             return Inertia::render('Error', [
@@ -28,11 +31,12 @@ class SubscribePageController extends Controller
             'auth.user.name' => $user->name,
             'auth.user.id' => $user->id,
             'subscribe' => [
-                'description' => $this->subscribePageService->getDescription($user->id)
+                'description' => $pageDescription,
             ]
         ]);
     }
-    public function successPage($userId) {
+    public function successPage($userId)
+    {
         return Inertia::render('Subscribe/Success');
     }
 }

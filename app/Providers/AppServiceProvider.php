@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Services\SubscribePageService;
-use App\Services\SubscriptionService;
+use App\Services\Interfaces\SubscribePageService;
+use App\Services\Interfaces\SubscriptionService;
 use Illuminate\Support\ServiceProvider;
-use App\Services\SubscriptionServiceImpl;
-use App\Services\SubscribePageServiceImpl;
-use App\Services\NewsletterService;
-use App\Services\NewsletterServiceImpl;
+use App\Services\Implementations\SubscriptionServiceImpl;
+use App\Services\Implementations\SubscribePageServiceImpl;
+use App\Services\Interfaces\NewsletterService;
+use App\Services\Implementations\NewsletterServiceImpl;
 
 class AppServiceProvider extends ServiceProvider
 {
