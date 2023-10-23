@@ -2,7 +2,6 @@
 
 namespace App\Services\Implementations;
 
-use App\Models\User;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\SubscribePageService;
 
