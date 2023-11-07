@@ -5,11 +5,12 @@ namespace App\Repositories\Interfaces;
 use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use App\Repositories\Interfaces\CRUDRepository;
 
 /**
- * @implements CrudRepository<Subscriber, int>
+ * @implements CRUDRepository<Subscriber, int>
  */
-interface SubscriberRepository extends CrudRepository
+interface SubscriberRepository extends CRUDRepository
 {
     /**
      * @param string $email

@@ -2,12 +2,13 @@
 
 namespace App\Repositories\Interfaces;
 
+use App\Repositories\Interfaces\CRUDRepository;
 use App\Models\User;
 
 /**
- * @implements CrudRepository<User, int>
+ * @implements CRUDRepository<User, int>
  */
-interface UserRepository extends CrudRepository
+interface UserRepository extends CRUDRepository
 {
 
 }

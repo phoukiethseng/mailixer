@@ -28,8 +28,7 @@ class NewsletterServiceImpl implements NewsletterService
         }
     }
 
-    public function createNewsletter(NewsletterContentType $contentType, string $subject, string $content, User $author): Newsletter
-    {
+    public function createNewsletter(NewsletterContentType $contentType, string $subject, string $content, User $author): Newsletter {
         $data = [
             'content_type_id' => $contentType,
             'content' => $content,
@@ -40,7 +39,7 @@ class NewsletterServiceImpl implements NewsletterService
         $newsletter = $this->newsletterRepository->save($newsletter);
         return $newsletter;
     }
-
+    
     public function getAllNewsletterForAuthor(User $author)
     {
         $newsletters = $this->newsletterRepository->findAllByUserId($author->id);

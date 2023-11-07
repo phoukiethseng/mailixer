@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @template ModelType of Model
  * @template PrimaryKeyType 
  */
-interface CrudRepository
+interface CRUDRepository
 {
     /**
      * @return Collection<ModelType>

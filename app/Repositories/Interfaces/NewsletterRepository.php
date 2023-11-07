@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Interfaces;
 use App\Models\Newsletter;
-use App\Repositories\Interfaces\CrudRepository;
+use App\Repositories\Interfaces\CRUDRepository;
 
 /**
- * @implements CrudRepository<Newsletter, int>
+ * @implements CRUDRepository<Newsletter, int>
  */
-interface NewsletterRepository extends CrudRepository {
+interface NewsletterRepository extends CRUDRepository {
     public function findAllByUserId($userId);
 }
