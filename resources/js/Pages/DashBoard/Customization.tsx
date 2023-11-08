@@ -39,7 +39,7 @@ import {
 import { Input } from "../../Components/Input";
 import { Icons } from "../../Components/Icons";
 import { useToast } from "../../Components/use-toast";
-import { useErrorMessageToast } from "../../lib/useErrorMessageToast";
+import { useMessageToast } from "../../lib/hooks/useMessageToast";
 
 const SubscribePageCustomizationFormSchema = z.object({
     description: z.string().nonempty(),
@@ -72,7 +72,7 @@ const Page = ({
         resolver: zodResolver(SubscribePageCustomizationFormSchema),
     });
 
-    useErrorMessageToast({ errors, message }, toasts);
+    useMessageToast({ errors, message }, toasts);
 
     const viewLiveUrl = subscribeUrl;
 

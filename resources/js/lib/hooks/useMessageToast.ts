@@ -1,12 +1,14 @@
 import { useEffect } from "react";
-import { InertiaSharedProps } from "../config/site";
-import { useToast } from "../Components/use-toast";
+import { InertiaSharedProps } from "../../config/site";
+import { useToast } from "../../Components/use-toast";
 
-export function useErrorMessageToast(
-    props: Partial<InertiaSharedProps>,
-    toasts: ReturnType<typeof useToast>
-) {
+type UseMessageToastProps = Partial<Omit<InertiaSharedProps, "auth">>;
+
+export function useMessageToast(
+    props: UseMessageToastProps
+): ReturnType<typeof useToast> {
     const { errors, message } = props;
+    const toasts = useToast();
     const { toast } = toasts;
     useEffect(() => {
         let errorToast: ReturnType<typeof toast>,
@@ -37,4 +39,5 @@ export function useErrorMessageToast(
             }
         };
     }, [errors, message]);
+    return toasts;
 }

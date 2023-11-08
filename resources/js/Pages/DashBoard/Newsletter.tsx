@@ -37,7 +37,7 @@ import {
 } from "../../config/site";
 import { Markdown } from "../../Components/Markdown";
 import { router } from "@inertiajs/react";
-import { useToast } from "../../Components/use-toast";
+import { useMessageToast } from "../../lib/hooks/useMessageToast";
 
 const composeNewsletterSchema = z.object({
     subject: z.string().nonempty().default("Mailixer Newsletter"),
@@ -48,21 +48,8 @@ const composeNewsletterSchema = z.object({
 type ComposeNewsletter = z.infer<typeof composeNewsletterSchema>;
 type NewsletterPageProps = {} & InertiaSharedProps;
 
-const NewsletterPage = ({ auth, message, errors }: NewsletterPageProps) => {
-    const { toast } = useToast();
-    useEffect(() => {
-        if (message) {
-            toast({
-                description: message,
-            });
-        }
-        if (errors?.message) {
-            toast({
-                variant: "destructive",
-                description: JSON.stringify(errors),
-            });
-        }
-    }, [message, errors]);
+const NewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
+    const toast = useMessageToast(props);
     const form = useForm<ComposeNewsletter>({
         resolver: zodResolver(composeNewsletterSchema),
         defaultValues: {

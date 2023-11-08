@@ -1,7 +1,7 @@
 import React from "react";
 import { InertiaSharedProps } from "../../config/site";
 import DashBoardLayout from "../../Layouts/DashBoardLayout";
-import { useErrorMessageToast } from "../../lib/useErrorMessageToast";
+import { useMessageToast } from "../../lib/hooks/useMessageToast";
 import { useToast } from "../../Components/use-toast";
 import { DataTable } from "../../Components/DataTable";
 import { columns as subscriberTableCloumns } from "../../Components/SubscriberTable/Columns";
@@ -29,7 +29,7 @@ const SubscribersPage = ({
     ...props
 }: SubscribersPageProps) => {
     const toasts = useToast();
-    useErrorMessageToast(props, toasts);
+    useMessageToast(props, toasts);
     return (
         <div className="grid grid-cols-1 gap-6 align-start justify-items-center ">
             <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
