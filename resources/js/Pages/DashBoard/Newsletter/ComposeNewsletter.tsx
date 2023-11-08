@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import DashBoardLayout from "../../Layouts/DashBoardLayout";
+import DashBoardLayout from "../../../Layouts/DashBoardLayout";
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "../../Components/Card";
+} from "../../../Components/Card";
 import {
     Form,
     FormControl,
@@ -14,30 +14,30 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "../../Components/Form";
+} from "../../../Components/Form";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../../Components/Input";
-import { Textarea } from "../../Components/TextArea";
-import { Button } from "../../Components/Button";
-import { Separator } from "../../Components/Separator";
+import { Input } from "../../../Components/Input";
+import { Textarea } from "../../../Components/TextArea";
+import { Button } from "../../../Components/Button";
+import { Separator } from "../../../Components/Separator";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "../../Components/Select";
+} from "../../../Components/Select";
 
 import {
     InertiaSharedProps,
     getNewsletterContentTypeId,
     newsletterContentType,
-} from "../../config/site";
-import { Markdown } from "../../Components/Markdown";
+} from "../../../config/site";
+import { Markdown } from "../../../Components/Markdown";
 import { router } from "@inertiajs/react";
-import { useMessageToast } from "../../lib/hooks/useMessageToast";
+import { useMessageToast } from "../../../lib/hooks/useMessageToast";
 
 const composeNewsletterSchema = z.object({
     subject: z.string().nonempty().default("Mailixer Newsletter"),
@@ -48,7 +48,7 @@ const composeNewsletterSchema = z.object({
 type ComposeNewsletter = z.infer<typeof composeNewsletterSchema>;
 type NewsletterPageProps = {} & InertiaSharedProps;
 
-const NewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
+const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
     const toast = useMessageToast(props);
     const form = useForm<ComposeNewsletter>({
         resolver: zodResolver(composeNewsletterSchema),
@@ -227,8 +227,8 @@ const NewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
     );
 };
 
-NewsletterPage.layout = (page: React.ReactNode) => (
-    <DashBoardLayout activePage="Newsletter">{page}</DashBoardLayout>
+ComposeNewsletterPage.layout = (page: React.ReactNode) => (
+    <DashBoardLayout activePage="ComposeNewsletter">{page}</DashBoardLayout>
 );
 
-export default NewsletterPage;
+export default ComposeNewsletterPage;

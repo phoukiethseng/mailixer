@@ -3,7 +3,7 @@ import { Separator } from "../Components/Separator";
 import LogoText from "../Components/LogoText";
 import { Avatar, AvatarFallback, AvatarImage } from "../Components/Avatar";
 import { router, usePage } from "@inertiajs/react";
-import { type DashBoardMenuItems } from "../config/site";
+import { dashboardPageGroups, type DashBoardMenuItems } from "../config/site";
 import siteConfig from "../config/site";
 import DashBoardNavigationItem from "./DashBoardNavigationItem";
 import { Button } from "../Components/Button";
@@ -17,16 +17,18 @@ import {
 } from "../Components/DropDownMenu";
 import { Icons } from "../Components/Icons";
 import DashBoardSubPageHeader from "./DashBoardSubPageHeader";
+import DashBoardNavigationItemGroup from "./DashBoardNavigationItemGroup";
 
 type DashBoardLayoutProps = {
-    activePage: keyof DashBoardMenuItems; // Current active page, must be any key from `siteConfig.dashboard.subPages`
-} & React.ComponentPropsWithRef<"div">;
+    activePage: DashBoardMenuItems; // Current active page, must be any key from `siteConfig.dashboard.pages`
+} & React.ComponentPropsWithoutRef<"div">;
 
 export default function DashBoardLayout({
     children,
     activePage,
 }: DashBoardLayoutProps) {
     const { props } = usePage<{ auth?: { user: { name: string } } }>();
+    const pageDescription = siteConfig.dashboard.pages[activePage].description;
     return (
         <div className="flex flex-row items-stretch min-h-screen w-full">
             <aside className="w-[90%] sm:w-[70%] md:w-[50%] lg:w-[30%] xl:w-[20%] border-r border-border pt-4 flex flex-col justify-start items-center gap-4">
@@ -60,26 +62,44 @@ export default function DashBoardLayout({
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <div className="w-[90%] flex flex-col justify-start items-stretch gap-2 transition-color duration-150">
-                    {Object.entries(siteConfig.dashboard.subPages).map(
+
+                <Separator />
+                <div className="w-[90%] flex flex-col justify-start items-stretch gap-4 transition-color duration-150">
+                    {/* {Object.entries(siteConfig.dashboard.pages).map(
                         ([pageName, pageInfo], index) => (
                             <DashBoardNavigationItem
                                 icon={pageInfo.icon}
                                 key={index}
-                                name={pageName}
+                                name={pageInfo?.displayName ?? pageName}
                                 url={pageInfo.url}
                                 isActive={pageName === activePage}
                             />
                         )
+                    )} */}
+                    {Object.entries(dashboardPageGroups).map(
+                        ([pageGroupName, pageGroupInfo], index, arr) => (
+                            <>
+                                <DashBoardNavigationItemGroup
+                                    key={index}
+                                    icon={pageGroupInfo.icon}
+                                    groupName={pageGroupName}
+                                    pages={pageGroupInfo.pages.map(
+                                        (pageName) =>
+                                            siteConfig.dashboard.pages[pageName]
+                                    )}
+                                    activePage={activePage}
+                                />
+                                {index + 1 !== arr.length && <Separator />}
+                            </>
+                        )
                     )}
                 </div>
+                <Separator />
             </aside>
             <div className="w-full overflow-x-scroll h-screen p-6 gap-6 flex flex-col justify-start items-stretch">
                 <DashBoardSubPageHeader
                     title={activePage}
-                    description={
-                        siteConfig.dashboard.subPages[activePage].description
-                    }
+                    description={pageDescription}
                 />
                 {children}
             </div>

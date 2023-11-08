@@ -19,6 +19,7 @@ export default function DashBoardNavigationItem({
     const Icon = icon;
     return (
         <Link
+            disabled
             className={cn(
                 "w-full flex flex-row justify-start gap-3 text-left font-semibold pl-5 py-3 text-foreground rounded-md hover:bg-accent hover:text-accent-foreground hover:underline",
                 "items-center sm:items-start",

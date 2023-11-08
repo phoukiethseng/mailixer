@@ -51,9 +51,9 @@ Route::prefix('/unsubscribe')->group(function () {
 Route::middleware('auth')->prefix('dashboard')->group(function () {
     // Dashboard pages
     Route::get('/', [DashboardPageController::class, 'indexPage'])->name('dashboard.index');
-    Route::get('/customization_page', [DashboardPageController::class, 'customizationPage'])->name('dashboard.customization');
-    Route::get('/subscribers_page', [DashboardPageController::class, 'subscribersPage'])->name('dashboard.subscribers');
-    Route::get('/newsletter_page', [NewsletterPageController::class, 'newsletterPage'])->name('dashboard.newsletter');
+    Route::get('/customize_page', [DashboardPageController::class, 'customizationPage'])->name('dashboard.customization');
+    Route::get('/all_subscribers_page', [DashboardPageController::class, 'subscribersPage'])->name('dashboard.subscribers');
+    Route::get('/compose_newsletter_page', [NewsletterPageController::class, 'composeNewsletterPage'])->name('dashboard.composeNewsletter');
 
     // Dashboard actions
     Route::post('/page/description', [DashboardActionController::class, 'updatePageDescription']);

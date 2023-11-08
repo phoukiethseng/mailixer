@@ -7,7 +7,7 @@ use Inertia\Inertia;
 
 class NewsletterPageController extends Controller
 {
-    public function newsletterPage() {
-        return Inertia::render('DashBoard/Newsletter');
+    public function composeNewsletterPage() {
+        return Inertia::render('DashBoard/Newsletter/ComposeNewsletter');
     }
 }
