@@ -88,7 +88,14 @@ const NewsletterPage = ({ auth, message, errors }: NewsletterPageProps) => {
     });
 
     function handleComposeNewsletterSubmit(data: ComposeNewsletter) {
-        router.post("/dashboard/newsletter", {
+        router.post("/dashboard/sendNewsletter", {
+            subject: data.subject,
+            content_type_id: getNewsletterContentTypeId(data.content_type),
+            content: data.content,
+        });
+    }
+    function handleSaveNewsletter(data: ComposeNewsletter) {
+        router.post("/dashboard/saveNewsletter", {
             subject: data.subject,
             content_type_id: getNewsletterContentTypeId(data.content_type),
             content: data.content,
@@ -176,7 +183,18 @@ const NewsletterPage = ({ auth, message, errors }: NewsletterPageProps) => {
                                 )}
                             />
                             <Button type="submit">Send</Button>
-                            <Button variant={"outline"}>Save as draft</Button>
+                            <Button
+                                variant={"outline"}
+                                onClick={() =>
+                                    handleSaveNewsletter({
+                                        content: emailContent,
+                                        content_type: emailContentType,
+                                        subject: emailSubject,
+                                    })
+                                }
+                            >
+                                Save as draft
+                            </Button>
                         </form>
                     </Form>
                 </CardContent>

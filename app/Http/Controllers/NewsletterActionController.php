@@ -39,4 +39,23 @@ class NewsletterActionController extends Controller
             'message' => 'Successfully sent newsletter',
         ]);
     }
+    public function saveNewsletter(Request $request)
+    {
+        $user = $this->userRepository->findById($request->user()->id);
+        $data = $request->validate([
+            'subject' => 'string|required',
+            'content' => 'string|required',
+            'content_type_id' => [new Enum(NewsletterContentType::class)],
+        ]);
+        $newsletter = $this->newsletterService->createNewsletter(
+            NewsletterContentType::from($data['content_type_id']),
+            $data['subject'],
+            $data['content'],
+            $user
+        );
+        return back()->with([
+            'id' => $newsletter->id,
+            'message' => 'Successully save newsletter'
+        ]);
+    }
 }
