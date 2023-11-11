@@ -10,30 +10,35 @@ import siteConfig, {
     PageDescription,
     dashboardPageGroups,
 } from "../config/site";
+import { cn } from "../lib/utils";
 
 type DashBoardNavigationItemGroupProps = {
     groupName: string;
     icon: React.FunctionComponent;
     pages: Array<PageDescription>;
     activePage: DashBoardMenuItems;
-};
+} & React.ComponentPropsWithoutRef<"div">;
 
 export default function DashBoardNavigationItemGroup({
     icon,
     groupName,
     pages,
     activePage,
+    className,
 }: DashBoardNavigationItemGroupProps) {
     const GroupIcon = icon;
     return (
-        <Collapsible className="hover:text-primary">
+        <Collapsible
+            className={cn("text-foreground hover:text-primary", className)}
+        >
             <CollapsibleTrigger className="w-full flex flex-row gap-3 justify-start p-0">
                 <GroupIcon />
-                <p className={"text-lg font-bold"}>{groupName}</p>
+                <p className={"text-lg font-bold "}>{groupName}</p>
             </CollapsibleTrigger>
-            <CollapsibleContent className="pt-2 flex flex-col gap-2">
+            <CollapsibleContent className="flex flex-col">
                 {pages.map(({ displayName, url, icon }, index) => (
                     <DashBoardNavigationItem
+                        className="mt-1"
                         key={index}
                         name={displayName}
                         url={url}

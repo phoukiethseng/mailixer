@@ -5,7 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "../Components/Avatar";
 import { router, usePage } from "@inertiajs/react";
 import { dashboardPageGroups, type DashBoardMenuItems } from "../config/site";
 import siteConfig from "../config/site";
-import DashBoardNavigationItem from "./DashBoardNavigationItem";
 import { Button } from "../Components/Button";
 import {
     DropdownMenu,
@@ -29,6 +28,7 @@ export default function DashBoardLayout({
 }: DashBoardLayoutProps) {
     const { props } = usePage<{ auth?: { user: { name: string } } }>();
     const pageDescription = siteConfig.dashboard.pages[activePage].description;
+    const pageTitle = siteConfig.dashboard.pages[activePage].displayName;
     return (
         <div className="flex flex-row items-stretch min-h-screen w-full">
             <aside className="w-[90%] sm:w-[70%] md:w-[50%] lg:w-[30%] xl:w-[20%] border-r border-border pt-4 flex flex-col justify-start items-center gap-4">
@@ -80,7 +80,6 @@ export default function DashBoardLayout({
                         ([pageGroupName, pageGroupInfo], index, arr) => (
                             <>
                                 <DashBoardNavigationItemGroup
-                                    key={index}
                                     icon={pageGroupInfo.icon}
                                     groupName={pageGroupName}
                                     pages={pageGroupInfo.pages.map(
@@ -98,7 +97,7 @@ export default function DashBoardLayout({
             </aside>
             <div className="w-full overflow-x-scroll h-screen p-6 gap-6 flex flex-col justify-start items-stretch">
                 <DashBoardSubPageHeader
-                    title={activePage}
+                    title={pageTitle}
                     description={pageDescription}
                 />
                 {children}

@@ -16,7 +16,7 @@ import {
     FormMessage,
 } from "../../../Components/Form";
 import { useForm, useWatch } from "react-hook-form";
-import { z } from "zod";
+import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../../Components/Input";
 import { Textarea } from "../../../Components/TextArea";
@@ -32,16 +32,16 @@ import {
 
 import {
     InertiaSharedProps,
-    getNewsletterContentTypeId,
+    getContentTypeNameById,
     newsletterContentType,
 } from "../../../config/site";
-import { Markdown } from "../../../Components/Markdown";
 import { router } from "@inertiajs/react";
 import { useMessageToast } from "../../../lib/hooks/useMessageToast";
+import NewsletterPreview from "../../../Components/NewsletterPreview";
 
 const composeNewsletterSchema = z.object({
     subject: z.string().nonempty().default("Mailixer Newsletter"),
-    content_type: z.enum(newsletterContentType),
+    content_type: z.string().nonempty(),
     content: z.string(),
 });
 
@@ -54,7 +54,7 @@ const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
         resolver: zodResolver(composeNewsletterSchema),
         defaultValues: {
             subject: "Mailixer Newsletter",
-            content_type: "Plaintext",
+            content_type: "HTML",
             content: "",
         },
     });
@@ -75,21 +75,27 @@ const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
     });
 
     function handleComposeNewsletterSubmit(data: ComposeNewsletter) {
+        const content_type_id: number =
+            //@ts-ignore
+            newsletterContentType[data.content_type];
         router.post("/dashboard/sendNewsletter", {
             subject: data.subject,
-            content_type_id: getNewsletterContentTypeId(data.content_type),
             content: data.content,
+            content_type_id,
         });
     }
     function handleSaveNewsletter(data: ComposeNewsletter) {
+        const content_type_id: number =
+            //@ts-ignore
+            newsletterContentType[data.content_type];
         router.post("/dashboard/saveNewsletter", {
             subject: data.subject,
-            content_type_id: getNewsletterContentTypeId(data.content_type),
             content: data.content,
+            content_type_id,
         });
     }
     return (
-        <div className="h-full w-full grid grid-cols-1 xl:grid-cols-5 gap-3">
+        <div className="h-full w-full grid grid-cols-1 xl:grid-cols-5 gap-3 items-start">
             <Card className="col-span-2">
                 <CardHeader>
                     <CardTitle>Compose Newsletter</CardTitle>
@@ -123,33 +129,48 @@ const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
                             <FormField
                                 name="content_type"
                                 control={form.control}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Content Type</FormLabel>
-                                        <Select
-                                            onValueChange={field.onChange}
-                                            value={field.value}
-                                        >
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Content Type" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                <SelectItem value="Plaintext">
-                                                    Plain Text
-                                                </SelectItem>
-                                                <SelectItem value="HTML">
-                                                    HTML
-                                                </SelectItem>
-                                                <SelectItem value="Markdown">
-                                                    Markdown
-                                                </SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                                render={({ field }) => {
+                                    console.log(field.value);
+                                    return (
+                                        <FormItem>
+                                            <FormLabel>Content Type</FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                value={field.value}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Content Type" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    <SelectItem
+                                                        value={getContentTypeNameById(
+                                                            newsletterContentType.PLAINTEXT
+                                                        )}
+                                                    >
+                                                        Plain Text
+                                                    </SelectItem>
+                                                    <SelectItem
+                                                        value={getContentTypeNameById(
+                                                            newsletterContentType.HTML
+                                                        )}
+                                                    >
+                                                        HTML
+                                                    </SelectItem>
+                                                    <SelectItem
+                                                        value={getContentTypeNameById(
+                                                            newsletterContentType.MARKDOWN
+                                                        )}
+                                                    >
+                                                        Markdown
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    );
+                                }}
                             />
 
                             <FormField
@@ -186,43 +207,13 @@ const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
                     </Form>
                 </CardContent>
             </Card>
-            <Card className="h-full col-span-3">
-                <CardHeader>
-                    <CardTitle>Preview</CardTitle>
-                    <CardDescription>
-                        Preview rendered content of your email
-                    </CardDescription>
-                </CardHeader>
-                <Separator />
-                <CardContent className="flex flex-col gap-4 pt-3">
-                    <Card>
-                        <CardContent className="py-2 text-sm">
-                            <p>
-                                <span className="font-semibold">From: </span>
-                                {`${auth.user.name} <no-reply@mailixer.com>`}
-                            </p>
-                            <p>
-                                <span className="font-semibold">Subject: </span>
-                                {emailSubject}
-                            </p>
-                        </CardContent>
-                    </Card>
-                    <Separator />
-                    <div className="p-2">
-                        {emailContentType === "HTML" && (
-                            <iframe srcDoc={emailContent} />
-                        )}
-                        {emailContentType === "Markdown" && (
-                            <Markdown className="prose dark:prose-invert">
-                                {emailContent}
-                            </Markdown>
-                        )}
-                        {emailContentType === "Plaintext" && (
-                            <p>{emailContent}</p>
-                        )}
-                    </div>
-                </CardContent>
-            </Card>
+            <NewsletterPreview
+                className="col-span-3"
+                auth={auth}
+                subject={emailSubject}
+                contentType={emailContentType}
+                content={emailContent}
+            />
         </div>
     );
 };

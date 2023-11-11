@@ -58,4 +58,14 @@ class NewsletterActionController extends Controller
             'message' => 'Successully save newsletter'
         ]);
     }
+    public function deleteNewsletter(Request $request)
+    {
+        $data = $request->validate([
+            'id' => "numeric",
+        ]);
+        $this->newsletterService->deleteNewsletter($data["id"]);
+        return back()->with([
+            'message' => "Successfully deleted newsletter"
+        ]);
+    }
 }

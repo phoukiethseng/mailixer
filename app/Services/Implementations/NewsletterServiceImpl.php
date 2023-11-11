@@ -51,4 +51,11 @@ class NewsletterServiceImpl implements NewsletterService
         $newsletters = $this->newsletterRepository->findById($id);
         return $newsletters;
     }
+    public function deleteNewsletter(int $newsletterId)
+    {
+        $newsletter = $this->newsletterRepository->findById($newsletterId);
+        if ($newsletter) {
+            $this->newsletterRepository->delete($newsletter);
+        }
+    }
 }

@@ -22,9 +22,26 @@ import {
 import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 import { useToast } from "../use-toast";
 import axios from "axios";
+import { Checkbox } from "../Checkbox";
+import React from "react";
 
 type Subscriber = SubscribersPageProps["subscribers"][number];
 export const columns: ColumnDef<Subscriber>[] = [
+    {
+        id: "select",
+        header: ({ table }) => (
+            <Checkbox
+                checked={table.getIsAllRowsSelected()}
+                onCheckedChange={() => table.toggleAllRowsSelected()}
+            />
+        ),
+        cell: ({ row }) => (
+            <Checkbox
+                checked={row.getIsSelected()}
+                onCheckedChange={() => row.toggleSelected()}
+            />
+        ),
+    },
     {
         accessorKey: "id",
         header: "ID",
@@ -58,19 +75,25 @@ export const columns: ColumnDef<Subscriber>[] = [
                         className="text-transparent group-hover/container:text-primary"
                         variant={"link"}
                         onClick={() => {
-                            axios.get<{ url: string; }>(`/dashboard/unsubscribe_url/${subscriberId}`)
+                            axios
+                                .get<{ url: string }>(
+                                    `/dashboard/unsubscribe_url/${subscriberId}`
+                                )
                                 .then((res) => {
                                     navigator.clipboard.writeText(res.data.url);
                                     toasts.toast({
-                                    description:
-                                        "Unsubscribe token has been copied to clipboard",
+                                        description:
+                                            "Unsubscribe token has been copied to clipboard",
                                     });
                                 })
-                                .catch((err) => toasts.toast({
-                                    variant: "destructive",
-                                    title: "Error",
-                                    description: "Could not retrieve unsubscribe url"
-                                }))
+                                .catch((err) =>
+                                    toasts.toast({
+                                        variant: "destructive",
+                                        title: "Error",
+                                        description:
+                                            "Could not retrieve unsubscribe url",
+                                    })
+                                );
                         }}
                     >
                         Copy URL
@@ -79,7 +102,6 @@ export const columns: ColumnDef<Subscriber>[] = [
             );
         },
     },
-    // TODO: Implement `unsubscribe` feature
     {
         id: "actions",
         cell: ({ row }) => {

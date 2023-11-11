@@ -12,6 +12,10 @@ import {
     UserMinus,
     Newspaper,
     Undo2,
+    Users2,
+    PenSquare,
+    FolderOpen,
+    Trash,
 } from "lucide-react";
 
 const Icons = {
@@ -28,6 +32,10 @@ const Icons = {
     UserMinus: UserMinus,
     Newspaper: Newspaper,
     Undo2: Undo2,
+    TwoUsers: Users2,
+    PenSquare: PenSquare,
+    FolderOpen: FolderOpen,
+    Trash: Trash,
 };
 
 export { Icons };

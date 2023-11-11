@@ -1,5 +1,7 @@
 import {
     ColumnDef,
+    Row,
+    TableOptions,
     flexRender,
     getCoreRowModel,
     useReactTable,
@@ -14,21 +16,25 @@ import {
     TableRow,
 } from "./Table";
 import { cn } from "../lib/utils";
+import React from "react";
 
 type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    tableOptions: Partial<TableOptions<TData>>;
 } & React.ComponentPropsWithoutRef<"div">;
 
 export function DataTable<TData, TValue>({
     data,
     columns,
     className,
+    tableOptions,
 }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
+        ...tableOptions,
     });
     return (
         <div className={cn("rounded-xl border text-foreground", className)}>
@@ -58,6 +64,9 @@ export function DataTable<TData, TValue>({
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
+                                onClick={() => {
+                                    row.toggleSelected();
+                                }}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>

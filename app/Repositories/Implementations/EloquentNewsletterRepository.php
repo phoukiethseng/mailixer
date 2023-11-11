@@ -11,6 +11,6 @@ class EloquentNewsletterRepository implements NewsletterRepository {
         $this->modelClassName = Newsletter::class;
     }
     public function findAllByUserId($userId) {
-        return Newsletter::where("user_id", $userId)->get();
+        return Newsletter::with(['contentType'])->where("user_id", $userId)->get();
     }
 }
