@@ -48,8 +48,13 @@ export default function NewsletterPreview({
                     </CardContent>
                 </Card>
                 <Separator />
-                <div className="p-2">
-                    {contentType === "HTML" && <iframe srcDoc={content} />}
+                <div className="p-2 w-full h-full">
+                    {contentType === "HTML" && (
+                        <iframe
+                            srcDoc={content}
+                            className="w-full min-h-[80vh]"
+                        />
+                    )}
                     {contentType === "MARKDOWN" && (
                         <Markdown className="prose">{content}</Markdown>
                     )}

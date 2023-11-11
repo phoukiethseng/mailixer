@@ -130,7 +130,6 @@ const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
                                 name="content_type"
                                 control={form.control}
                                 render={({ field }) => {
-                                    console.log(field.value);
                                     return (
                                         <FormItem>
                                             <FormLabel>Content Type</FormLabel>
@@ -192,6 +191,7 @@ const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
                             />
                             <Button type="submit">Send</Button>
                             <Button
+                                type="button"
                                 variant={"outline"}
                                 onClick={() =>
                                     handleSaveNewsletter({
