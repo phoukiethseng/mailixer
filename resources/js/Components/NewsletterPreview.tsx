@@ -3,6 +3,7 @@ import {
     Card,
     CardContent,
     CardDescription,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from "./Card";
@@ -48,11 +49,11 @@ export default function NewsletterPreview({
                     </CardContent>
                 </Card>
                 <Separator />
-                <div className="p-2 w-full h-full">
+                <div className="p-2 w-full min-h-[60vh]">
                     {contentType === "HTML" && (
                         <iframe
                             srcDoc={content}
-                            className="w-full min-h-[80vh]"
+                            className="w-full min-h-[60vh]"
                         />
                     )}
                     {contentType === "MARKDOWN" && (
@@ -61,6 +62,7 @@ export default function NewsletterPreview({
                     {contentType === "PLAINTEXT" && <p>{content}</p>}
                 </div>
             </CardContent>
+            <CardFooter></CardFooter>
         </Card>
     );
 }

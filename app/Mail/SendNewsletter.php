@@ -56,28 +56,22 @@ class SendNewsletter extends Mailable implements ShouldQueue
 
     private function getNewsletterContent(): Content
     {
+        /*
+            Convert all content to html format
+        */
+
+        $contentType = $this->newsletter->contentType()->first()->name;
         $content = $this->newsletter->content;
-        if ($this->newsletter->contentType()->first()->name == 'html') {
-            return new Content(
-                html: 'email.html_template',
-                with: [
-                    'content' => $content
-                ]
-            );
-        } elseif ($this->newsletter->contentType()->first()->name == 'markdown') {
-            return new Content(
-                markdown: 'email.markdown_template',
-                with: [
-                    'content' => $content
-                ]
-            );
+
+        if ($contentType === "markdown") {
+            $content = \Illuminate\Support\Str::markdown($content);
         }
 
-        // Fallback to plain text
         return new Content(
-            text: "email.plaintext_template",
+            html: 'email.html_template',
             with: [
-                'content' => $content
+                'content' => $content,
+                'contentType' => $contentType,
             ]
         );
     }

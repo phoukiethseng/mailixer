@@ -189,20 +189,22 @@ const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit">Send</Button>
-                            <Button
-                                type="button"
-                                variant={"outline"}
-                                onClick={() =>
-                                    handleSaveNewsletter({
-                                        content: emailContent,
-                                        content_type: emailContentType,
-                                        subject: emailSubject,
-                                    })
-                                }
-                            >
-                                Save as draft
-                            </Button>
+                            <div className="grid grid-cols-2 justify-around items-stretch gap-2 w-full h-full">
+                                <Button type="submit">Send</Button>
+                                <Button
+                                    type="button"
+                                    variant={"outline"}
+                                    onClick={() =>
+                                        handleSaveNewsletter({
+                                            content: emailContent,
+                                            content_type: emailContentType,
+                                            subject: emailSubject,
+                                        })
+                                    }
+                                >
+                                    Save as draft
+                                </Button>
+                            </div>
                         </form>
                     </Form>
                 </CardContent>
