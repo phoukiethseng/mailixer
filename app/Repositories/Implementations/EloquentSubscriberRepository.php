@@ -20,7 +20,7 @@ class EloquentSubscriberRepository implements SubscriberRepository
         return Subscriber::where("user_id", $userId)->get();
     }
     public function findByUnsubscribeToken($unsubscribeToken) {
-        return Subscriber::where("unsubscribe_token", $unsubscribeToken)->get();
+        return Subscriber::where("unsubscribe_token", $unsubscribeToken)->first();
     }
 
 }

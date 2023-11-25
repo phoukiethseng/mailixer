@@ -8,6 +8,7 @@ use App\Repositories\Interfaces\SubscriberRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\SubscriptionService;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class SubscriptionServiceImpl implements SubscriptionService
@@ -80,7 +81,11 @@ class SubscriptionServiceImpl implements SubscriptionService
 
     public function getSubscriberAuthorByUnsubscribeToken($unsubscribeToken): User
     {
-        return $this->subscriberRepository->findByUnsubscribeToken($unsubscribeToken)->user;
+        $subscriber = $this->subscriberRepository->findByUnsubscribeToken($unsubscribeToken);
+        Log::debug('found subscriber', [$subscriber]);
+        $userId = $subscriber->user_id;
+        $user = $this->userRepository->findById($userId);
+        return $user;
     }
     public function getUnsubscribeTokenById($subscriberId)
     {

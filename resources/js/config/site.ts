@@ -7,7 +7,7 @@ export type PageDescription = {
     icon: React.FunctionComponent;
     description: string;
 };
-type PageGroupConfig = {
+type PageGroupDescription = {
     [key: string]: {
         pages: Array<DashBoardMenuItems>;
         icon: React.FunctionComponent;
@@ -48,7 +48,7 @@ const siteConfig = {
 };
 
 // Defining a grouping of dashboard sub pages
-export const dashboardPageGroups: PageGroupConfig = {
+export const dashboardPageGroups: PageGroupDescription = {
     "Subscribe Page": {
         icon: Icons.Layout,
         pages: ["CustomizePage"],

@@ -78,7 +78,7 @@ export default function DashBoardLayout({
                     )} */}
                     {Object.entries(dashboardPageGroups).map(
                         ([pageGroupName, pageGroupInfo], index, arr) => (
-                            <>
+                            <div key={index} className="flex flex-col gap-2">
                                 <DashBoardNavigationItemGroup
                                     icon={pageGroupInfo.icon}
                                     groupName={pageGroupName}
@@ -89,7 +89,7 @@ export default function DashBoardLayout({
                                     activePage={activePage}
                                 />
                                 {index + 1 !== arr.length && <Separator />}
-                            </>
+                            </div>
                         )
                     )}
                 </div>
