@@ -4,9 +4,18 @@ import { Button } from "../Button";
 import { Icons } from "../Icons";
 import React from "react";
 import { router } from "@inertiajs/react";
+import { Checkbox } from "../Checkbox";
 
 type Newsletter = DraftNewsletterProps["newsletters"][number];
 export const columns: ColumnDef<Newsletter>[] = [
+    {
+        id: "select",
+        cell: ({ row }) => {
+            return (
+                <Checkbox checked={row.getIsSelected()} onCheckedChange={() => row.toggleSelected()}/>
+            )
+        }
+    },
     {
         accessorKey: "id",
         header: "ID",

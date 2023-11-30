@@ -55,7 +55,7 @@ const SubscribersPage = ({
                             <PieChart
                                 data={subscriberEmailProvidersCounts}
                                 innerRadius={0.3}
-                                arcLabel={"label"}
+                                arcLabel={data => `${data.id[0].toUpperCase()}${data.id.slice(1)}`}
                                 enableArcLinkLabels={false}
                             />
                         )}

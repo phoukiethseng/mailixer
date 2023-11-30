@@ -26,25 +26,30 @@ const DraftNewsletter = ({
     errors,
 }: DraftNewsletterProps) => {
     /* Start of Tanstack Table stuff */
-    /* We manage Data Table `rowSelection` state 
+    /* We manage Data Table `rowSelection` state
     so we can search currently selected row and display its newsletter content */
     const [rowSelection, setRowSelection] = useState({});
     useEffect(() => {
-        /* This will only run once cause we disable multi-row selection 
+        /* This will only run once cause we disable multi-row selection
             so object should only contain one property */
-        Object.keys(rowSelection).forEach((selectedId) => {
-            const newsletter = newsletters.find(
-                (e) => e.id === parseInt(selectedId)
-            );
-            if (newsletter) setCurrentPreviewNewsletter(newsletter);
-        });
+        const rowSelectionKeys = Object.keys(rowSelection);
+        if (rowSelectionKeys.length > 0) {
+            rowSelectionKeys.forEach((selectedId) => {
+                const newsletter = newsletters.find(
+                    (e) => e.id === parseInt(selectedId)
+                );
+                if (newsletter) setCurrentPreviewNewsletter(newsletter);
+            });
+        } else {
+            setCurrentPreviewNewsletter(null);
+        }
     }, [rowSelection]);
     /* End of Tanstack Table stuff */
 
     useMessageToast({ message, errors });
     const [currentPreviewNewsletter, setCurrentPreviewNewsletter] = useState<
-        DraftNewsletterProps["newsletters"][number]
-    >(newsletters[0]);
+        DraftNewsletterProps["newsletters"][number] | null
+    >(null);
     console.log(currentPreviewNewsletter);
     return (
         <div
@@ -53,14 +58,14 @@ const DraftNewsletter = ({
             )}
         >
             <DataTable
-                className={cn(newsletters.length < 1 && "col-span-3")}
+                className={cn("cursor-pointer",(newsletters.length < 1 || currentPreviewNewsletter === null) && "col-span-3")}
                 data={newsletters}
                 columns={columns}
                 tableOptions={{
                     enableRowSelection: true,
                     enableMultiRowSelection: false,
                     getRowId: (row) => `${row.id}` /* Set row's id to data's id
-                                                     so we can use that to search 
+                                                     so we can use that to search
                                                      the corresponding newsletter via its id */,
                     onRowSelectionChange: setRowSelection,
                     state: {
@@ -68,7 +73,7 @@ const DraftNewsletter = ({
                     },
                 }}
             />
-            {newsletters.length > 0 && (
+            {newsletters.length > 0 && currentPreviewNewsletter !== null && (
                 <NewsletterPreview
                     className=" col-span-2"
                     auth={auth}
