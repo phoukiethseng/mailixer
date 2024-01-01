@@ -62,10 +62,10 @@ export const columns: ColumnDef<Subscriber>[] = [
         },
     },
     {
-        accessorKey: "unsubscribe_token",
+        accessorKey: "unsubscribeToken",
         header: "Unsubscribe Token",
         cell: ({ row }) => {
-            const token: string = row.getValue("unsubscribe_token");
+            const token: string = row.getValue("unsubscribeToken");
             const subscriberId = row.getValue("id");
             const toasts = useToast();
             return (

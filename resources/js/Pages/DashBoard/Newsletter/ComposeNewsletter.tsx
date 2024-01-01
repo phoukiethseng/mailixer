@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import DashBoardLayout from "../../../Layouts/DashBoardLayout";
 import {
     Card,
@@ -30,14 +30,12 @@ import {
     SelectValue,
 } from "../../../Components/Select";
 
-import {
-    InertiaSharedProps,
-    getContentTypeNameById,
-    newsletterContentType,
-} from "../../../config/site";
+import { InertiaSharedProps } from "../../../config/site";
 import { router } from "@inertiajs/react";
 import { useMessageToast } from "../../../lib/hooks/useMessageToast";
 import NewsletterPreview from "../../../Components/NewsletterPreview";
+import { newsletterContentType } from "../../../types/models";
+import { getNewsletterContentTypeNameById } from "@/resources/js/lib/utils";
 
 const composeNewsletterSchema = z.object({
     subject: z.string().nonempty().default("Mailixer Newsletter"),
@@ -144,23 +142,29 @@ const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
                                                 </FormControl>
                                                 <SelectContent>
                                                     <SelectItem
-                                                        value={getContentTypeNameById(
-                                                            newsletterContentType.PLAINTEXT
-                                                        )}
+                                                        value={
+                                                            getNewsletterContentTypeNameById(
+                                                                newsletterContentType.PLAINTEXT
+                                                            ) ?? ""
+                                                        }
                                                     >
                                                         Plain Text
                                                     </SelectItem>
                                                     <SelectItem
-                                                        value={getContentTypeNameById(
-                                                            newsletterContentType.HTML
-                                                        )}
+                                                        value={
+                                                            getNewsletterContentTypeNameById(
+                                                                newsletterContentType.HTML
+                                                            ) ?? ""
+                                                        }
                                                     >
                                                         HTML
                                                     </SelectItem>
                                                     <SelectItem
-                                                        value={getContentTypeNameById(
-                                                            newsletterContentType.MARKDOWN
-                                                        )}
+                                                        value={
+                                                            getNewsletterContentTypeNameById(
+                                                                newsletterContentType.MARKDOWN
+                                                            ) ?? ""
+                                                        }
                                                     >
                                                         Markdown
                                                     </SelectItem>

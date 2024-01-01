@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\Interfaces\UserRepository;
-use App\Services\Interfaces\NewsletterContentType;
+use App\Enums\NewsletterContentType;
 use App\Services\Interfaces\NewsletterService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;

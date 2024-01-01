@@ -4,12 +4,7 @@ namespace App\Services\Interfaces;
 
 use App\Models\Newsletter;
 use App\Models\User;
-
-enum NewsletterContentType: int {
-    case HTML = 1;
-    case MARKDOWN = 2;
-    case PLAINTEXT = 3;
-}
+use App\Enums\NewsletterContentType;
 
 interface NewsletterService {
     public function sendNewsletter(Newsletter $newsletter, User $author);

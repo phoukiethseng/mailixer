@@ -6,10 +6,10 @@ use App\Mail\SendNewsletter;
 use App\Models\Newsletter;
 use App\Models\User;
 use App\Repositories\Interfaces\NewsletterRepository;
-use App\Services\Interfaces\NewsletterContentType;
 use App\Services\Interfaces\NewsletterService;
 use App\Services\Interfaces\SubscriptionService;
 use Illuminate\Support\Facades\Mail;
+use App\Enums\NewsletterContentType;
 
 class NewsletterServiceImpl implements NewsletterService
 {
@@ -39,7 +39,7 @@ class NewsletterServiceImpl implements NewsletterService
         $newsletter = $this->newsletterRepository->save($newsletter);
         return $newsletter;
     }
-    
+
     public function getAllNewsletterForAuthor(User $author)
     {
         $newsletters = $this->newsletterRepository->findAllByUserId($author->id);

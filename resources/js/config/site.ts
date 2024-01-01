@@ -78,18 +78,4 @@ export type InertiaSharedProps = {
     };
 };
 
-// Enum for Newsletter Content Type
-export const newsletterContentType = {
-    HTML: 1,
-    MARKDOWN: 2,
-    PLAINTEXT: 3,
-};
-export type NewsletterContentType = keyof typeof newsletterContentType;
-export function getContentTypeNameById(id: number): string | null {
-    const entry = Object.entries(newsletterContentType).find(
-        ([key, value]) => value === id
-    );
-    if (entry) return entry[0];
-    else return null;
-}
 export default siteConfig;

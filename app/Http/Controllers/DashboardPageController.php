@@ -2,29 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Subscriber;
 use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
 use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\DTOs\SubscriberDTO;
+use App\Repositories\Interfaces\UserRepository;
 
 class DashboardPageController extends Controller
 {
 
-    public function __construct(private SubscribePageService $subscribePageService, private SubscriptionService $subscriptionService)
+    public function __construct(private SubscribePageService $subscribePageService, private SubscriptionService $subscriptionService, private UserRepository $userRepository)
     {
 
     }
     public function subscribersPage(Request $request)
     {
-        $user = $request->user();
+        $user = $this->userRepository->findById($request->user()->id);
         try {
             $subscribers = $this->subscriptionService->getAllSubscribersByUserId($user->id);
-            $count = $this->subscriptionService->getSubscribersCount($user->id);
+            $SubscriberCount = $this->subscriptionService->getSubscribersCount($user->id);
             return Inertia::render('DashBoard/Subscribers', [
                 'subscribers' => collect($subscribers)->mapInto(SubscriberDTO::class),
-                'subscribersCount' => $count
+                'subscribersCount' => $SubscriberCount
             ]);
         } catch (Exception) {
             return back()->withErrors([
@@ -34,7 +35,7 @@ class DashboardPageController extends Controller
     }
     public function customizationPage(Request $request)
     {
-        $user = $request->user();
+        $user = $this->userRepository->findById($request->user()->id);
         try {
             $description = $this->subscribePageService->getDescription($user->id);
             $pageUrl = route('subscribe.index', $user->id);
@@ -57,18 +58,3 @@ class DashboardPageController extends Controller
 }
 
 
-// Used for mapping backend data to frontend data
-class SubscriberDTO
-{
-    public $id;
-    public $email;
-    public $unsubscribe_token;
-    public $createdAt;
-    public function __construct(Subscriber $subscriber)
-    {
-        $this->id = $subscriber->id;
-        $this->email = $subscriber->email;
-        $this->createdAt = $subscriber->created_at;
-        $this->unsubscribe_token = $subscriber->unsubscribe_token;
-    }
-}
