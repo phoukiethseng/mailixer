@@ -82,7 +82,7 @@ const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
             content_type_id,
         });
     }
-    function handleSaveNewsletter(data: ComposeNewsletter) {
+    function handleSaveNewsletterAsDraft(data: ComposeNewsletter) {
         const content_type_id: number =
             //@ts-ignore
             newsletterContentType[data.content_type];
@@ -199,7 +199,7 @@ const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
                                     type="button"
                                     variant={"outline"}
                                     onClick={() =>
-                                        handleSaveNewsletter({
+                                        handleSaveNewsletterAsDraft({
                                             content: emailContent,
                                             content_type: emailContentType,
                                             subject: emailSubject,

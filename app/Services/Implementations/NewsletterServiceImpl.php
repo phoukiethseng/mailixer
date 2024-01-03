@@ -2,6 +2,7 @@
 
 namespace App\Services\Implementations;
 
+use App\Enums\NewsletterStatus;
 use App\Mail\SendNewsletter;
 use App\Models\Newsletter;
 use App\Models\User;
@@ -30,6 +31,7 @@ class NewsletterServiceImpl implements NewsletterService
 
     public function createNewsletter(NewsletterContentType $contentType, string $subject, string $content, User $author): Newsletter {
         $data = [
+            'status_id' => NewsletterStatus::DRAFT,
             'content_type_id' => $contentType,
             'content' => $content,
             'subject' => $subject,

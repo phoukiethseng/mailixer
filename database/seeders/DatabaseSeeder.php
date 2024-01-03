@@ -63,5 +63,19 @@ class DatabaseSeeder extends Seeder
             ['id'],
             ['subject', 'content', 'content_type_id']
         );
+        DB::table('newsletter_status')->upsert(
+            [
+                [
+                    'id' => 1,
+                    'name' => 'DRAFT'
+                ],
+                [
+                    'id' => 2,
+                    'name' => 'SENT'
+                ]
+            ],
+            ['id'],
+            ['name']
+        );
     }
 }
