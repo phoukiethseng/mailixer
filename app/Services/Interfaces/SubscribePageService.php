@@ -4,7 +4,9 @@ namespace App\Services\Interfaces;
 
 interface SubscribePageService
 {
-    public function getDescription($userId);
-    public function updateDescription($userId, $description);
+    public function getSubscribePageTokenByAuthorId($authorId);
+    public function getDescriptionByToken($token);
+    public function updateDescriptionByToken($token, $description);
+    public function getAuthorIdByToken($token);
 
 }

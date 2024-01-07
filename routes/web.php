@@ -36,8 +36,8 @@ Route::prefix('/')->group(function () {
 
 Route::prefix('subscribe_page')->group(function () {
 
-    Route::get('/{userId}', [SubscribePageController::class, 'subscribePage'])->name("subscribe.index");
-    Route::get('/{userId}/success', [SubscribePageController::class, 'successPage'])->name('subscribe.success');
+    Route::get('/{token}', [SubscribePageController::class, 'subscribePage'])->name("subscribe.index");
+    Route::get('/{token}/success', [SubscribePageController::class, 'successPage'])->name('subscribe.success');
 
     Route::post('/', [SubscribeActionController::class, 'subscribe']);
 

@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Services\Interfaces\StringRandomGenerator;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -32,9 +34,11 @@ class DatabaseSeeder extends Seeder
             ['name', 'password']
         );
 
+        $stringRandomGenerator = App::make(StringRandomGenerator::class);
         DB::table('subscribe_pages')->upsert(
             [
-                'user_id' => DB::table('users')->select('id')->where('email', 'puseng123@gmail.com')->first()->id
+                'user_id' => DB::table('users')->select('id')->where('email', 'puseng123@gmail.com')->first()->id,
+                'token' => $stringRandomGenerator->generateRandom(30),
             ],
             ['user_id'],
             ['user_id']

@@ -16,10 +16,15 @@ class SubscribePageController extends Controller
     ) {
 
     }
-    public function subscribePage($userId)
+    public function subscribePage($token)
     {
+        // $user = $this->userRepository->findById($userId);
+        // $pageDescription = $this->subscribePageService->getDescription($user->id);
+
+        $userId = $this->subscribePageService->getAuthorIdByToken($token);
+        $pageDescription = $this->subscribePageService->getDescriptionByToken($token);
+
         $user = $this->userRepository->findById($userId);
-        $pageDescription = $this->subscribePageService->getDescription($user->id);
 
         if (!$user) {
             return Inertia::render('Error', [
@@ -35,8 +40,12 @@ class SubscribePageController extends Controller
             ]
         ]);
     }
-    public function successPage($userId)
+    public function successPage($token)
     {
-        return Inertia::render('Subscribe/Success');
+        $authorId = $this->subscribePageService->getAuthorIdByToken($token);
+        $author = $this->userRepository->findById($authorId);
+        return Inertia::render('Subscribe/Success',[
+            'author.name' => $author->name,
+        ]);
     }
 }

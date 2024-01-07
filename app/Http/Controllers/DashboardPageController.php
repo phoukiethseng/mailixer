@@ -37,8 +37,9 @@ class DashboardPageController extends Controller
     {
         $user = $this->userRepository->findById($request->user()->id);
         try {
-            $description = $this->subscribePageService->getDescription($user->id);
-            $pageUrl = route('subscribe.index', $user->id);
+            $subscribePageToken = $this->subscribePageService->getSubscribePageTokenByAuthorId($user->id);
+            $description = $this->subscribePageService->getDescriptionByToken($subscribePageToken);
+            $subscribePageUrl = route('subscribe.index', $subscribePageToken);
         } catch (Exception) {
             return back()->withErrors([
                 'message' => "Couldn't retreive page description or preview url"
@@ -46,7 +47,7 @@ class DashboardPageController extends Controller
         }
         return Inertia::render('DashBoard/Customization', [
             'description' => $description ? $description : '',
-            'subscribeUrl' => $pageUrl
+            'subscribeUrl' => $subscribePageUrl
         ]);
     }
 

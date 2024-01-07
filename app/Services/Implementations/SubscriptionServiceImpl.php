@@ -7,13 +7,14 @@ use App\Models\User;
 use App\Repositories\Interfaces\SubscriberRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\SubscriptionService;
+use App\Services\Interfaces\StringRandomGenerator;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class SubscriptionServiceImpl implements SubscriptionService
 {
-    public function __construct(private SubscriberRepository $subscriberRepository, private UserRepository $userRepository)
+    public function __construct(private SubscriberRepository $subscriberRepository, private UserRepository $userRepository, private StringRandomGenerator $stringRandomGenerator)
     {
 
     }
@@ -27,7 +28,7 @@ class SubscriptionServiceImpl implements SubscriptionService
         }
 
         // Check for existing subscriber
-        if ($this->subscriberRepository->findByEmail($email)) {
+        if ($this->subscriberRepository->findByEmail($email) != null) {
             throw new Exception("Email is already subscribed");
         }
 
@@ -35,7 +36,7 @@ class SubscriptionServiceImpl implements SubscriptionService
         $subscriber = $this->subscriberRepository->getNewInstance([
             'email' => $email,
             'user_id' => $user->id,
-            'unsubscribe_token' => Str::random(20),
+            'unsubscribe_token' => $this->stringRandomGenerator->generateRandom(30),
         ]);
         $this->subscriberRepository->save($subscriber);
     }

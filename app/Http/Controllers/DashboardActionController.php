@@ -20,7 +20,7 @@ class DashboardActionController extends Controller
         $data = $request->validated();
         $user = $request->user();
         try {
-            $this->subscribePageService->updateDescription($user->id, $data['description']);
+            $this->subscribePageService->updateDescriptionByToken($user->id, $data['description']);
         } catch (Exception) {
             return back()->withErrors([
                 'message' => "Couldn't update subscribe page description"

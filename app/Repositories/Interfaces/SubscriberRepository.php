@@ -16,16 +16,16 @@ interface SubscriberRepository extends CRUDRepository
      * @param string $email
      * @return Subscriber|null
      */
-    public function findByEmail($email);
+    public function findByEmail($email): Subscriber | null;
     /**
      * @param string $unsubscribeToken
      * @return Subscriber|null
      */
-    public function findByUnsubscribeToken($unsubscribeToken);
+    public function findByUnsubscribeToken($unsubscribeToken): Subscriber | null;
     /**
      * @param int $userId
      * @return Collection<User>
      */
-    public function findAllByUserId($userId);
+    public function findAllByUserId($userId): Collection;
 
 }

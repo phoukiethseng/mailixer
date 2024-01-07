@@ -35,7 +35,7 @@ import { router } from "@inertiajs/react";
 import { useMessageToast } from "../../../lib/hooks/useMessageToast";
 import NewsletterPreview from "../../../Components/NewsletterPreview";
 import { newsletterContentType } from "../../../types/models";
-import { getNewsletterContentTypeNameById } from "@/resources/js/lib/utils";
+import { getNewsletterContentTypeNameById } from "../../../lib/utils";
 
 const composeNewsletterSchema = z.object({
     subject: z.string().nonempty().default("Mailixer Newsletter"),

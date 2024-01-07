@@ -23,6 +23,10 @@ class SubscribeActionController extends Controller
 
         try {
             $this->subscriptionService->subscribe($data['user_id'], $data['email']);
+            $subscribePageToken = $this->subscribePageService->getSubscribePageTokenByAuthorId($data['user_id']);
+            return to_route('subscribe.success', [
+                'token' => $subscribePageToken ,
+            ]);
         } catch (Exception $e) {
             Log::debug('', [$e]);
             return back()->withErrors([
@@ -30,8 +34,5 @@ class SubscribeActionController extends Controller
             ]);
         }
 
-        return to_route('subscribe.success', [
-            'userId' => $data['user_id']
-        ]);
     }
 }

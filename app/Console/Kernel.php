@@ -7,7 +7,8 @@ use App\Models\Newsletter;
 use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\DB;
+use App\Services\Interfaces\StringRandomGenerator;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -31,6 +32,7 @@ class Kernel extends ConsoleKernel
         require base_path('routes/console.php');
 
         $this->command('email:test', function () {
+            $stringRandomGenerator = App::make(StringRandomGenerator::class);
             $newsletter = Newsletter::firstOrNew([
                 'subject' => 'Test Newsletter',
                 'content_type_id' => 1,
@@ -40,7 +42,7 @@ class Kernel extends ConsoleKernel
             $publisher = $newsletter->user;
             $subscriber = $publisher->subscribers()->firstOrNew([
                 'email' => 'seng@example.com',
-                'unsubscribe_token' => Str::random(20),
+                'unsubscribe_token' => $stringRandomGenerator->generateRandom(30),
                 'user_id' => $publisher->id
             ]);
 
