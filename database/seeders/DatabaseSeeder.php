@@ -3,6 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Newsletter;
+use App\Models\NewsletterContentType;
+use App\Models\NewsletterStatus;
+use App\Models\SubscribePage;
+use App\Models\User;
 use App\Services\Interfaces\StringRandomGenerator;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\App;
@@ -11,6 +16,9 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
+    public function __construct(private StringRandomGenerator $stringRandomGenerator)
+    {
+    }
     /**
      * Seed the application's database.
      */
@@ -22,64 +30,49 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        DB::table('users')->upsert(
-            [
-                [
-                    'name' => '科森',
-                    'email' => 'puseng123@gmail.com',
-                    'password' => Hash::make('012858378'),
-                ]
-            ],
-            ['email'],
-            ['name', 'password']
-        );
+        $defaultUser = User::factory()->createOne([
+            'name' => '科森',
+            'email' => 'puseng123@gmail.com',
+            'password' => Hash::make('012858378'),
+        ]);
 
-        $stringRandomGenerator = App::make(StringRandomGenerator::class);
-        DB::table('subscribe_pages')->upsert(
-            [
-                'user_id' => DB::table('users')->select('id')->where('email', 'puseng123@gmail.com')->first()->id,
-                'token' => $stringRandomGenerator->generateRandom(30),
-            ],
-            ['user_id'],
-            ['user_id']
-        );
+        $subscribePage = SubscribePage::factory()->makeOne([
+            'description' => 'Subscribe to recieve latest about technology related news',
+            'token' => $this->stringRandomGenerator->generateRandom(30),
+        ]);
 
-        DB::table('newsletter_content_type')->upsert(
-            [
-                ['name' => 'html', 'id' => 1],
-                ['name' => 'markdown', 'id' => 2],
-                ['name' => 'plaintext', 'id' => 3]
+        $defaultUser->subscribePage()->save($subscribePage);
+        $subscribePage->save();
 
-            ],
-            ['id'],
-            ['name', 'id']
-        );
-        DB::table('newsletters')->upsert(
-            [
-                [
-                    'user_id' => 1,
-                    'subject' => 'Test Newsletter',
-                    'content' => '<h1>This is header 1</h1>',
-                    'content_type_id' => 1,
-                ]
+        $htmlContentType = NewsletterContentType::factory()->createOne([
+            'name' => 'html',
+            'id' => 1,
+        ]);
+        $markDownContentType = NewsletterContentType::factory()->createOne([
+            'name' => 'markdown',
+            'id' => 2,
+        ]);
+        $plainTextContentType = NewsletterContentType::factory()->createOne([
+            'name' => 'plaintext',
+            'id' => 3,
+        ]);
 
-            ],
-            ['id'],
-            ['subject', 'content', 'content_type_id']
-        );
-        DB::table('newsletter_status')->upsert(
-            [
-                [
-                    'id' => 1,
-                    'name' => 'DRAFT'
-                ],
-                [
-                    'id' => 2,
-                    'name' => 'SENT'
-                ]
-            ],
-            ['id'],
-            ['name']
-        );
+        $draftNewsletterStatus = NewsletterStatus::factory()->createOne([
+            'id' => 1,
+            'name' => 'DRAFT'
+        ]);
+        $sentNewsletterStatus = NewsletterStatus::factory()->createOne([
+            'id' => 2,
+            'name' => 'SENT'
+        ]);
+
+        $defaultNewsletter = Newsletter::factory()->makeOne([
+            'subject' => 'Mailixer Sample Newsletter Subject',
+            'content' => '<h1>This is heading 1</h1>',
+        ]);
+        $defaultNewsletter->contentType()->associate($htmlContentType);
+        $defaultUser->newsletters()->save($defaultNewsletter);
+        $defaultNewsletter->status()->associate($draftNewsletterStatus);
+        $defaultNewsletter->save();
     }
 }

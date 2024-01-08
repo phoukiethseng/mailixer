@@ -20,4 +20,7 @@ class Newsletter extends Model
     {
         return $this->belongsTo(NewsletterContentType::class);
     }
+    public function status(): BelongsTo {
+        return $this->belongsTo(NewsletterStatus::class);
+    }
 }
