@@ -36,7 +36,6 @@ class SubscriptionServiceImpl implements SubscriptionService
         $subscriber = $this->subscriberRepository->getNewInstance([
             'email' => $email,
             'user_id' => $user->id,
-            'unsubscribe_token' => $this->stringRandomGenerator->generateRandom(30),
         ]);
         $this->subscriberRepository->save($subscriber);
     }

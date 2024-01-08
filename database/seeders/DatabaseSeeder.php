@@ -10,8 +10,6 @@ use App\Models\SubscribePage;
 use App\Models\User;
 use App\Services\Interfaces\StringRandomGenerator;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -37,8 +35,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $subscribePage = SubscribePage::factory()->makeOne([
-            'description' => 'Subscribe to recieve latest about technology related news',
-            'token' => $this->stringRandomGenerator->generateRandom(30),
+            'description' => 'Subscribe to recieve latest about tech related news',
         ]);
 
         $defaultUser->subscribePage()->save($subscribePage);
