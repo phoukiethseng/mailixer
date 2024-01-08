@@ -1,22 +1,15 @@
 import NewsletterPreview from "../../../Components/NewsletterPreview";
 import DashBoardLayout from "../../../Layouts/DashBoardLayout";
-import {
-    InertiaSharedProps,
-    NewsletterContentType,
-} from "../../../config/site";
+import { InertiaSharedProps } from "../../../config/site";
 import React, { useEffect, useState } from "react";
 import { DataTable } from "../../../Components/DataTable";
 import { columns } from "../../../Components/NewsletterTable/Columns";
 import { cn } from "../../../lib/utils";
 import { useMessageToast } from "../../../lib/hooks/useMessageToast";
+import { Newsletter } from "../../../types/models";
 
 export type DraftNewsletterProps = {
-    newsletters: {
-        id: number;
-        subject: string;
-        contentType: NewsletterContentType;
-        content: string;
-    }[];
+    newsletters: Newsletter[];
 } & InertiaSharedProps;
 
 const DraftNewsletter = ({
@@ -51,6 +44,10 @@ const DraftNewsletter = ({
         DraftNewsletterProps["newsletters"][number] | null
     >(null);
     console.log(currentPreviewNewsletter);
+
+    const draftNewsletters = newsletters.filter(
+        (newsletter) => newsletter.status === "DRAFT"
+    );
     return (
         <div
             className={cn(
@@ -58,8 +55,13 @@ const DraftNewsletter = ({
             )}
         >
             <DataTable
-                className={cn("cursor-pointer",(newsletters.length < 1 || currentPreviewNewsletter === null) && "col-span-3")}
-                data={newsletters}
+                className={cn(
+                    "cursor-pointer",
+                    (newsletters.length < 1 ||
+                        currentPreviewNewsletter === null) &&
+                        "col-span-3"
+                )}
+                data={draftNewsletters}
                 columns={columns}
                 tableOptions={{
                     enableRowSelection: true,

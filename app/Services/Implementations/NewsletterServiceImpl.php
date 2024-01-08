@@ -27,19 +27,25 @@ class NewsletterServiceImpl implements NewsletterService
             // FYI: Laravel docs recommend that we should use new instance of mailable for each of receipiant
             Mail::send(new SendNewsletter($newsletter, $author, $subscriber));
         }
+        // Mark newsletter as Sent
+        $newsletter->status()->disassociate();
+        $newsletter->status()->associate(\App\Models\NewsletterStatus::find(NewsletterStatus::SENT->value));
+        $newsletter->save();
     }
 
     public function createNewsletter(NewsletterContentType $contentType, string $subject, string $content, User $author): Newsletter {
         $data = [
-            'status_id' => NewsletterStatus::DRAFT,
-            'content_type_id' => $contentType,
             'content' => $content,
             'subject' => $subject,
-            'user_id' => $author->id,
         ];
-        $newsletter = $this->newsletterRepository->getNewInstance($data);
-        $newsletter = $this->newsletterRepository->save($newsletter);
-        return $newsletter;
+
+        $draftNewsletter = $this->newsletterRepository->getNewInstance($data);
+        $draftNewsletter->user()->associate($author);
+        $draftNewsletter->contentType()->associate(\App\Models\NewsletterContentType::find($contentType->value));
+        $draftNewsletter->status()->associate(\App\Models\NewsletterStatus::find(NewsletterStatus::DRAFT->value));
+
+        $draftNewsletter = $this->newsletterRepository->save($draftNewsletter);
+        return $draftNewsletter;
     }
 
     public function getAllNewsletterForAuthor(User $author)

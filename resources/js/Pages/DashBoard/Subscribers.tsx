@@ -15,13 +15,9 @@ import {
 import { Icons } from "../../Components/Icons";
 import PieChart from "../../Components/Charts/Pie";
 import { getSubscriberESP } from "../../lib/analytics/subscriber";
+import { Subscriber } from "../../types/models";
 export type SubscribersPageProps = {
-    subscribers: {
-        id: number;
-        email: string;
-        createdAt: Date;
-        unsubscribeToken: string;
-    }[];
+    subscribers: Subscriber[];
     subscribersCount: number;
 } & InertiaSharedProps;
 
@@ -31,7 +27,8 @@ const SubscribersPage = ({
     ...props
 }: SubscribersPageProps) => {
     useMessageToast(props);
-    const subscriberEmailProvidersCounts = React.useMemo(
+    // Email Service Provider
+    const ESPStats = React.useMemo(
         () =>
             getSubscriberESP(subscribers).map((e) => ({
                 id: e.id,
@@ -41,8 +38,8 @@ const SubscribersPage = ({
         [subscribers]
     );
     return (
-        <div className="grid grid-cols-1 gap-6 align-start justify-items-center ">
-            <div className="min-h-[200px] w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 items-start">
+        <div className="grid grid-cols-5 grid-rows-6 gap-2 min-h-[100vh]">
+            <div className="min-h-[200px] w-full grid grid-cols-1 sm:grid-cols-2 gap-2 items-start col-span-2">
                 <Card>
                     <CardHeader>
                         <CardTitle>Subscribers ESP</CardTitle>
@@ -51,15 +48,19 @@ const SubscribersPage = ({
                         </CardDescription>
                     </CardHeader>
                     <div className="h-[200px] w-full flex flex-col justify-center items-center">
-                        {subscriberEmailProvidersCounts.length > 0 && (
+                        {ESPStats.length > 0 && (
                             <PieChart
-                                data={subscriberEmailProvidersCounts}
+                                data={ESPStats}
                                 innerRadius={0.3}
-                                arcLabel={data => `${data.id[0].toUpperCase()}${data.id.slice(1)}`}
+                                arcLabel={(data) =>
+                                    `${data.id[0].toUpperCase()}${data.id.slice(
+                                        1
+                                    )}`
+                                }
                                 enableArcLinkLabels={false}
                             />
                         )}
-                        {subscriberEmailProvidersCounts.length < 1 && (
+                        {ESPStats.length < 1 && (
                             <p className="text-muted-foreground text-sm">
                                 No Data
                             </p>
@@ -88,7 +89,7 @@ const SubscribersPage = ({
             <DataTable
                 columns={subscriberTableCloumns}
                 data={subscribers}
-                className="w-full"
+                className="w-full h-full col-span-3 row-auto"
             />
         </div>
     );
