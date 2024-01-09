@@ -3,27 +3,20 @@ type HasName = { name: string };
 type HasEmail = { email: string };
 type HasCreationDate = { createdAt: Date };
 type HasUpdateDate = { updatedAt: Date };
+type HasTimestamp = HasUpdateDate & HasCreationDate;
 
-export const newsletterContentType = {
-    HTML: 1,
-    MARKDOWN: 2,
-    PLAINTEXT: 3,
-};
+export const NEWSLETTER_CONTENT_TYPE = ["HTML", "MARKDOWN", 'PLAINTEXT'] as const;
 
-export const newsletterStatus = {
-    DRAFT: 1,
-    SENT: 2,
-};
+export const NEWSLETTER_STATUS = ["DRAFT", "SENT"];
 
-type NewsletterStatus = keyof typeof newsletterStatus;
-type NewsletterContentType = keyof typeof newsletterContentType;
+type NewsletterStatus = typeof NEWSLETTER_STATUS[number];
+type NewsletterContentType = typeof NEWSLETTER_CONTENT_TYPE[number];
 
-type User = HasId & HasName & HasEmail;
+type User = HasId & HasName & HasEmail & HasTimestamp;
 type Subscriber = HasId &
     HasEmail &
-    HasCreationDate &
-    HasUpdateDate & { unsubscribeToken: string };
-type Newsletter = HasId & {
+    HasTimestamp & { unsubscribeToken: string };
+type Newsletter = HasId & HasTimestamp & {
     subject: string;
     content: string;
     contentType: NewsletterContentType;

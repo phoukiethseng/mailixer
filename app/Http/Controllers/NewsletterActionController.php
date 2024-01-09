@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveNewsletterRequest;
+use App\Http\Requests\SendNewsletterRequest;
 use App\Repositories\Interfaces\UserRepository;
 use App\Enums\NewsletterContentType;
 use App\Services\Interfaces\NewsletterService;
@@ -16,22 +18,13 @@ class NewsletterActionController extends Controller
     ) {
 
     }
-    public function sendNewsletter(Request $request)
+    public function sendNewsletter(SendNewsletterRequest $request)
     {
-        $data = $request->validate([
-            'subject' => 'string|required',
-            'content' => 'string|required',
-            'content_type_id' => [new Enum(NewsletterContentType::class)],
-        ]);
+        $data = $request->validated();
 
         $user = $this->userRepository->findById($request->user()->id);
 
-        $newsletter = $this->newsletterService->createNewsletter(
-            NewsletterContentType::from($data['content_type_id']),
-            $data['subject'],
-            $data['content'],
-            $user
-        );
+        $newsletter = $this->createNewsletter($data, $user);
 
         $this->newsletterService->sendNewsletter($newsletter, $user);
 
@@ -39,23 +32,15 @@ class NewsletterActionController extends Controller
             'message' => 'Successfully sent newsletter',
         ]);
     }
-    public function saveNewsletter(Request $request)
+    public function saveNewsletter(SaveNewsletterRequest $request)
     {
         $user = $this->userRepository->findById($request->user()->id);
-        $data = $request->validate([
-            'subject' => 'string|required',
-            'content' => 'string|required',
-            'content_type_id' => [new Enum(NewsletterContentType::class)],
-        ]);
-        $newsletter = $this->newsletterService->createNewsletter(
-            NewsletterContentType::from($data['content_type_id']),
-            $data['subject'],
-            $data['content'],
-            $user
-        );
+        $data = $request->validated();
+
+        $newsletter = $this->createNewsletter($data, $user);
         return back()->with([
             'id' => $newsletter->id,
-            'message' => 'Successully save newsletter'
+            'message' => 'Successfully save newsletter'
         ]);
     }
     public function deleteNewsletter(Request $request)
@@ -67,5 +52,20 @@ class NewsletterActionController extends Controller
         return back()->with([
             'message' => "Successfully deleted newsletter"
         ]);
+    }
+
+    /**
+     * @param mixed $data
+     * @param \Illuminate\Database\Eloquent\Model|\App\Models\User $user
+     * @return \App\Models\Newsletter
+     */
+    private function createNewsletter(mixed $data, \Illuminate\Database\Eloquent\Model|\App\Models\User $user): \App\Models\Newsletter
+    {
+        return $this->newsletterService->createNewsletter(
+            NewsletterContentType::getCase($data['contentType']),
+            $data['subject'],
+            $data['content'],
+            $user
+        );
     }
 }

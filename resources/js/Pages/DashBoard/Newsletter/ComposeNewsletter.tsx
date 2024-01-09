@@ -1,12 +1,11 @@
-import React from "react";
+import React, {useRef} from "react";
 import DashBoardLayout from "../../../Layouts/DashBoardLayout";
 import {Card, CardContent,} from "../../../Components/Card";
-import z from "zod";
 
 import {InertiaSharedProps} from "../../../config/site";
 import {router} from "@inertiajs/react";
 import {useMessageToast} from "../../../lib/hooks/useMessageToast";
-import {newsletterContentType} from "../../../types/models";
+import {Newsletter} from "../../../types/models";
 import {Separator} from "../../../Components/Separator";
 import {Editor, EditorContent, useEditor} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -15,14 +14,8 @@ import {Icons} from "../../../Components/Icons";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 
-const composeNewsletterSchema = z.object({
-    subject: z.string().nonempty().default("Mailixer Newsletter"),
-    content_type: z.string().nonempty(),
-    content: z.string(),
-});
-
-type ComposeNewsletter = z.infer<typeof composeNewsletterSchema>;
 type NewsletterPageProps = {} & InertiaSharedProps;
+type ComposeNewsletter = Pick<Newsletter, "subject" | "content" | "contentType">;
 
 const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
     iconSize: number,
@@ -61,54 +54,72 @@ const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
     </div>;
 }
 
-const ComposeNewsletterPage = ({auth, ...props}: NewsletterPageProps) => {
-    useMessageToast(props);
-
+function ComposeNewsletterTextEditor(props: {
+    onSend: (data: ComposeNewsletter) => void,
+    onSave: (data: ComposeNewsletter) => void
+}) {
     const editor = useEditor({
         extensions: [StarterKit, Underline, Link],
         editorProps: {
             attributes: {
-                class: 'prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none',
+                class: 'prose dark:prose-invert prose-base m-5 focus:outline-none',
             },
         },
-    })
+    });
+    if (!editor) return (<p>Failed to initialize text editor</p>);
 
-    function handleComposeNewsletterSubmit(data: ComposeNewsletter) {
-        const content_type_id: number =
+    function getData(): ComposeNewsletter {
+        return {
             //@ts-ignore
-            newsletterContentType[data.content_type];
-        router.post("/dashboard/sendNewsletter", {
-            subject: data.subject,
-            content: data.content,
-            content_type_id,
-        });
+            subject: subjectInputRef?.current.value,
+            content: editor?.getHTML() ?? "",
+            contentType: "HTML"
+        };
+    }
+
+    return <Card>
+        <div className={"flex flex-row justify-start items-center gap-2 px-3.5 py-2"}>
+            <p className={"font-light text-muted-foreground"}>Subject</p>
+            <input
+                //@ts-ignore
+                ref={subjectInputRef} type={"text"} className={"p-1 w-full outline-0"}/>
+        </div>
+        <Separator/>
+        <CardContent>
+            <TextEditorFixedMenu editor={editor} iconSize={14} iconStrokeWidth={2.5}/>
+            <div className={"w-full min-h-[57vh] mt-2"}>
+                <EditorContent editor={editor} className={""}/>
+            </div>
+            <div className={"w-full flex flex-row justify-start items-center gap-4"}>
+                <Button onClick={() => props.onSend(getData())}>Send</Button>
+                <Button variant={"secondary"} onClick={() => props.onSave(getData())}>Save as Draft</Button>
+            </div>
+        </CardContent>
+    </Card>;
+}
+
+const ComposeNewsletterPage = ({auth, ...props}: NewsletterPageProps) => {
+    useMessageToast(props);
+    function handleSendNewsletter(data: ComposeNewsletter) {
+        router.post('/dashboard/sendNewsletter', data);
     }
 
     function handleSaveNewsletterAsDraft(data: ComposeNewsletter) {
-        const content_type_id: number =
-            //@ts-ignore
-            newsletterContentType[data.content_type];
-        router.post("/dashboard/saveNewsletter", {
-            subject: data.subject,
-            content: data.content,
-            content_type_id,
-        });
+        // const content_type_id: number =
+        //     //@ts-ignore
+        //     NEWSLETTER_CONTENT_TYPE[data.content_type];
+        // router.post("/dashboard/saveNewsletter", {
+        //     subject: data.subject,
+        //     content: data.content,
+        //     content_type_id,
+        // });
+        router.post("/dashboard/saveNewsletter", data);
     }
 
     return (
-        editor && <Card>
-            <div className={"flex flex-row justify-start items-center gap-2 px-3.5 py-2"}>
-                <p className={"font-light text-muted-foreground"}>Subject</p>
-                <input type={"text"} className={"p-1 w-full outline-0"}/>
-            </div>
-            <Separator/>
-            <CardContent className={"flex flex-col justify-start items-center bg-muted"}>
-                <TextEditorFixedMenu editor={editor} iconSize={14} iconStrokeWidth={2.5}/>
-                <div className={"w-full min-h-[60vh] mt-2"}>
-                    <EditorContent editor={editor} className={""}/>
-                </div>
-            </CardContent>
-        </Card>
+        <ComposeNewsletterTextEditor onSend={handleSendNewsletter} onSave={
+            handleSaveNewsletterAsDraft
+        }/>
     );
 };
 
