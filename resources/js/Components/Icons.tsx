@@ -16,6 +16,10 @@ import {
     PenSquare,
     FolderOpen,
     Trash,
+    Bold,
+    Italic,
+    Underline,
+    Strikethrough
 } from "lucide-react";
 
 const Icons = {
@@ -36,6 +40,10 @@ const Icons = {
     PenSquare: PenSquare,
     FolderOpen: FolderOpen,
     Trash: Trash,
+    Bold: Bold,
+    Italic: Italic,
+    Underline: Underline,
+    Strikethrough: Strikethrough
 };
 
 export { Icons };

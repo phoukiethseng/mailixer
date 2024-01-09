@@ -1,41 +1,19 @@
 import React from "react";
 import DashBoardLayout from "../../../Layouts/DashBoardLayout";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "../../../Components/Card";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "../../../Components/Form";
-import { useForm, useWatch } from "react-hook-form";
+import {Card, CardContent,} from "../../../Components/Card";
 import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../../../Components/Input";
-import { Textarea } from "../../../Components/TextArea";
-import { Button } from "../../../Components/Button";
-import { Separator } from "../../../Components/Separator";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "../../../Components/Select";
 
-import { InertiaSharedProps } from "../../../config/site";
-import { router } from "@inertiajs/react";
-import { useMessageToast } from "../../../lib/hooks/useMessageToast";
-import NewsletterPreview from "../../../Components/NewsletterPreview";
-import { newsletterContentType } from "../../../types/models";
-import { getNewsletterContentTypeNameById } from "../../../lib/utils";
+import {InertiaSharedProps} from "../../../config/site";
+import {router} from "@inertiajs/react";
+import {useMessageToast} from "../../../lib/hooks/useMessageToast";
+import {newsletterContentType} from "../../../types/models";
+import {Separator} from "../../../Components/Separator";
+import {Editor, EditorContent, useEditor} from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import {Button} from "../../../Components/Button";
+import {Icons} from "../../../Components/Icons";
+import Underline from "@tiptap/extension-underline";
+import Link from "@tiptap/extension-link";
 
 const composeNewsletterSchema = z.object({
     subject: z.string().nonempty().default("Mailixer Newsletter"),
@@ -46,31 +24,54 @@ const composeNewsletterSchema = z.object({
 type ComposeNewsletter = z.infer<typeof composeNewsletterSchema>;
 type NewsletterPageProps = {} & InertiaSharedProps;
 
-const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
-    const toast = useMessageToast(props);
-    const form = useForm<ComposeNewsletter>({
-        resolver: zodResolver(composeNewsletterSchema),
-        defaultValues: {
-            subject: "Mailixer Newsletter",
-            content_type: "HTML",
-            content: "",
+const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
+    iconSize: number,
+    iconStrokeWidth: number,
+    editor: Editor
+}) => {
+    return <div
+        className={"border border-border bg-background rounded-md mt-4 flex flex-row gap-1 justify-center items-center px-1.5 py-1"}>
+        <Button variant={editor.isActive("bold") ? "default" : "ghost"} size={"icon"} onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().toggleBold().run();
+        }}>
+            <Icons.Bold size={iconSize} strokeWidth={iconStrokeWidth}/>
+        </Button>
+        <Separator orientation={"vertical"} className={"h-5"}/>
+        <Button variant={editor.isActive("italic") ? "default" : "ghost"} size={"icon"} onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().toggleItalic().run();
+        }}>
+            <Icons.Italic size={iconSize} strokeWidth={iconStrokeWidth}/>
+        </Button>
+        <Separator orientation={"vertical"} className={"h-5"}/>
+        <Button variant={editor.isActive("underline") ? "default" : "ghost"} size={"icon"} onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().toggleUnderline().run();
+        }}>
+            <Icons.Underline size={iconSize} strokeWidth={iconStrokeWidth}/>
+        </Button>
+        <Separator orientation={"vertical"} className={"h-5"}/>
+        <Button variant={editor.isActive("strike") ? "default" : "ghost"} size={"icon"} onClick={(e) => {
+            e.preventDefault();
+            editor.chain().focus().toggleStrike().run();
+        }}>
+            <Icons.Strikethrough size={iconSize} strokeWidth={iconStrokeWidth}/>
+        </Button>
+    </div>;
+}
+
+const ComposeNewsletterPage = ({auth, ...props}: NewsletterPageProps) => {
+    useMessageToast(props);
+
+    const editor = useEditor({
+        extensions: [StarterKit, Underline, Link],
+        editorProps: {
+            attributes: {
+                class: 'prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none',
+            },
         },
-    });
-
-    const emailContent = useWatch({
-        control: form.control,
-        name: "content",
-    });
-
-    const emailContentType = useWatch({
-        control: form.control,
-        name: "content_type",
-    });
-
-    const emailSubject = useWatch({
-        control: form.control,
-        name: "subject",
-    });
+    })
 
     function handleComposeNewsletterSubmit(data: ComposeNewsletter) {
         const content_type_id: number =
@@ -82,6 +83,7 @@ const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
             content_type_id,
         });
     }
+
     function handleSaveNewsletterAsDraft(data: ComposeNewsletter) {
         const content_type_id: number =
             //@ts-ignore
@@ -92,135 +94,21 @@ const ComposeNewsletterPage = ({ auth, ...props }: NewsletterPageProps) => {
             content_type_id,
         });
     }
-    return (
-        <div className="h-full w-full grid grid-cols-1 xl:grid-cols-5 gap-3 items-start">
-            <Card className="col-span-2">
-                <CardHeader>
-                    <CardTitle>Compose Newsletter</CardTitle>
-                    <CardDescription>Create new newsletter</CardDescription>
-                </CardHeader>
-                <Separator />
-                <CardContent className="pt-3">
-                    <Form {...form}>
-                        <form
-                            className="flex flex-col gap-4"
-                            onSubmit={form.handleSubmit(
-                                handleComposeNewsletterSubmit
-                            )}
-                        >
-                            <FormField
-                                name="subject"
-                                control={form.control}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="font-semibold">
-                                            Subject
-                                        </FormLabel>
-                                        <Input
-                                            {...field}
-                                            placeholder="Email Subject"
-                                        />
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                name="content_type"
-                                control={form.control}
-                                render={({ field }) => {
-                                    return (
-                                        <FormItem>
-                                            <FormLabel>Content Type</FormLabel>
-                                            <Select
-                                                onValueChange={field.onChange}
-                                                value={field.value}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Content Type" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    <SelectItem
-                                                        value={
-                                                            getNewsletterContentTypeNameById(
-                                                                newsletterContentType.PLAINTEXT
-                                                            ) ?? ""
-                                                        }
-                                                    >
-                                                        Plain Text
-                                                    </SelectItem>
-                                                    <SelectItem
-                                                        value={
-                                                            getNewsletterContentTypeNameById(
-                                                                newsletterContentType.HTML
-                                                            ) ?? ""
-                                                        }
-                                                    >
-                                                        HTML
-                                                    </SelectItem>
-                                                    <SelectItem
-                                                        value={
-                                                            getNewsletterContentTypeNameById(
-                                                                newsletterContentType.MARKDOWN
-                                                            ) ?? ""
-                                                        }
-                                                    >
-                                                        Markdown
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    );
-                                }}
-                            />
 
-                            <FormField
-                                name="content"
-                                control={form.control}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="font-semibold">
-                                            Content
-                                        </FormLabel>
-                                        <Textarea
-                                            {...field}
-                                            className="min-h-[270px]"
-                                            placeholder="Your email newsletter content"
-                                        />
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <div className="grid grid-cols-2 justify-around items-stretch gap-2 w-full h-full">
-                                <Button type="submit">Send</Button>
-                                <Button
-                                    type="button"
-                                    variant={"outline"}
-                                    onClick={() =>
-                                        handleSaveNewsletterAsDraft({
-                                            content: emailContent,
-                                            content_type: emailContentType,
-                                            subject: emailSubject,
-                                        })
-                                    }
-                                >
-                                    Save as draft
-                                </Button>
-                            </div>
-                        </form>
-                    </Form>
-                </CardContent>
-            </Card>
-            <NewsletterPreview
-                className="col-span-3"
-                auth={auth}
-                subject={emailSubject}
-                contentType={emailContentType}
-                content={emailContent}
-            />
-        </div>
+    return (
+        editor && <Card>
+            <div className={"flex flex-row justify-start items-center gap-2 px-3.5 py-2"}>
+                <p className={"font-light text-muted-foreground"}>Subject</p>
+                <input type={"text"} className={"p-1 w-full outline-0"}/>
+            </div>
+            <Separator/>
+            <CardContent className={"flex flex-col justify-start items-center bg-muted"}>
+                <TextEditorFixedMenu editor={editor} iconSize={14} iconStrokeWidth={2.5}/>
+                <div className={"w-full min-h-[60vh] mt-2"}>
+                    <EditorContent editor={editor} className={""}/>
+                </div>
+            </CardContent>
+        </Card>
     );
 };
 
