@@ -21,6 +21,8 @@ import {
     Underline,
     Strikethrough,
     Send,
+    GripVertical,
+    ChevronDown
 } from "lucide-react";
 
 const Icons = {
@@ -45,7 +47,9 @@ const Icons = {
     Italic: Italic,
     Underline: Underline,
     Strikethrough: Strikethrough,
-    Send: Send
+    Send: Send,
+    GripVertical: GripVertical,
+    ChevronDown
 };
 
 export { Icons };

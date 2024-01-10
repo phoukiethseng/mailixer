@@ -13,6 +13,7 @@ use App\Services\Interfaces\SubscriptionService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Enums\NewsletterContentType;
+use Illuminate\Support\Facades\URL;
 
 class NewsletterServiceImpl implements NewsletterService
 {
@@ -29,7 +30,7 @@ class NewsletterServiceImpl implements NewsletterService
         $subscribers = $this->subscriptionService->getAllSubscribersByUserId($author->id);
         foreach ($subscribers as $subscriber) {
             // FYI: Laravel docs recommend that we should use new instance of mailable for each of receipiant
-            Mail::send(new SendNewsletter($newsletter, $author, $subscriber));
+            Mail::send(new SendNewsletter($newsletter, $author, $subscriber, URL::signedRoute('unsubscribe', ['unsubscribeToken' => $subscriber->unsubscribe_token])));
         }
         // Mark newsletter as Sent
         $newsletter->status()->disassociate();

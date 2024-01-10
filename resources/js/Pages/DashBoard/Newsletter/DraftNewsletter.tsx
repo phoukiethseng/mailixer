@@ -1,90 +1,100 @@
-import NewsletterPreview from "../../../Components/NewsletterPreview";
 import DashBoardLayout from "../../../Layouts/DashBoardLayout";
-import { InertiaSharedProps } from "../../../config/site";
-import React, { useEffect, useState } from "react";
-import { DataTable } from "../../../Components/DataTable";
-import { columns } from "../../../Components/NewsletterTable/Columns";
-import { cn } from "../../../lib/utils";
-import { useMessageToast } from "../../../lib/hooks/useMessageToast";
-import { Newsletter } from "../../../types/models";
+import {InertiaSharedProps} from "../../../config/site";
+import React, {useEffect, useState} from "react";
+import {useMessageToast} from "../../../lib/hooks/useMessageToast";
+import {Newsletter} from "../../../types/models";
+import ComposeNewsletterTextEditor from "../../../Components/ComposeNewsletterTextEditor";
+import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "../../../Components/Resizable";
+import {Card, CardContent} from "../../../Components/Card";
+import {htmlToText} from "../../../lib/utils";
+import {Icons} from "../../../Components/Icons";
+import {router} from "@inertiajs/react";
 
 export type DraftNewsletterProps = {
     newsletters: Newsletter[];
 } & InertiaSharedProps;
 
 const DraftNewsletter = ({
-    auth,
-    newsletters,
-    message,
-    errors,
-}: DraftNewsletterProps) => {
-    /* Start of Tanstack Table stuff */
-    /* We manage Data Table `rowSelection` state
-    so we can search currently selected row and display its newsletter content */
-    const [rowSelection, setRowSelection] = useState({});
-    useEffect(() => {
-        /* This will only run once cause we disable multi-row selection
-            so object should only contain one property */
-        const rowSelectionKeys = Object.keys(rowSelection);
-        if (rowSelectionKeys.length > 0) {
-            rowSelectionKeys.forEach((selectedId) => {
-                const newsletter = newsletters.find(
-                    (e) => e.id === parseInt(selectedId)
-                );
-                if (newsletter) setCurrentPreviewNewsletter(newsletter);
-            });
-        } else {
-            setCurrentPreviewNewsletter(null);
-        }
-    }, [rowSelection]);
-    /* End of Tanstack Table stuff */
-
-    useMessageToast({ message, errors });
-    const [currentPreviewNewsletter, setCurrentPreviewNewsletter] = useState<
-        DraftNewsletterProps["newsletters"][number] | null
-    >(null);
-    console.log(currentPreviewNewsletter);
-
+                             newsletters,
+                             message,
+                             errors,
+                         }: DraftNewsletterProps) => {
+    useMessageToast({message, errors});
     const draftNewsletters = newsletters.filter(
         (newsletter) => newsletter.status === "DRAFT"
     );
+    const [currentPreviewNewsletter, setCurrentPreviewNewsletter] = useState<
+        Newsletter | null
+    >(null);
+    console.log(currentPreviewNewsletter);
+    const isNewsletterSelected = newsletters.length > 0 && currentPreviewNewsletter !== null;
+
+    function handleDeleteDraftNewsletter(newsletter: Newsletter) {
+        const id = newsletter.id;
+        router.delete("/dashboard/deleteNewsletter", {
+            data: {
+                id
+            }
+        });
+    }
+
+    useEffect(() => {
+        if (currentPreviewNewsletter !== null) setCurrentPreviewNewsletter(null);
+    }, [newsletters]);
+
     return (
-        <div
-            className={cn(
-                "grid grid-cols-1 xl:grid-cols-3 grid-rows-2 xl:grid-rows-1 gap-2 items-start"
-            )}
+        <ResizablePanelGroup
+            direction={"horizontal"}
+            className={"gap-2"}
         >
-            <DataTable
-                className={cn(
-                    "cursor-pointer",
-                    (newsletters.length < 1 ||
-                        currentPreviewNewsletter === null) &&
-                        "col-span-3"
+            <ResizablePanel minSize={30} maxSize={50} defaultSize={35} className={"flex flex-col gap-3"}>
+                {
+                    draftNewsletters.map((newsletter, index) => {
+                        const displayCharLimit = 130;
+                        return (
+                            <Card key={index} className={"py-3 hover:bg-muted group/draftcard"}
+                                  onClick={() => setCurrentPreviewNewsletter(newsletter)}>
+                                <CardContent className={"flex flex-row justify-between items-center gap-4 pr-2.5"}>
+                                    <div className={"flex flex-col justify-start items-stretch gap-1 w-full"}>
+                                        <p className={"font-semibold cursor-default"}>{newsletter.subject}</p>
+                                        <p className={"text-sm text-muted-foreground text-wrap cursor-default"}>{htmlToText(newsletter.content).slice(0, displayCharLimit)}{"..."}</p>
+                                    </div>
+                                    <div
+                                        className={"cursor-pointer hidden group-hover/draftcard:flex self-start hover:bg-muted"}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDeleteDraftNewsletter((newsletter));
+                                        }}>
+                                        <Icons.Cross2Icon size={16} strokeWidth={2}
+                                                          className={"text-muted-foreground"}/>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        );
+                    })
+                }
+            </ResizablePanel>
+            <ResizableHandle/>
+            <ResizablePanel>
+                {isNewsletterSelected && (
+                    // <NewsletterPreview
+                    //     className=" col-span-2"
+                    //     auth={auth}
+                    //     subject={currentPreviewNewsletter.subject}
+                    //     contentType={currentPreviewNewsletter.contentType}
+                    //     content={currentPreviewNewsletter.content}
+                    // />
+                    <ComposeNewsletterTextEditor newsletter={currentPreviewNewsletter} onSend={() => {
+                    }} onSave={() => {
+                    }}/>
                 )}
-                data={draftNewsletters}
-                columns={columns}
-                tableOptions={{
-                    enableRowSelection: true,
-                    enableMultiRowSelection: false,
-                    getRowId: (row) => `${row.id}` /* Set row's id to data's id
-                                                     so we can use that to search
-                                                     the corresponding newsletter via its id */,
-                    onRowSelectionChange: setRowSelection,
-                    state: {
-                        rowSelection,
-                    },
-                }}
-            />
-            {newsletters.length > 0 && currentPreviewNewsletter !== null && (
-                <NewsletterPreview
-                    className=" col-span-2"
-                    auth={auth}
-                    subject={currentPreviewNewsletter.subject}
-                    contentType={currentPreviewNewsletter.contentType}
-                    content={currentPreviewNewsletter.content}
-                />
-            )}
-        </div>
+                {
+                    !isNewsletterSelected &&
+                    <div className={"w-full h-full flex justify-center items-center text-muted-foreground"}>No draft
+                        newsletter selected</div>
+                }
+            </ResizablePanel>
+        </ResizablePanelGroup>
     );
 };
 

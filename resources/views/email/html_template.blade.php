@@ -4,6 +4,6 @@
     <p>{!! nl2br($content) !!}</p>
 @endif
 <div style="width: 100%; align-text: center; padding: 5px;">
-    <p>Didn't want to recieve any more newsletter? </p>
-    <a :href="$subscribe_url">Unsubscribe</a>
+    <p>Didn't want to receive any more newsletter? </p>
+    <a href="{{ $unsubscribe_url }}">Unsubscribe</a>
 </div>

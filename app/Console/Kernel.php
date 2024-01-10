@@ -10,6 +10,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Services\Interfaces\StringRandomGenerator;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class Kernel extends ConsoleKernel
@@ -46,7 +47,7 @@ class Kernel extends ConsoleKernel
                 'user_id' => $publisher->id
             ]);
 
-            $email = new SendNewsletter($newsletter, $publisher, $subscriber);
+            $email = new SendNewsletter($newsletter, $publisher, $subscriber, URL::signedRoute('unsubscribe', [$subscriber->unsubscribe_token]));
 
             Mail::to($subscriber->email)
                 ->send($email);

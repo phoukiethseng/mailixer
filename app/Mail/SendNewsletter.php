@@ -12,17 +12,16 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 
 class SendNewsletter extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(private Newsletter $newsletter, private User $publisher, private Subscriber $subscriber)
+    public function __construct(private Newsletter $newsletter, private User $publisher, private Subscriber $subscriber, private string $unsubscribeUrl)
     {
 
+        $this->unsubscribeUrl = $unsubscribeUrl;
     }
 
     /**
@@ -73,6 +72,7 @@ class SendNewsletter extends Mailable implements ShouldQueue
             with: [
                 'content' => $content,
                 'contentType' => $contentType,
+                'unsubscribe_url' => $this->unsubscribeUrl
             ]
         );
     }

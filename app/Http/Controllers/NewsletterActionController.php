@@ -25,9 +25,11 @@ class NewsletterActionController extends Controller
     {
         $data = $request->validated();
         Log::debug('sendDraftNewsletter', ['data' => $data]);
-        $author = $this->userRepository->findById($request->user()->id);
         $newsletter = $this->newsletterService->getNewsletterById($data['id']);
         $this->newsletterService->sendNewsletter($newsletter);
+        return back()->with([
+            'message' => 'Successfully sent newsletter'
+        ]);
     }
     public function sendNewsletter(SendNewsletterRequest $request)
     {
