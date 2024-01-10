@@ -61,6 +61,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::delete('/subscriber/{subscriberId}', [DashboardActionController::class, 'unsubscribe']);
     Route::get('/unsubscribe_url/{subscriberId}', [DashboardActionController::class, 'getUnsubscribeUrl']);
     Route::post('/sendNewsletter', [NewsletterActionController::class, 'sendNewsletter']);
+    Route::put('/sendDraftNewsletter', [NewsletterActionController::class, 'sendDraftNewsletter']);
     Route::post('/saveNewsletter', [NewsletterActionController::class,'saveNewsletter']);
     Route::delete('/deleteNewsletter', [NewsletterActionController::class, 'deleteNewsletter']);
 });

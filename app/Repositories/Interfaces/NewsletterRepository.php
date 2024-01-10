@@ -10,4 +10,5 @@ use Illuminate\Database\Eloquent\Collection;
  */
 interface NewsletterRepository extends CRUDRepository {
     public function findAllByUserId($userId): Collection;
+    public function getAuthorIdById($id);
 }

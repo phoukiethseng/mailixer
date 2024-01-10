@@ -19,7 +19,8 @@ import {
     Bold,
     Italic,
     Underline,
-    Strikethrough
+    Strikethrough,
+    Send,
 } from "lucide-react";
 
 const Icons = {
@@ -43,7 +44,8 @@ const Icons = {
     Bold: Bold,
     Italic: Italic,
     Underline: Underline,
-    Strikethrough: Strikethrough
+    Strikethrough: Strikethrough,
+    Send: Send
 };
 
 export { Icons };

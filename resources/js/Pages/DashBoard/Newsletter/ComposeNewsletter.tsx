@@ -58,6 +58,7 @@ function ComposeNewsletterTextEditor(props: {
     onSend: (data: ComposeNewsletter) => void,
     onSave: (data: ComposeNewsletter) => void
 }) {
+    const subjectInputRef = useRef();
     const editor = useEditor({
         extensions: [StarterKit, Underline, Link],
         editorProps: {
@@ -85,7 +86,7 @@ function ComposeNewsletterTextEditor(props: {
                 ref={subjectInputRef} type={"text"} className={"p-1 w-full outline-0"}/>
         </div>
         <Separator/>
-        <CardContent>
+        <CardContent className={"flex flex-col items-center justify-start"}>
             <TextEditorFixedMenu editor={editor} iconSize={14} iconStrokeWidth={2.5}/>
             <div className={"w-full min-h-[57vh] mt-2"}>
                 <EditorContent editor={editor} className={""}/>

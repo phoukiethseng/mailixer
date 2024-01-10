@@ -14,4 +14,9 @@ class EloquentNewsletterRepository implements NewsletterRepository {
     public function findAllByUserId($userId): Collection {
         return Newsletter::with(['contentType'])->where("user_id", $userId)->get();
     }
+
+    public function getAuthorIdById($id)
+    {
+        return Newsletter::find($id)->user_id;
+    }
 }

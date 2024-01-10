@@ -7,21 +7,25 @@ use App\Mail\SendNewsletter;
 use App\Models\Newsletter;
 use App\Models\User;
 use App\Repositories\Interfaces\NewsletterRepository;
+use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\NewsletterService;
 use App\Services\Interfaces\SubscriptionService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Enums\NewsletterContentType;
 
 class NewsletterServiceImpl implements NewsletterService
 {
 
-    public function __construct(private SubscriptionService $subscriptionService, private NewsletterRepository $newsletterRepository)
+    public function __construct(private SubscriptionService $subscriptionService, private NewsletterRepository $newsletterRepository, private UserRepository $userRepository)
     {
 
     }
 
-    public function sendNewsletter(Newsletter $newsletter, User $author)
+    public function sendNewsletter(Newsletter $newsletter)
     {
+        $authorId = $this->newsletterRepository->getAuthorIdById($newsletter->id);
+        $author = $this->userRepository->findById($authorId);
         $subscribers = $this->subscriptionService->getAllSubscribersByUserId($author->id);
         foreach ($subscribers as $subscriber) {
             // FYI: Laravel docs recommend that we should use new instance of mailable for each of receipiant

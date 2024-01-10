@@ -11,6 +11,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class SendNewsletter extends Mailable implements ShouldQueue
 {
@@ -21,7 +22,7 @@ class SendNewsletter extends Mailable implements ShouldQueue
      */
     public function __construct(private Newsletter $newsletter, private User $publisher, private Subscriber $subscriber)
     {
-        //
+
     }
 
     /**

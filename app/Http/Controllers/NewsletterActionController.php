@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveNewsletterRequest;
+use App\Http\Requests\SendDraftNewsletterRequest;
 use App\Http\Requests\SendNewsletterRequest;
 use App\Repositories\Interfaces\UserRepository;
 use App\Enums\NewsletterContentType;
 use App\Services\Interfaces\NewsletterService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Enum;
 
 class NewsletterActionController extends Controller
@@ -18,6 +20,15 @@ class NewsletterActionController extends Controller
     ) {
 
     }
+
+    public function sendDraftNewsletter(SendDraftNewsletterRequest $request)
+    {
+        $data = $request->validated();
+        Log::debug('sendDraftNewsletter', ['data' => $data]);
+        $author = $this->userRepository->findById($request->user()->id);
+        $newsletter = $this->newsletterService->getNewsletterById($data['id']);
+        $this->newsletterService->sendNewsletter($newsletter);
+    }
     public function sendNewsletter(SendNewsletterRequest $request)
     {
         $data = $request->validated();
@@ -26,7 +37,7 @@ class NewsletterActionController extends Controller
 
         $newsletter = $this->createNewsletter($data, $user);
 
-        $this->newsletterService->sendNewsletter($newsletter, $user);
+        $this->newsletterService->sendNewsletter($newsletter);
 
         return back()->with([
             'message' => 'Successfully sent newsletter',
