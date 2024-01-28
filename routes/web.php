@@ -52,9 +52,10 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     // Dashboard pages
     Route::get('/', [DashboardPageController::class, 'indexPage'])->name('dashboard.index');
     Route::get('/customize_page', [DashboardPageController::class, 'customizationPage'])->name('dashboard.customization');
-    Route::get('/all_subscribers_page', [DashboardPageController::class, 'subscribersPage'])->name('dashboard.subscribers');
+    Route::get('/all_subscribers_page', [DashboardPageController::class, 'allSubscribersPage'])->name('dashboard.subscribers');
     Route::get('/compose_newsletter_page', [NewsletterPageController::class, 'composeNewsletterPage'])->name('dashboard.composeNewsletter');
     Route::get('/draft_newsletter_page', [NewsletterPageController::class, 'draftNewsletterPage'])->name('dashboard.draftNewsletter');
+    Route::get('/blacklisted_subscribers', [DashboardPageController::class, 'blacklistedSubscribersPage']);
 
     // Dashboard actions
     Route::post('/page/description', [DashboardActionController::class, 'updatePageDescription']);
@@ -62,6 +63,8 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/unsubscribe_url/{subscriberId}', [DashboardActionController::class, 'getUnsubscribeUrl']);
     Route::post('/sendNewsletter', [NewsletterActionController::class, 'sendNewsletter']);
     Route::put('/sendDraftNewsletter', [NewsletterActionController::class, 'sendDraftNewsletter']);
-    Route::post('/saveNewsletter', [NewsletterActionController::class,'saveNewsletter']);
+    Route::post('/saveNewsletter', [NewsletterActionController::class, 'saveNewsletter']);
     Route::delete('/deleteNewsletter', [NewsletterActionController::class, 'deleteNewsletter']);
+    Route::put('/updateNewsletter', [NewsletterActionController::class, 'updateNewsletter']);
+    Route::put('/blacklistSubscriber', [SubscribeActionController::class, 'blacklistSubscriber']);
 });

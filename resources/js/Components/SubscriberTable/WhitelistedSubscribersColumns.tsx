@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { SubscribersPageProps } from "../../Pages/DashBoard/Subscribers";
+import { SubscribersPageProps } from "../../Pages/DashBoard/Subscribers/AllSubscribers";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -24,8 +24,8 @@ import { useToast } from "../use-toast";
 import axios from "axios";
 import { Checkbox } from "../Checkbox";
 import React from "react";
+import {type Subscriber} from "../../types/models";
 
-type Subscriber = SubscribersPageProps["subscribers"][number];
 export const columns: ColumnDef<Subscriber>[] = [
     {
         id: "select",

@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\NewsletterContentType;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class SaveNewsletterRequest extends FormRequest
+class BlacklistSubscriberRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +22,7 @@ class SaveNewsletterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subject' => 'required|string',
-            'content' => 'required|string',
-            'contentType' => ['required', Rule::in(array_map(function ($newsletter){
-                return $newsletter->name;
-            },NewsletterContentType::cases()))]
+            'id' => 'required|string'
         ];
     }
 }

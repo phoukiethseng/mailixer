@@ -22,7 +22,12 @@ import {
     Strikethrough,
     Send,
     GripVertical,
-    ChevronDown
+    ChevronDown,
+    Image,
+    Heading1,
+    Heading2,
+    Heading3,
+    UserX
 } from "lucide-react";
 
 const Icons = {
@@ -49,7 +54,12 @@ const Icons = {
     Strikethrough: Strikethrough,
     Send: Send,
     GripVertical: GripVertical,
-    ChevronDown
+    ChevronDown,
+    Image: Image,
+    Heading1: Heading1,
+    Heading2: Heading2,
+    Heading3: Heading3,
+    UserX: UserX,
 };
 
 export { Icons };

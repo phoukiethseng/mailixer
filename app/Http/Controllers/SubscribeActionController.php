@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BlacklistSubscriberRequest;
 use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
 use Exception;
@@ -14,6 +15,7 @@ class SubscribeActionController extends Controller
     {
 
     }
+
     public function subscribe(Request $request)
     {
         $data = $request->validate([
@@ -25,7 +27,7 @@ class SubscribeActionController extends Controller
             $this->subscriptionService->subscribe($data['user_id'], $data['email']);
             $subscribePageToken = $this->subscribePageService->getSubscribePageTokenByAuthorId($data['user_id']);
             return to_route('subscribe.success', [
-                'token' => $subscribePageToken ,
+                'token' => $subscribePageToken,
             ]);
         } catch (Exception $e) {
             Log::debug('', [$e]);
@@ -33,6 +35,21 @@ class SubscribeActionController extends Controller
                 'message' => $e->getMessage()
             ]);
         }
+    }
 
+    public function blacklistSubscriber(BlacklistSubscriberRequest $request)
+    {
+        $data = $request->validated();
+        try {
+            $this->subscriptionService->blacklistById($data['id']);
+            return back()->with([
+                'message' => 'Blacklisted'
+            ]);
+        } catch (Exception $e) {
+            Log::debug('', [$e]);
+            return back()->withErrors([
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 }

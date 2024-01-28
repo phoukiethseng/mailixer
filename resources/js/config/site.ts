@@ -1,5 +1,5 @@
 import React from "react";
-import { Icons } from "../Components/Icons";
+import {Icons} from "../Components/Icons";
 
 export type PageDescription = {
     displayName: string;
@@ -43,6 +43,12 @@ const siteConfig = {
                 icon: Icons.FolderOpen,
                 description: "Drafts of all Newsletter",
             },
+            BlacklistedSubscribers: {
+                displayName: "Blacklisted",
+                url: "/dashboard/blacklisted_subscribers",
+                icon: Icons.UserX,
+                description: "All blacklisted subscribers"
+            }
         } satisfies { [key: string]: PageDescription },
     },
 };
@@ -55,7 +61,7 @@ export const dashboardPageGroups: PageGroupDescription = {
     },
     Subscribers: {
         icon: Icons.UserCheck,
-        pages: ["Subscribers"],
+        pages: ["Subscribers", "BlacklistedSubscribers"],
     },
     Newsletter: {
         icon: Icons.Newspaper,
@@ -77,5 +83,11 @@ export type InertiaSharedProps = {
         message?: string;
     };
 };
+
+export const QRCodeOptions = {
+    color: {
+        dark: "#16a34a"
+    }
+}
 
 export default siteConfig;

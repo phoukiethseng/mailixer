@@ -12,4 +12,7 @@ interface SubscriptionService
     public function getSubscribersCount($userId);
     public function getSubscriberById($subscriberId);
     public function getSubscriberAuthorByUnsubscribeToken($unsubscribeToken);
+    public function blacklistById($subscriberId);
+    public function getAllBlacklistedSubscribersByUserId($userId);
+    public function getAllWhitelistedSubscribersByUserId($userId);
 }

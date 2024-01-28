@@ -18,6 +18,7 @@ class SubscriptionServiceImpl implements SubscriptionService
     {
 
     }
+
     public function subscribe($userId, $email)
     {
         // Check if user exist
@@ -46,6 +47,7 @@ class SubscriptionServiceImpl implements SubscriptionService
 
         return $subscribers;
     }
+
     public function unsubscribeById($subscriberId)
     {
         $subscriber = $this->subscriberRepository->findById($subscriberId);
@@ -54,6 +56,7 @@ class SubscriptionServiceImpl implements SubscriptionService
         }
         $this->subscriberRepository->delete($subscriber);
     }
+
     public function getSubscriber($subscriberId)
     {
         return $this->subscriberRepository->findById($subscriberId);
@@ -64,6 +67,7 @@ class SubscriptionServiceImpl implements SubscriptionService
         $count = $this->subscriberRepository->findAllByUserId($userId)->count();
         return $count;
     }
+
     public function unsusbscribeByToken($unsubscribeToken)
     {
         $subscriberId = $this->subscriberRepository->findByUnsubscribeToken($unsubscribeToken)->id;
@@ -82,13 +86,43 @@ class SubscriptionServiceImpl implements SubscriptionService
     public function getSubscriberAuthorByUnsubscribeToken($unsubscribeToken): User
     {
         $subscriber = $this->subscriberRepository->findByUnsubscribeToken($unsubscribeToken);
-        Log::debug('found subscriber', [$subscriber]);
-        $userId = $subscriber->user_id;
-        $user = $this->userRepository->findById($userId);
-        return $user;
+        if ($subscriber) {
+            $userId = $subscriber->user_id;
+            $user = $this->userRepository->findById($userId);
+            return $user;
+        } else {
+            throw new Exception('Subscriber is not found');
+        }
     }
+
     public function getUnsubscribeTokenById($subscriberId)
     {
         return $this->subscriberRepository->findById($subscriberId)->unsubscribe_token;
+    }
+
+    public function blacklistById($subscriberId)
+    {
+        $subscriber = $this->subscriberRepository->findById($subscriberId);
+        if ($subscriber) {
+            $subscriber->is_blacklisted = true;
+            $subscriber->save();
+        } else {
+            throw new Exception('Subscriber is not found');
+        }
+    }
+
+    public function getAllBlacklistedSubscribersByUserId($userId)
+    {
+        try {
+            $blacklistedSubscribers = $this->subscriberRepository->findAllBlacklistedByUserId($userId);
+            return $blacklistedSubscribers;
+        } catch (Exception $e) {
+            throw new Exception('Error while querying for blacklisted subscribers');
+        }
+    }
+
+    public function getAllWhitelistedSubscribersByUserId($userId)
+    {
+        return $this->subscriberRepository->findAllWhitelistedByUserId($userId);
     }
 }

@@ -12,7 +12,7 @@ export const NEWSLETTER_STATUS = ["DRAFT", "SENT"];
 export type NewsletterStatus = typeof NEWSLETTER_STATUS[number];
 export type NewsletterContentType = typeof NEWSLETTER_CONTENT_TYPE[number];
 
-export type User = HasId & HasName & HasEmail & HasTimestamp;
+export type User = HasId & HasName & HasEmail & HasCreationDate;
 export type Subscriber = HasId &
     HasEmail &
     HasTimestamp & { unsubscribeToken: string };

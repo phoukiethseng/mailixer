@@ -1,9 +1,9 @@
 import React from "react";
-import { InertiaSharedProps } from "../../config/site";
-import DashBoardLayout from "../../Layouts/DashBoardLayout";
-import { useMessageToast } from "../../lib/hooks/useMessageToast";
-import { DataTable } from "../../Components/DataTable";
-import { columns as subscriberTableCloumns } from "../../Components/SubscriberTable/Columns";
+import { InertiaSharedProps } from "../../../config/site";
+import DashBoardLayout from "../../../Layouts/DashBoardLayout";
+import { useMessageToast } from "../../../lib/hooks/useMessageToast";
+import { DataTable } from "../../../Components/DataTable";
+import { columns as subscriberTableCloumns } from "../../../Components/SubscriberTable/WhitelistedSubscribersColumns";
 import {
     Card,
     CardContent,
@@ -11,11 +11,11 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "../../Components/Card";
-import { Icons } from "../../Components/Icons";
-import PieChart from "../../Components/Charts/Pie";
-import { getSubscriberESP } from "../../lib/analytics/subscriber";
-import { Subscriber } from "../../types/models";
+} from "../../../Components/Card";
+import { Icons } from "../../../Components/Icons";
+import PieChart from "../../../Components/Charts/Pie";
+import { getSubscriberESP } from "../../../lib/analytics/subscriber";
+import { Subscriber } from "../../../types/models";
 export type SubscribersPageProps = {
     subscribers: Subscriber[];
     subscribersCount: number;
@@ -87,6 +87,8 @@ const SubscribersPage = ({
                 </Card>
             </div>
             <DataTable
+                // Ignore this error since we didn't pass second type parameter to ColumnDef
+                //@ts-ignore
                 columns={subscriberTableCloumns}
                 data={subscribers}
                 className="w-full h-full col-span-3 row-auto"

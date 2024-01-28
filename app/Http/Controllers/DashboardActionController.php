@@ -35,7 +35,8 @@ class DashboardActionController extends Controller
     {
         try {
             $this->subscriptionService->unsubscribeById($subscriberId);
-        } catch (Exception) {
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
             return back()->withErrors([
                 'message' => "Couldn't unsubscribe {$this->subscriptionService->getSubscriberById($subscriberId)}"
             ]);

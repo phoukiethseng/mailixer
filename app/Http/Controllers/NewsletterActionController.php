@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SaveNewsletterRequest;
 use App\Http\Requests\SendDraftNewsletterRequest;
 use App\Http\Requests\SendNewsletterRequest;
+use App\Http\Requests\UpdateNewsletter;
 use App\Repositories\Interfaces\UserRepository;
 use App\Enums\NewsletterContentType;
 use App\Services\Interfaces\NewsletterService;
@@ -24,7 +25,6 @@ class NewsletterActionController extends Controller
     public function sendDraftNewsletter(SendDraftNewsletterRequest $request)
     {
         $data = $request->validated();
-        Log::debug('sendDraftNewsletter', ['data' => $data]);
         $newsletter = $this->newsletterService->getNewsletterById($data['id']);
         $this->newsletterService->sendNewsletter($newsletter);
         return back()->with([
@@ -80,5 +80,14 @@ class NewsletterActionController extends Controller
             $data['content'],
             $user
         );
+    }
+
+    public function updateNewsletter(UpdateNewsletter $request)
+    {
+        $data = $request->validated();
+        $this->newsletterService->saveNewsletter($data['id'], $data['subject'], $data['content'], NewsletterContentType::getCase($data['contentType']));
+        return back()->with([
+            'message' => 'Successfully updated draft newsletter'
+        ]);
     }
 }

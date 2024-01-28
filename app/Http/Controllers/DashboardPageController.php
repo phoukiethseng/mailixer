@@ -17,14 +17,17 @@ class DashboardPageController extends Controller
     {
 
     }
-    public function subscribersPage(Request $request)
+
+    public function allSubscribersPage(Request $request)
     {
         $user = $this->userRepository->findById($request->user()->id);
         try {
-            $subscribers = $this->subscriptionService->getAllSubscribersByUserId($user->id);
+            // We only return whitelisted subscribers since now
+            // we have a dedicated blacklisted subscribers page
+            $subscribers = $this->subscriptionService->getAllWhitelistedSubscribersByUserId($user->id);
             $SubscriberCount = $this->subscriptionService->getSubscribersCount($user->id);
-            return Inertia::render('DashBoard/Subscribers', [
-                'subscribers' => collect($subscribers)->mapInto(SubscriberDTO::class),
+            return Inertia::render('DashBoard/Subscribers/AllSubscribers', [
+                'subscribers' => $subscribers->mapInto(SubscriberDTO::class),
                 'subscribersCount' => $SubscriberCount
             ]);
         } catch (Exception) {
@@ -33,6 +36,7 @@ class DashboardPageController extends Controller
             ]);
         }
     }
+
     public function customizationPage(Request $request)
     {
         $user = $this->userRepository->findById($request->user()->id);
@@ -42,11 +46,11 @@ class DashboardPageController extends Controller
             $subscribePageUrl = route('subscribe.index', $subscribePageToken);
         } catch (Exception) {
             return back()->withErrors([
-                'message' => "Couldn't retreive page description or preview url"
+                'message' => "Couldn't retrieve page description or preview url"
             ]);
         }
         return Inertia::render('DashBoard/Customization', [
-            'description' => $description ? $description : '',
+            'description' => $description ?: '',
             'subscribeUrl' => $subscribePageUrl
         ]);
     }
@@ -55,6 +59,14 @@ class DashboardPageController extends Controller
     public function indexPage()
     {
         return redirect()->route('dashboard.customization');
+    }
+
+    public function blacklistedSubscribersPage(Request $request)
+    {
+        $userId = $request->user()->id;
+        return Inertia::render('DashBoard/Subscribers/BlacklistedSubscribers', [
+            'subscribers.blacklisted' => $this->subscriptionService->getAllBlacklistedSubscribersByUserId($userId)->mapInto(SubscriberDTO::class)
+        ]);
     }
 }
 

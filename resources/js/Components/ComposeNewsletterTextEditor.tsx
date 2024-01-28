@@ -3,11 +3,14 @@ import {EditorContent, useEditor} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
+import Image from "@tiptap/extension-image";
 import {Card, CardContent} from "./Card";
 import {Separator} from "./Separator";
 import {Button} from "./Button";
 import TextEditorFixedMenu from "./TextEditorFixedMenu";
 import {ComposeNewsletter} from "../types/models";
+import {ScrollArea} from "./ScrollArea";
+import {cn} from "../../js/lib/utils";
 
 function ComposeNewsletterTextEditor(props: {
     newsletter?: ComposeNewsletter,
@@ -17,8 +20,13 @@ function ComposeNewsletterTextEditor(props: {
     const subjectInputRef = useRef<HTMLInputElement | null>(null);
     const newsletterContent = props?.newsletter?.content ?? "";
     const textEditor = useEditor({
-        content: newsletterContent,
-        extensions: [StarterKit, Underline, Link],
+        extensions: [StarterKit, Underline, Link, Image.configure({
+            allowBase64: true,
+            HTMLAttributes: {
+                class: "w-[400px] h-auto"
+            },
+            inline: true,
+        })],
         editorProps: {
             attributes: {
                 class: 'prose dark:prose-invert prose-base m-5 focus:outline-none',
@@ -34,26 +42,35 @@ function ComposeNewsletterTextEditor(props: {
 
     function getData(): ComposeNewsletter {
         return {
-            //@ts-ignore
-            subject: subjectInputRef?.current.value,
+            subject: subjectInputRef.current?.value ?? "Mailixer Newsletter",
             content: textEditor?.getHTML() ?? "",
             contentType: "HTML"
         };
     }
 
     if (!textEditor) return (<p>Failed to initialize text editor</p>);
+    const subjectInputIsEmpty = subjectInputRef.current?.value === "" || subjectInputRef.current?.value === undefined;
     return <Card>
         <div className={"flex flex-row justify-start items-center gap-2 px-3.5 py-2"}>
-            <p className={"font-light text-muted-foreground"}>Subject</p>
+            <p className={cn("font-light text-muted-foreground", subjectInputIsEmpty && "text-destructive before:content-['*']")}>Subject</p>
             <input
-                defaultValue={props.newsletter?.subject ?? ""} ref={subjectInputRef} type={"text"} className={"p-1 w-full outline-0"}/>
+                ref={subjectInputRef}
+
+                // Ignore this error is actually okay, because we know for sure that type of event being pass over
+                // to this handler function is going to be KeyboardEvent
+                // @ts-ignore
+                onKeyDown={(e: KeyboardEvent) => e.key === "Enter" ? textEditor?.chain().focus().run() : null}
+
+                placeholder={"Newsletter subject cannot be empty"}
+                defaultValue={props.newsletter?.subject ?? ""} type={"text"} className={"p-1 w-full outline-0"}/>
         </div>
         <Separator/>
         <CardContent className={"flex flex-col items-center justify-start"}>
             <TextEditorFixedMenu editor={textEditor} iconSize={14} iconStrokeWidth={2.5}/>
-            <div className={"w-full min-h-[57vh] mt-2"}>
-                <EditorContent editor={textEditor} className={""}/>
-            </div>
+            <ScrollArea className={"w-full h-[57vh] mt-2"}>
+                <EditorContent editor={textEditor} className={"w-full h-full"}/>
+            </ScrollArea>
+            <Separator className={"mb-4"}/>
             <div className={"w-full flex flex-row justify-start items-center gap-4"}>
                 <Button onClick={() => props.onSend(getData())}>Send</Button>
                 <Button variant={"secondary"} onClick={() => props.onSave(getData())}>Save</Button>

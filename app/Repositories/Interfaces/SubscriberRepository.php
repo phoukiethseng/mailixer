@@ -27,5 +27,7 @@ interface SubscriberRepository extends CRUDRepository
      * @return Collection<User>
      */
     public function findAllByUserId($userId): Collection;
+    public function findAllBlacklistedByUserId($userId);
+    public function findAllWhitelistedByUserId($userId);
 
 }

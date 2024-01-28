@@ -71,4 +71,17 @@ class NewsletterServiceImpl implements NewsletterService
             $this->newsletterRepository->delete($newsletter);
         }
     }
+
+    public function saveNewsletter($id, $subject, $content, NewsletterContentType $contentType)
+    {
+        $saveNewsletter = $this->newsletterRepository->findById($id);
+        if ($saveNewsletter) {
+            $saveNewsletter->subject = $subject;
+            $saveNewsletter->content = $content;
+            $saveNewsletter->contentType()->disassociate();
+            $saveNewsletter->contentType()->associate(\App\Models\NewsletterContentType::find($contentType->value));
+
+            $saveNewsletter->save();
+        }
+    }
 }

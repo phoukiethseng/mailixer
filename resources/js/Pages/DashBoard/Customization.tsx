@@ -1,4 +1,4 @@
-import React, { useEffect, useId } from "react";
+import React, {useEffect, useId, useRef, useState} from "react";
 import DashBoardLayout from "../../Layouts/DashBoardLayout";
 import {
     Card,
@@ -8,15 +8,15 @@ import {
     CardHeader,
     CardTitle,
 } from "../../Components/Card";
-import { Separator } from "../../Components/Separator";
-import { useController, useForm, useWatch } from "react-hook-form";
+import {Separator} from "../../Components/Separator";
+import {useController, useForm, useWatch} from "react-hook-form";
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "../../Components/Label";
-import { Textarea } from "../../Components/TextArea";
-import { Button } from "../../Components/Button";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Label} from "../../Components/Label";
+import {Textarea} from "../../Components/TextArea";
+import {Button} from "../../Components/Button";
 import SubscribeCard from "../../Components/SubscribeCard";
-import { router } from "@inertiajs/react";
+import {router} from "@inertiajs/react";
 import {
     Form,
     FormDescription,
@@ -24,7 +24,7 @@ import {
     FormItem,
     FormMessage,
 } from "../../Components/Form";
-import { InertiaSharedProps } from "../../config/site";
+import {InertiaSharedProps, QRCodeOptions} from "../../config/site";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -36,10 +36,12 @@ import {
     AlertDialogDescription,
     AlertDialogTitle,
 } from "../../Components/AlertDialog";
-import { Input } from "../../Components/Input";
-import { Icons } from "../../Components/Icons";
-import { useToast } from "../../Components/use-toast";
-import { useMessageToast } from "../../lib/hooks/useMessageToast";
+import {Input} from "../../Components/Input";
+import {Icons} from "../../Components/Icons";
+import {useToast} from "../../Components/use-toast";
+import {useMessageToast} from "../../lib/hooks/useMessageToast";
+import QRCode from "qrcode";
+import dataUrlToBlob from "dataurl-to-blob";
 
 const SubscribePageCustomizationFormSchema = z.object({
     description: z.string().nonempty(),
@@ -55,12 +57,12 @@ type DashBoardCustomizationPageProps = {
 } & InertiaSharedProps;
 
 const Page = ({
-    description,
-    subscribeUrl,
-    auth,
-    errors,
-    message,
-}: DashBoardCustomizationPageProps) => {
+                  description,
+                  subscribeUrl,
+                  auth,
+                  errors,
+                  message,
+              }: DashBoardCustomizationPageProps) => {
     const toasts = useToast();
     const descriptionTextareaId = useId();
     const customizationFormId = useId();
@@ -72,7 +74,7 @@ const Page = ({
         resolver: zodResolver(SubscribePageCustomizationFormSchema),
     });
 
-    useMessageToast({ errors, message }, toasts);
+    useMessageToast({errors, message});
 
     const viewLiveUrl = subscribeUrl;
 
@@ -97,6 +99,16 @@ const Page = ({
         });
     }
 
+    const [viewLiveQRCodeImage, setViewLiveQRCodeImage] = useState<string>("");
+
+    useEffect(() => {
+        QRCode.toDataURL(subscribeUrl, QRCodeOptions)
+            .then((qrCodeURL) => {
+                setViewLiveQRCodeImage(qrCodeURL);
+            });
+
+    }, []);
+
     return (
         <div className="flex flex-col justify-start items-center w-full gap-2 pt-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3 items-start max-w-[1300px]">
@@ -107,7 +119,7 @@ const Page = ({
                             Personalize your subscribe page
                         </CardDescription>
                     </CardHeader>
-                    <Separator />
+                    <Separator/>
                     <CardContent className="flex flex-col gap-2 justify-start items-stretch pt-4">
                         <div className="flex flex-row justify-between items-stretch">
                             <Label
@@ -130,9 +142,9 @@ const Page = ({
                                 <FormField
                                     name="description"
                                     control={customizationForm.control}
-                                    render={({ field }) => (
+                                    render={({field}) => (
                                         <FormItem>
-                                            <FormMessage />
+                                            <FormMessage/>
                                             <Textarea
                                                 {...field}
                                                 id={descriptionTextareaId}
@@ -204,7 +216,7 @@ const Page = ({
                             What will you subscribe page looks like
                         </CardDescription>
                     </CardHeader>
-                    <Separator />
+                    <Separator/>
                     <CardContent className="flex justify-center items-center pt-5">
                         <SubscribeCard
                             user={{
@@ -213,7 +225,8 @@ const Page = ({
                             subscribe={{
                                 description: currentDescriptionText,
                             }}
-                            onSubscribe={() => {}}
+                            onSubscribe={() => {
+                            }}
                         />
                     </CardContent>
                 </Card>
@@ -224,31 +237,61 @@ const Page = ({
                             Send this link your potential subscriber
                         </CardDescription>
                     </CardHeader>
-                    <Separator />
-                    <CardContent className="mt-4 flex flex-row gap-2 justify-between items-center">
-                        <Input
-                            type="text"
-                            readOnly
-                            defaultValue={viewLiveUrl}
-                            onClick={() => router.visit(viewLiveUrl)}
-                            className="cursor-pointer"
-                        />
-                        <Button
-                            variant={"outline"}
-                            size={"icon"}
-                            onClick={() => {
-                                navigator.clipboard.writeText(viewLiveUrl);
-                                toasts.toast({
-                                    description: "Copied to clipboard",
-                                });
-                            }}
-                        >
-                            <Icons.Clipboard
-                                size={20}
-                                strokeWidth={1.5}
-                                className="text-card-foreground w-4 h-4"
-                            />
-                        </Button>
+                    <Separator/>
+                    <CardContent >
+                        <div className={"flex flex-col justify-center items-stretch gap-3"}>
+                            <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+                                <Input
+                                    type="text"
+                                    readOnly
+                                    defaultValue={viewLiveUrl}
+                                    onClick={() => router.visit(viewLiveUrl)}
+                                    className="cursor-pointer"
+                                />
+                                <Button
+                                    variant={"outline"}
+                                    size={"icon"}
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(viewLiveUrl);
+                                        toasts.toast({
+                                            description: "Copied to clipboard",
+                                        });
+                                    }}
+                                >
+                                    <Icons.Clipboard
+                                        size={20}
+                                        strokeWidth={1.5}
+                                        className="text-card-foreground w-4 h-4"
+                                    />
+                                </Button>
+                            </div>
+                            <div className={"w-full flex flex-col justify-center items-center gap-1"}>
+                                {
+                                    viewLiveQRCodeImage !== "" &&
+                                    <img src={viewLiveQRCodeImage}  alt={"View Live QR Code"}/>
+                                }
+                                <Button variant={"secondary"} onClick={async () => {
+
+                                    // We must convert qr code data url string to blob first before writing it to file
+                                    const qrCodeBlob = dataUrlToBlob(viewLiveQRCodeImage);
+
+                                    // @ts-ignore
+                                    const qrCodeFileHandle = await window.showSaveFilePicker({
+                                        types: [{
+                                            accept: {
+                                                "image/png": [".png"]
+                                            }
+                                        }]
+                                    });
+                                    const writeStream: FileSystemWritableFileStream = await qrCodeFileHandle.createWritable();
+                                    const writer = await writeStream.getWriter();
+                                    await writer.write(qrCodeBlob);
+                                    await writer.close();
+                                    await writeStream.close();
+                                }}>Save QR Code</Button>
+                            </div>
+                        </div>
+
                     </CardContent>
                 </Card>
             </div>

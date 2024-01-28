@@ -24,4 +24,13 @@ class EloquentSubscriberRepository implements SubscriberRepository
         return Subscriber::where("unsubscribe_token", $unsubscribeToken)->first();
     }
 
+    public function findAllBlacklistedByUserId($userId)
+    {
+        return Subscriber::where("is_blacklisted", true)->where("user_id", $userId)->get();
+    }
+
+    public function findAllWhitelistedByUserId($userId)
+    {
+        return Subscriber::where("is_blacklisted", false)->where("user_id", $userId)->get();
+    }
 }

@@ -12,4 +12,5 @@ interface NewsletterService {
     public function getNewsletterById(int $id): Newsletter;
     public function getAllNewsletterForAuthor(User $author);
     public function deleteNewsletter(int $newsletterId);
+    public function saveNewsletter($id, $subject, $content, NewsletterContentType $contentType);
 }
