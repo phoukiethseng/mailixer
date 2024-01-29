@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateDescriptionRequest;
+use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
 use Exception;
@@ -11,16 +12,19 @@ use Illuminate\Support\Facades\URL;
 
 class DashboardActionController extends Controller
 {
-    public function __construct(private SubscribePageService $subscribePageService, private SubscriptionService $subscriptionService)
+
+    public function __construct(private SubscribePageService $subscribePageService, private SubscriptionService $subscriptionService, private UserRepository $userRepository)
     {
 
     }
     public function updatePageDescription(UpdateDescriptionRequest $request)
     {
         $data = $request->validated();
-        $user = $request->user();
+        $user = $this->userRepository->findById($request->user()->id);
+        $subscribePageToken = $user->subscribePage->token;
+
         try {
-            $this->subscribePageService->updateDescriptionByToken($user->id, $data['description']);
+            $this->subscribePageService->updateDescriptionByToken($subscribePageToken, $data['description']);
         } catch (Exception) {
             return back()->withErrors([
                 'message' => "Couldn't update subscribe page description"

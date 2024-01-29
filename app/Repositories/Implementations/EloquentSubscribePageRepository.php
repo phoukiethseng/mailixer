@@ -12,7 +12,6 @@ class EloquentSubscribePageRepository implements SubscribePageRepository {
 
     public function findByToken($token): SubscribePage | null {
         $subscribePage = SubscribePage::with(['user'])->where('token', $token)->first();
-        Log::debug('', ['subscribePage' => $subscribePage, 'token' => $token]);
         return $subscribePage;
     }
 }

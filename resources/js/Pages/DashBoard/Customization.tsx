@@ -41,7 +41,8 @@ import {Icons} from "../../Components/Icons";
 import {useToast} from "../../Components/use-toast";
 import {useMessageToast} from "../../lib/hooks/useMessageToast";
 import QRCode from "qrcode";
-import dataUrlToBlob from "dataurl-to-blob";
+import {Dialog, DialogContent, DialogTrigger} from "../../Components/Dialog";
+import {getQRCodeImageHTML} from "../../lib/utils";
 
 const SubscribePageCustomizationFormSchema = z.object({
     description: z.string().nonempty(),
@@ -55,6 +56,7 @@ type DashBoardCustomizationPageProps = {
     description: string;
     subscribeUrl: string;
 } & InertiaSharedProps;
+
 
 const Page = ({
                   description,
@@ -100,6 +102,9 @@ const Page = ({
     }
 
     const [viewLiveQRCodeImage, setViewLiveQRCodeImage] = useState<string>("");
+    console.log(viewLiveQRCodeImage);
+
+    const qrCodeImageHTML = getQRCodeImageHTML(auth.user.name, viewLiveQRCodeImage);
 
     useEffect(() => {
         QRCode.toDataURL(subscribeUrl, QRCodeOptions)
@@ -270,25 +275,35 @@ const Page = ({
                                     viewLiveQRCodeImage !== "" &&
                                     <img src={viewLiveQRCodeImage}  alt={"View Live QR Code"}/>
                                 }
-                                <Button variant={"secondary"} onClick={async () => {
+                                <Dialog>
+                                    <DialogTrigger>
+                                        <Button variant={"secondary"} >Save as Image</Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <iframe srcdoc={qrCodeImageHTML} className={""} height={"600"} width={"400"} allow-script/>
+                                        <Button onClick={async () => {
 
-                                    // We must convert qr code data url string to blob first before writing it to file
-                                    const qrCodeBlob = dataUrlToBlob(viewLiveQRCodeImage);
+                                            // const qrCodeImageBlob = await htmlToImage({
+                                            //     html: qrCodeImageHTML
+                                            // })
 
-                                    // @ts-ignore
-                                    const qrCodeFileHandle = await window.showSaveFilePicker({
-                                        types: [{
-                                            accept: {
-                                                "image/png": [".png"]
-                                            }
-                                        }]
-                                    });
-                                    const writeStream: FileSystemWritableFileStream = await qrCodeFileHandle.createWritable();
-                                    const writer = await writeStream.getWriter();
-                                    await writer.write(qrCodeBlob);
-                                    await writer.close();
-                                    await writeStream.close();
-                                }}>Save QR Code</Button>
+                                            // @ts-ignore
+                                            const qrCodeFileHandle = await window.showSaveFilePicker({
+                                                types: [{
+                                                    accept: {
+                                                        "image/png": [".png"]
+                                                    }
+                                                }]
+                                            });
+                                            const writeStream: FileSystemWritableFileStream = await qrCodeFileHandle.createWritable();
+                                            const writer = await writeStream.getWriter();
+                                            // await writer.write(qrCodeImageBlob);
+                                            await writer.close();
+                                            await writeStream.close();
+                                        }}>Download</Button>
+                                    </DialogContent>
+                                </Dialog>
+
                             </div>
                         </div>
 

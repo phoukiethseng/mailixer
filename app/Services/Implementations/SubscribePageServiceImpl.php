@@ -5,6 +5,7 @@ namespace App\Services\Implementations;
 use App\Repositories\Interfaces\SubscribePageRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\SubscribePageService;
+use Illuminate\Support\Facades\Log;
 
 class SubscribePageServiceImpl implements SubscribePageService
 {
