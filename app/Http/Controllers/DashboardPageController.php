@@ -26,9 +26,11 @@ class DashboardPageController extends Controller
             // we have a dedicated blacklisted subscribers page
             $subscribers = $this->subscriptionService->getAllWhitelistedSubscribersByUserId($user->id);
             $SubscriberCount = $this->subscriptionService->getSubscribersCount($user->id);
+            $blacklistedSubscribersCount = $this->subscriptionService->getBlacklistedCount($user->id);
             return Inertia::render('DashBoard/Subscribers/AllSubscribers', [
                 'subscribers' => $subscribers->mapInto(SubscriberDTO::class),
-                'subscribersCount' => $SubscriberCount
+                'subscribersCount' => $SubscriberCount,
+                'blacklistedSubscribersCount' => $blacklistedSubscribersCount
             ]);
         } catch (Exception) {
             return back()->withErrors([
@@ -51,7 +53,7 @@ class DashboardPageController extends Controller
         }
         return Inertia::render('DashBoard/Customization', [
             'description' => $description ?: '',
-            'subscribeUrl' => $subscribePageUrl
+            'subscribeUrl' => $subscribePageUrl,
         ]);
     }
 

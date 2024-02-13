@@ -125,4 +125,26 @@ class SubscriptionServiceImpl implements SubscriptionService
     {
         return $this->subscriberRepository->findAllWhitelistedByUserId($userId);
     }
+
+    public function whitelistById($subscriberId)
+    {
+        try {
+            $subscriber = $this->subscriberRepository->findById($subscriberId);
+            if ($subscriber) {
+                $subscriber->is_blacklisted = false;
+                $subscriber->save();
+            }
+        } catch(Exception $e) {
+            throw new Exception("Error while performing whitelist subscriber action");
+        }
+    }
+
+    public function getBlacklistedCount($userId)
+    {
+        try {
+            return $this->subscriberRepository->findAllBlacklistedByUserId($userId)->count();
+        } catch (Exception $e) {
+            throw new Exception("Error while performing counting whitelisted subscribers");
+        }
+    }
 }

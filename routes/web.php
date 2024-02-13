@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardActionController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\NewsletterActionController;
 use App\Http\Controllers\NewsletterPageController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SubscribePageController;
 use App\Http\Controllers\SubscribeActionController;
 use App\Http\Controllers\UnsubscribePageController;
@@ -67,4 +68,9 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::delete('/deleteNewsletter', [NewsletterActionController::class, 'deleteNewsletter']);
     Route::put('/updateNewsletter', [NewsletterActionController::class, 'updateNewsletter']);
     Route::put('/blacklistSubscriber', [SubscribeActionController::class, 'blacklistSubscriber']);
+    Route::put('/whitelistSubscriber', [SubscribeActionController::class, 'whitelistSubscriber']);
+});
+
+Route::middleware('auth')->prefix('account')->group(function () {
+    Route::get('settings', [SettingsController::class, 'AccountSettingsPage']);
 });

@@ -24,7 +24,7 @@ import {
     FormItem,
     FormMessage,
 } from "../../Components/Form";
-import {InertiaSharedProps, QRCodeOptions} from "../../config/site";
+import {InertiaSharedProps, QRCodeConversionOptions} from "../../config/site";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -41,8 +41,16 @@ import {Icons} from "../../Components/Icons";
 import {useToast} from "../../Components/use-toast";
 import {useMessageToast} from "../../lib/hooks/useMessageToast";
 import QRCode from "qrcode";
-import {Dialog, DialogContent, DialogTrigger} from "../../Components/Dialog";
-import {getQRCodeImageHTML} from "../../lib/utils";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "../../Components/Dialog";
+import {useToPng} from '@hugocxl/react-to-image';
+import dataUrlToBlob from "dataurl-to-blob";
 
 const SubscribePageCustomizationFormSchema = z.object({
     description: z.string().nonempty(),
@@ -101,17 +109,42 @@ const Page = ({
         });
     }
 
+    const [isSaveQRCodeDialogOpen, setIsSaveQRCodeDialogOpen] = useState<boolean>(false);
     const [viewLiveQRCodeImage, setViewLiveQRCodeImage] = useState<string>("");
-    console.log(viewLiveQRCodeImage);
+    const [reactToPngConversionState, convertReactToPng, conversionDOMRef] = useToPng<HTMLDivElement>({
+        onSuccess: async (base64EncodedImage) => {
+            // Once conversion is finished, we prompt user for save location
+            // @ts-ignore
+            const qrCodeFileHandle = await window.showSaveFilePicker({
+                types: [{
+                    accept: {
+                        "image/png": [".png"]
+                    }
+                }]
+            });
 
-    const qrCodeImageHTML = getQRCodeImageHTML(auth.user.name, viewLiveQRCodeImage);
+            setIsSaveQRCodeDialogOpen(false);
+
+            // Conversion result is base64 encoded format, so we have to
+            // convert it to BLOB first before writing to file
+            const image = dataUrlToBlob(base64EncodedImage);
+
+            const writeStream: FileSystemWritableFileStream = await qrCodeFileHandle.createWritable();
+            const writer = await writeStream.getWriter();
+            await writer.write(image);
+            await writer.close();
+            await writeStream.close();
+
+
+        }
+    });
 
     useEffect(() => {
-        QRCode.toDataURL(subscribeUrl, QRCodeOptions)
+        // Generate QR code base on given subscribe page url
+        QRCode.toDataURL(subscribeUrl, QRCodeConversionOptions)
             .then((qrCodeURL) => {
                 setViewLiveQRCodeImage(qrCodeURL);
             });
-
     }, []);
 
     return (
@@ -243,7 +276,7 @@ const Page = ({
                         </CardDescription>
                     </CardHeader>
                     <Separator/>
-                    <CardContent >
+                    <CardContent>
                         <div className={"flex flex-col justify-center items-stretch gap-3"}>
                             <div className="mt-4 flex flex-row gap-2 justify-between items-center">
                                 <Input
@@ -270,37 +303,63 @@ const Page = ({
                                     />
                                 </Button>
                             </div>
-                            <div className={"w-full flex flex-col justify-center items-center gap-1"}>
+                            <div className={"self-center flex flex-col justify-center items-center gap-1 w-[200px]"}>
                                 {
                                     viewLiveQRCodeImage !== "" &&
-                                    <img src={viewLiveQRCodeImage}  alt={"View Live QR Code"}/>
+                                    <img src={viewLiveQRCodeImage} alt={"View Live QR Code"}/>
                                 }
-                                <Dialog>
+                                <Dialog open={isSaveQRCodeDialogOpen} onOpenChange={setIsSaveQRCodeDialogOpen}>
                                     <DialogTrigger>
-                                        <Button variant={"secondary"} >Save as Image</Button>
+                                        <Button variant={"secondary"}>Save as Image</Button>
                                     </DialogTrigger>
                                     <DialogContent>
-                                        <iframe srcdoc={qrCodeImageHTML} className={""} height={"600"} width={"400"} allow-script/>
-                                        <Button onClick={async () => {
+                                        <DialogHeader>
+                                            <DialogTitle>
+                                                Save Image
+                                            </DialogTitle>
+                                            <DialogDescription>
+                                                Send this image to your potential subscriber
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div
+                                            className={"w-full h-full p-3 gap-4 flex flex-col justify-start items-center bg-background"}>
+                                            <div
+                                                ref={conversionDOMRef}
+                                                className="min-w-[400px] max-h-[600px] bg-primary py-7 flex flex-col justify-stretch items-center">
+                                                <div
+                                                    className="rounded-xl w-[85%] bg-amber-50 flex flex-col items-center justify-start pb-5"
+                                                >
+                                                    <h1
+                                                        className="font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#00B88F] to-[#0092D2] text-4xl pt-5"
+                                                    >
+                                                        Mailixer
+                                                    </h1>
 
-                                            // const qrCodeImageBlob = await htmlToImage({
-                                            //     html: qrCodeImageHTML
-                                            // })
+                                                    <img
+                                                        className="object-center object-cover self-center my-5"
+                                                        src={viewLiveQRCodeImage}
+                                                    />
 
-                                            // @ts-ignore
-                                            const qrCodeFileHandle = await window.showSaveFilePicker({
-                                                types: [{
-                                                    accept: {
-                                                        "image/png": [".png"]
-                                                    }
-                                                }]
-                                            });
-                                            const writeStream: FileSystemWritableFileStream = await qrCodeFileHandle.createWritable();
-                                            const writer = await writeStream.getWriter();
-                                            // await writer.write(qrCodeImageBlob);
-                                            await writer.close();
-                                            await writeStream.close();
-                                        }}>Download</Button>
+                                                    <p className="text-slate-600 font-semibold text-lg">
+                                                        Subscribe to {auth.user.name} newsletter
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <Button disabled={reactToPngConversionState.isLoading} onClick={() => {
+                                                // Start react to image conversion
+                                                convertReactToPng();
+                                            }}>
+                                                {
+                                                    !reactToPngConversionState.isLoading &&
+                                                    "Download"
+                                                }
+                                                {
+                                                    reactToPngConversionState.isLoading &&
+                                                    <Icons.Loader2 size={20} strokeWidth={2}
+                                                                   className={"animate-spin"}/>
+                                                }
+                                            </Button>
+                                        </div>
                                     </DialogContent>
                                 </Dialog>
 

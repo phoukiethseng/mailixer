@@ -3,7 +3,7 @@ import {Button} from "./Button";
 import {Icons} from "./Icons";
 import {Separator} from "./Separator";
 import React, {useRef, useState} from "react";
-import {Dialog, DialogContent, DialogTrigger} from "./Dialog";
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "./Dialog";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "./Tabs";
 import {Input} from "./Input";
 import imageCompression from "browser-image-compression";
@@ -15,7 +15,8 @@ const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
     editor: Editor
 }) => {
     const uploadInputRef = useRef<HTMLInputElement | null>(null);
-    const urlInputRef = useRef<HTMLInputElement | null>(null);
+    const imageUrlInputRef = useRef<HTMLInputElement | null>(null);
+    const insertUrlInputRef = useRef<HTMLInputElement | null>(null);
 
     const [isImageDialogOpen, setIsImageDialogOpen] = useState<boolean>(false);
 
@@ -39,7 +40,7 @@ const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
     }
 
     function handleImageUrlSubmission() {
-        const imageUrl = urlInputRef.current?.value;
+        const imageUrl = imageUrlInputRef.current?.value;
         if (imageUrl) {
             editor.chain().focus()
                 .setImage({
@@ -75,6 +76,19 @@ const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
         }}>
             <Icons.Strikethrough size={iconSize} strokeWidth={iconStrokeWidth}/>
         </Button>
+        <Button variant={editor.isActive("link") ? "default" : "ghost"} size={"icon"} onClick={() => {
+            if (editor.isActive("link")) {
+                editor.chain().focus().unsetLink().run();
+                return;
+            }
+            const url = window.prompt("URL");
+            if (url !== null && url !== "") {
+                editor.chain().focus().toggleLink({href: url}).run();
+            }
+        }}>
+            <Icons.Link size={iconSize} strokeWidth={iconStrokeWidth}/>
+        </Button>
+
         <Separator orientation={"vertical"} className={"h-5"}/>
         <Dialog open={isImageDialogOpen} onOpenChange={setIsImageDialogOpen}>
             <DialogTrigger>
@@ -93,7 +107,8 @@ const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
                                onChange={async () => await handleImageUpload()}/>
                     </TabsContent>
                     <TabsContent value={"fromUrl"} className={"flex flex-row gap-2 justify-center items-center"}>
-                        <Input type={"text"} ref={urlInputRef} placeholder={"Enter your image url"} className={"w-60"}/>
+                        <Input type={"text"} ref={imageUrlInputRef} placeholder={"Enter your image url"}
+                               className={"w-60"}/>
                         <Button variant={"default"} onClick={() => handleImageUrlSubmission()}>Confirm</Button>
                     </TabsContent>
                 </Tabs>

@@ -27,8 +27,8 @@ class NewsletterServiceImpl implements NewsletterService
     {
         $authorId = $this->newsletterRepository->getAuthorIdById($newsletter->id);
         $author = $this->userRepository->findById($authorId);
-        $subscribers = $this->subscriptionService->getAllSubscribersByUserId($author->id);
-        foreach ($subscribers as $subscriber) {
+        $whitelistedSubscribers = $this->subscriptionService->getAllWhitelistedSubscribersByUserId($author->id);
+        foreach ($whitelistedSubscribers as $subscriber) {
             // FYI: Laravel docs recommend that we should use new instance of mailable for each of receipiant
             Mail::send(new SendNewsletter($newsletter, $author, $subscriber, URL::signedRoute('unsubscribe', ['unsubscribeToken' => $subscriber->unsubscribe_token])));
         }

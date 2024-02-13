@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BlacklistSubscriberRequest;
+use App\Http\Requests\WhitelistSubscriberRequest;
 use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
 use Exception;
@@ -49,6 +50,21 @@ class SubscribeActionController extends Controller
             Log::debug('', [$e]);
             return back()->withErrors([
                 'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function whitelistSubscriber(WhitelistSubscriberRequest $request)
+    {
+        $data = $request->validated();
+        try {
+            $this->subscriptionService->whitelistById($data['id']);
+            return back()->with([
+                'message' => 'Successfully whitelisted subscriber'
+            ]);
+        } catch(Exception $e) {
+            return back()->withErrors([
+                'message' => 'Error while whitelisting subscriber'
             ]);
         }
     }

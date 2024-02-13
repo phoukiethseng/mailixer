@@ -1,5 +1,6 @@
 import React from "react";
 import {Icons} from "../Components/Icons";
+import {type QRCodeToDataURLOptions} from "qrcode";
 
 export type PageDescription = {
     displayName: string;
@@ -48,6 +49,12 @@ const siteConfig = {
                 url: "/dashboard/blacklisted_subscribers",
                 icon: Icons.UserX,
                 description: "All blacklisted subscribers"
+            },
+            AccountSettings: {
+                displayName: "Settings",
+                url: "/account/settings",
+                icon: Icons.UserX,
+                description: "Account Settings"
             }
         } satisfies { [key: string]: PageDescription },
     },
@@ -84,10 +91,13 @@ export type InertiaSharedProps = {
     };
 };
 
-export const QRCodeOptions = {
+export const QRCodeConversionOptions: QRCodeToDataURLOptions = {
     color: {
         dark: "#16a34a"
-    }
+    },
+    width: 250
 }
+
+
 
 export default siteConfig;

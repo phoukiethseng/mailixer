@@ -14,7 +14,7 @@ type BlacklistedSubscribersPageProps = {
 
 const BlacklistedSubscribers = (props: BlacklistedSubscribersPageProps) => {
     useMessageToast(props);
-    console.log(props.subscribers.blacklisted[0]);
+    console.log(props.subscribers.blacklisted);
     return (
         // Ignore this error since we didn't pass second type parameter to ColumnDef
         //@ts-ignore

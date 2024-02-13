@@ -4,7 +4,9 @@ import {
     TableOptions,
     flexRender,
     getCoreRowModel,
+    getPaginationRowModel,
     useReactTable,
+    type SortingState, getSortedRowModel
 } from "@tanstack/react-table";
 
 import {
@@ -16,7 +18,7 @@ import {
     TableRow,
 } from "./Table";
 import { cn } from "../lib/utils";
-import React from "react";
+import React, {useState} from "react";
 
 type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[];
@@ -30,11 +32,27 @@ export function DataTable<TData, TValue>({
     className,
     tableOptions,
 }: DataTableProps<TData, TValue>) {
+
+    const [sorting, setSorting] = useState<SortingState>();
+
+    const {state, ...tableOptionsWithoutState} = tableOptions?.state ? tableOptions : {state: {}, ...tableOptions};
+
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
-        ...tableOptions,
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        state: {
+            sorting,
+
+            // Parent component managed state will take
+            // precedence over default managed state
+            ...(state ?? {})
+        },
+
+        // We do this so parent component can overwrite pre-defined configuration
+        ...tableOptionsWithoutState,
     });
     return (
         <div className={cn("rounded-xl border text-foreground", className)}>

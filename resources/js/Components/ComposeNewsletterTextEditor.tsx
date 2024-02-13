@@ -1,16 +1,13 @@
 import React, {useEffect, useRef} from "react";
 import {EditorContent, useEditor} from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import Link from "@tiptap/extension-link";
-import Image from "@tiptap/extension-image";
 import {Card, CardContent} from "./Card";
 import {Separator} from "./Separator";
 import {Button} from "./Button";
 import TextEditorFixedMenu from "./TextEditorFixedMenu";
 import {ComposeNewsletter} from "../types/models";
 import {ScrollArea} from "./ScrollArea";
-import {cn} from "../../js/lib/utils";
+import {cn} from "../lib/utils";
+import {EditorExtensionList} from "../config/tiptap/extensions";
 
 function ComposeNewsletterTextEditor(props: {
     newsletter?: ComposeNewsletter,
@@ -20,13 +17,7 @@ function ComposeNewsletterTextEditor(props: {
     const subjectInputRef = useRef<HTMLInputElement | null>(null);
     const newsletterContent = props?.newsletter?.content ?? "";
     const textEditor = useEditor({
-        extensions: [StarterKit, Underline, Link, Image.configure({
-            allowBase64: true,
-            HTMLAttributes: {
-                class: "w-[400px] h-auto"
-            },
-            inline: true,
-        })],
+        extensions: EditorExtensionList,
         editorProps: {
             attributes: {
                 class: 'prose dark:prose-invert prose-base m-5 focus:outline-none',

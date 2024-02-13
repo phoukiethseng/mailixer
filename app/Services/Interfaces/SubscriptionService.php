@@ -15,4 +15,8 @@ interface SubscriptionService
     public function blacklistById($subscriberId);
     public function getAllBlacklistedSubscribersByUserId($userId);
     public function getAllWhitelistedSubscribersByUserId($userId);
+
+    public function whitelistById($subscriberId);
+
+    public function getBlacklistedCount($userId);
 }

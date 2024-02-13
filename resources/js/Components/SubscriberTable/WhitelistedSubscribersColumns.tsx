@@ -49,6 +49,7 @@ export const columns: ColumnDef<Subscriber>[] = [
     {
         accessorKey: "email",
         header: "Email",
+
     },
     {
         accessorKey: "createdAt",
@@ -113,6 +114,45 @@ export const columns: ColumnDef<Subscriber>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent sideOffset={8} align="end">
+                        <DropdownMenuItem asChild>
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <Button variant={"ghost"} className={"flex flex-row justify-start gap-3 w-full"}>
+                                        <Icons.UserX size={14}/>
+                                        <span>Blacklist</span>
+                                    </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>
+                                            Are you sure?
+                                        </AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This action will move selected subscriber to blacklist and this subscriber won't be able to receive any more newsletter.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter className="flex flex-row start gap-3">
+                                        <AlertDialogCancel asChild>
+                                            <Button variant={"ghost"}>
+                                                Cancel
+                                            </Button>
+                                        </AlertDialogCancel>
+                                        <AlertDialogAction
+                                            onClick={() =>
+                                                router.put(
+                                                    `/dashboard/blacklistSubscriber/`,
+                                                    {
+                                                        id: row.getValue("id"),
+                                                    }
+                                                )
+                                            }
+                                        >
+                                            Confirm
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>

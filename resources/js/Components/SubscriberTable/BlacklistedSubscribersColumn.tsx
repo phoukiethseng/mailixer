@@ -52,7 +52,7 @@ const column: ColumnDef<Subscriber>[] = [
                             <AlertDialogTrigger asChild>
                                 <Button
                                     variant={"ghost"}
-                                    className="flex flex-row justify-between gap-3"
+                                    className="flex flex-row justify-start w-full gap-3"
                                 >
                                     <Icons.UserMinus
                                         size={14}
@@ -85,11 +85,63 @@ const column: ColumnDef<Subscriber>[] = [
                                         onClick={(event: MouseEvent) => {
                                             event.stopPropagation();
                                             // TODO: Fix row.getValue returning undefined -_-
-                                            const id = row.getValue();
+                                            const id = row.getValue("id");
                                             router.delete(
                                                 `/dashboard/subscriber/${id}`
                                             )
-                                            }
+                                        }
+                                        }
+                                    >
+                                        Confirm
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button
+                                    variant={"ghost"}
+                                    className="flex flex-row justify-start gap-3 w-full"
+                                >
+                                    <Icons.UserCheck
+                                        size={14}
+                                    />
+                                    <span>
+                                            Whitelist
+                                    </span>
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        Are you sure?
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action will add subscriber to whitelist. This subscriber will be able to
+                                        receive newsletter in the future.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter className="flex flex-row justify-between gap-2">
+                                    <AlertDialogCancel asChild>
+                                        <Button variant={"ghost"}>
+                                            Cancel
+                                        </Button>
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                        // TODO: Fix typescript error
+                                        //@ts-ignore
+                                        onClick={(event: MouseEvent) => {
+                                            event.stopPropagation();
+                                            // TODO: Fix row.getValue returning undefined -_-
+                                            router.put(
+                                                `/dashboard/whitelistSubscriber`,
+                                                {
+                                                    id: row.getValue("id"),
+                                                }
+                                            )
+                                        }
                                         }
                                     >
                                         Confirm

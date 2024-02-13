@@ -27,7 +27,9 @@ import {
     Heading1,
     Heading2,
     Heading3,
-    UserX
+    UserX,
+    Loader2,
+    Link
 } from "lucide-react";
 
 const Icons = {
@@ -60,6 +62,8 @@ const Icons = {
     Heading2: Heading2,
     Heading3: Heading3,
     UserX: UserX,
+    Loader2: Loader2,
+    Link: Link
 };
 
 export { Icons };

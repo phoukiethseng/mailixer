@@ -60,6 +60,12 @@ export default function DashBoardLayout({
                             <Icons.LogOut className="mr-2 w-4 h-4" />
                             <span className="font-medium">Logout</span>
                         </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onSelect={() => router.visit("/account/settings")}
+                        >
+                            <Icons.Settings className="mr-2 w-4 h-4" />
+                            <span className="font-medium">Settings</span>
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
 

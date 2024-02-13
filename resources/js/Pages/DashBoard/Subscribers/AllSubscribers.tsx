@@ -1,9 +1,9 @@
-import React from "react";
-import { InertiaSharedProps } from "../../../config/site";
+import React, {useMemo} from "react";
+import {InertiaSharedProps} from "../../../config/site";
 import DashBoardLayout from "../../../Layouts/DashBoardLayout";
-import { useMessageToast } from "../../../lib/hooks/useMessageToast";
-import { DataTable } from "../../../Components/DataTable";
-import { columns as subscriberTableCloumns } from "../../../Components/SubscriberTable/WhitelistedSubscribersColumns";
+import {useMessageToast} from "../../../lib/hooks/useMessageToast";
+import {DataTable} from "../../../Components/DataTable";
+import {columns as subscriberTableCloumns} from "../../../Components/SubscriberTable/WhitelistedSubscribersColumns";
 import {
     Card,
     CardContent,
@@ -12,20 +12,23 @@ import {
     CardHeader,
     CardTitle,
 } from "../../../Components/Card";
-import { Icons } from "../../../Components/Icons";
+import {Icons} from "../../../Components/Icons";
 import PieChart from "../../../Components/Charts/Pie";
-import { getSubscriberESP } from "../../../lib/analytics/subscriber";
-import { Subscriber } from "../../../types/models";
+import {getSubscriberESP} from "../../../lib/analytics/subscriber";
+import {Subscriber} from "../../../types/models";
+
 export type SubscribersPageProps = {
     subscribers: Subscriber[];
     subscribersCount: number;
+    blacklistedSubscribersCount: number;
 } & InertiaSharedProps;
 
 const SubscribersPage = ({
-    subscribers,
-    subscribersCount,
-    ...props
-}: SubscribersPageProps) => {
+                             subscribers,
+                             subscribersCount,
+                             blacklistedSubscribersCount,
+                             ...props
+                         }: SubscribersPageProps) => {
     useMessageToast(props);
     // Email Service Provider
     const ESPStats = React.useMemo(
@@ -38,8 +41,8 @@ const SubscribersPage = ({
         [subscribers]
     );
     return (
-        <div className="grid grid-cols-5 grid-rows-6 gap-2 min-h-[100vh]">
-            <div className="min-h-[200px] w-full grid grid-cols-1 sm:grid-cols-2 gap-2 items-start col-span-2">
+        <div className="flex flex-row gap-2">
+            <div className="min-h-[250px] w-full grid grid-cols-1 sm:grid-cols-2 gap-2 items-start">
                 <Card>
                     <CardHeader>
                         <CardTitle>Subscribers ESP</CardTitle>
@@ -66,7 +69,7 @@ const SubscribersPage = ({
                             </p>
                         )}
                     </div>
-                    <CardFooter />
+                    <CardFooter/>
                 </Card>
                 <Card>
                     <CardHeader className="flex flex-row justify-between items-center">
@@ -80,9 +83,21 @@ const SubscribersPage = ({
                         />
                     </CardHeader>
                     <CardContent>
-                        <p className="text-3xl font-bold ">
+                        <p className="text-3xl font-bold">
                             {subscribersCount}
                         </p>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader className="flex flex-row justify-between items-center">
+                        <CardTitle className="max-w-[100px] leading-5">Blacklisted</CardTitle>
+                        <Icons.UserX
+                            size={16}
+                            strokeWidth={1.5}
+                            className="hidden lg:flex"/>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-3xl font-bold">{blacklistedSubscribersCount}</p>
                     </CardContent>
                 </Card>
             </div>
@@ -91,7 +106,7 @@ const SubscribersPage = ({
                 //@ts-ignore
                 columns={subscriberTableCloumns}
                 data={subscribers}
-                className="w-full h-full col-span-3 row-auto"
+                className="w-full"
             />
         </div>
     );

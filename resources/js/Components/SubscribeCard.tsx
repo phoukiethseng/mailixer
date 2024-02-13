@@ -45,7 +45,7 @@ export default function SubscribeCard(props: SubscribeCardProps) {
     return (
         <Card
             className={cn(
-                "w-[90vw] sm:w-[70vw] md:w-[60vw] lg:w-[40vw] xl:w-[30vw] 2xl:w-[20vw] min-h-52",
+                "w-[90vw] sm:w-[70vw] md:w-[40vw] lg:w-[35vw] xl:w-[30vw] min-h-52 xl:max-w-[350px]",
                 props.className
             )}
         >
