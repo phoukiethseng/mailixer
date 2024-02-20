@@ -1,6 +1,7 @@
 import React from "react";
 import {Icons} from "../Components/Icons";
 import {type QRCodeToDataURLOptions} from "qrcode";
+import {User} from "../types/models";
 
 export type PageDescription = {
     displayName: string;
@@ -80,10 +81,7 @@ export type DashBoardMenuItems = keyof typeof siteConfig.dashboard.pages;
 
 export type InertiaSharedProps = {
     auth: {
-        user: {
-            name: string;
-            id: number;
-        };
+        user: User
     };
     message?: string;
     errors: {

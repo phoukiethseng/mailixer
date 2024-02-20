@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\SubscribePage;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class User extends Model implements MustVerifyEmail
 {
-    use HasFactory;
+    use HasFactory, MustVerifyEmailTrait, Notifiable;
 
     public function subscribers(): HasMany {
         return $this->hasMany(Subscriber::class);
@@ -20,6 +22,10 @@ class User extends Model
     }
     public function newsletters(): HasMany {
         return $this->hasMany(Newsletter::class);
+    }
+    public function profilePicture(): HasOne
+    {
+        return $this->hasOne(ProfilePicture::class, 'user_id', 'id');
     }
     protected $table = 'users';
     protected $primaryKey = 'id';

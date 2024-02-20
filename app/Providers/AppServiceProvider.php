@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Implementations\AccountServiceImpl;
+use App\Services\Interfaces\AccountService;
 use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
 use App\Services\Implementations\LaravelStringRandomGenerator;
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(SubscribePageService::class, SubscribePageServiceImpl::class);
         $this->app->bind(NewsletterService::class, NewsletterServiceImpl::class);
         $this->app->bind(StringRandomGenerator::class, LaravelStringRandomGenerator::class);
+        $this->app->bind(AccountService::class, AccountServiceImpl::class);
     }
 
     /**

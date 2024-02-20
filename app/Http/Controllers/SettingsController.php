@@ -19,6 +19,8 @@ class SettingsController extends Controller
         $user = $this->userRepository->findById($request->user()->id);
         return Inertia::render('Account/Settings', [
             'account' => [
+                'profilePicture' => $user->profilePicture->base64_data,
+                'profilePictureType' => $user->profilePicture->mime_type,
                 'displayName' => $user->name,
                 'email' => $user->email,
             ],

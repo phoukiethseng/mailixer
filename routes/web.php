@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardActionController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\NewsletterActionController;
 use App\Http\Controllers\NewsletterPageController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SubscribePageController;
 use App\Http\Controllers\SubscribeActionController;
@@ -73,4 +74,5 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
 
 Route::middleware('auth')->prefix('account')->group(function () {
     Route::get('settings', [SettingsController::class, 'AccountSettingsPage']);
+    Route::post('profile', [AccountController::class, 'editProfile']);
 });

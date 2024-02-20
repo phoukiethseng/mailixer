@@ -2,7 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\DTOs\UserDTO;
+use App\Models\ProfilePicture;
+use App\Repositories\Interfaces\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Inertia\Middleware;
 
@@ -37,9 +41,13 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $userDTO = null;
+        if($request->user()) {
+            $user = App::get(UserRepository::class)->findById($request->user()->id);
+            $userDTO = new UserDTO($user);
+        }
         return array_merge(parent::share($request), [
-            'auth.user.name' => $request->user() ? $request->user()->name : '',
-            'auth.user.id' => $request->user() ? $request->user()->id : 0,
+            'auth.user' => $userDTO,
             'message' => $request->session()->get('message') ?? ''
         ]);
     }

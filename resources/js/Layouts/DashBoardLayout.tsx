@@ -3,7 +3,7 @@ import { Separator } from "../Components/Separator";
 import LogoText from "../Components/LogoText";
 import { Avatar, AvatarFallback, AvatarImage } from "../Components/Avatar";
 import { router, usePage } from "@inertiajs/react";
-import { dashboardPageGroups, type DashBoardMenuItems } from "../config/site";
+import {dashboardPageGroups, type DashBoardMenuItems, InertiaSharedProps} from "../config/site";
 import siteConfig from "../config/site";
 import { Button } from "../Components/Button";
 import {
@@ -20,13 +20,13 @@ import DashBoardNavigationItemGroup from "./DashBoardNavigationItemGroup";
 
 type DashBoardLayoutProps = {
     activePage: DashBoardMenuItems; // Current active page, must be any key from `siteConfig.dashboard.pages`
-} & React.ComponentPropsWithoutRef<"div">;
+} & InertiaSharedProps & React.ComponentPropsWithoutRef<"div">;
 
 export default function DashBoardLayout({
     children,
     activePage,
 }: DashBoardLayoutProps) {
-    const { props } = usePage<{ auth?: { user: { name: string } } }>();
+    const {props: {auth}} = usePage<InertiaSharedProps>();
     const pageDescription = siteConfig.dashboard.pages[activePage].description;
     const pageTitle = siteConfig.dashboard.pages[activePage].displayName;
     return (
@@ -35,14 +35,14 @@ export default function DashBoardLayout({
                 <LogoText className="text-3xl" />
                 <Separator className="my-4" />
                 <Avatar className="w-12 h-12 lg:w-16 lg:h-16">
-                    <AvatarImage src="/default_avatar.png" />
+                    <AvatarImage src={auth.user.profilePicture ?? "/default_avatar.png"} />
                     <AvatarFallback className="text-sm font-bold">
                         MX
                     </AvatarFallback>
                 </Avatar>
-                {props?.auth && (
+                {auth && (
                     <p className="text-xl font-bold text-foreground">
-                        {props?.auth.user.name}
+                        {auth.user.name}
                     </p>
                 )}
                 <DropdownMenu>

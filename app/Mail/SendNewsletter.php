@@ -32,7 +32,7 @@ class SendNewsletter extends Mailable implements ShouldQueue
         return new Envelope(
             subject: $this->newsletter->subject,
             to: $this->subscriber->email,
-            from: $this->publisher->email,
+            from: $this->publisher->name . '@mailixer.cc',
         );
     }
 

@@ -3,11 +3,10 @@ import {Button} from "./Button";
 import {Icons} from "./Icons";
 import {Separator} from "./Separator";
 import React, {useRef, useState} from "react";
-import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "./Dialog";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "./Tabs";
-import {Input} from "./Input";
+import {Dialog, DialogContent, DialogTrigger} from "./Dialog";
 import imageCompression from "browser-image-compression";
 import {blobToBase64} from "base64-blob";
+import {UploadImage} from "./UploadImage";
 
 const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
     iconSize: number,
@@ -97,21 +96,8 @@ const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
                 </Button>
             </DialogTrigger>
             <DialogContent>
-                <Tabs className={"w-full flex flex-col justify-start items-center"} defaultValue={"upload"}>
-                    <TabsList className={"mb-4"}>
-                        <TabsTrigger value={"upload"} defaultChecked>Upload</TabsTrigger>
-                        <TabsTrigger value={"fromUrl"}>From URL</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value={"upload"}>
-                        <Input type={"file"} ref={uploadInputRef} accept={"image/*"}
-                               onChange={async () => await handleImageUpload()}/>
-                    </TabsContent>
-                    <TabsContent value={"fromUrl"} className={"flex flex-row gap-2 justify-center items-center"}>
-                        <Input type={"text"} ref={imageUrlInputRef} placeholder={"Enter your image url"}
-                               className={"w-60"}/>
-                        <Button variant={"default"} onClick={() => handleImageUrlSubmission()}>Confirm</Button>
-                    </TabsContent>
-                </Tabs>
+                <UploadImage ref={uploadInputRef} onImageFileSelectionChange={async () => await handleImageUpload()}
+                             ref1={imageUrlInputRef} onImageURLSubmission={() => handleImageUrlSubmission()}/>
             </DialogContent>
         </Dialog>
         <Separator orientation={"vertical"} className={"h-5"}/>
