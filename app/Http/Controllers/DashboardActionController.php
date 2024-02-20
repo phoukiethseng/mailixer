@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateDescriptionRequest;
+use App\Http\Requests\EditSubscribePageRequest;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
@@ -17,7 +17,7 @@ class DashboardActionController extends Controller
     {
 
     }
-    public function updatePageDescription(UpdateDescriptionRequest $request)
+    public function editSubscribePage(EditSubscribePageRequest $request)
     {
         $data = $request->validated();
         $user = $this->userRepository->findById($request->user()->id);
@@ -25,6 +25,7 @@ class DashboardActionController extends Controller
 
         try {
             $this->subscribePageService->updateDescriptionByToken($subscribePageToken, $data['description']);
+            $this->subscribePageService->setShowProfilePicture($subscribePageToken, $data['showProfilePicture']);
         } catch (Exception) {
             return back()->withErrors([
                 'message' => "Couldn't update subscribe page description"

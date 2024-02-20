@@ -36,4 +36,25 @@ class SubscribePageServiceImpl implements SubscribePageService
         $subscribePage = $user->subscribePage;
         return $subscribePage->token;
     }
+
+    public function getShowProfilePicture($token)
+    {
+        $subscribePage = $this->getSubscribePage($token);
+        return $subscribePage->show_profile_picture;
+    }
+
+    public function setShowProfilePicture($token, $value)
+    {
+        $subscribePage = $this->getSubscribePage($token);
+        $subscribePage->show_profile_picture = $value;
+        $subscribePage->save();
+    }
+
+    private function getSubscribePage($token): mixed
+    {
+        $authorId = $this->getAuthorIdByToken($token);
+        $user = $this->userRepository->findById($authorId);
+        $subscribePage = $user->subscribePage;
+        return $subscribePage;
+    }
 }

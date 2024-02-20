@@ -1,40 +1,26 @@
-import React, {useEffect, useId, useRef, useState} from "react";
+import React, {useEffect, useId, useState} from "react";
 import DashBoardLayout from "../../Layouts/DashBoardLayout";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "../../Components/Card";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "../../Components/Card";
 import {Separator} from "../../Components/Separator";
 import {useController, useForm, useWatch} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Label} from "../../Components/Label";
 import {Textarea} from "../../Components/TextArea";
 import {Button} from "../../Components/Button";
 import SubscribeCard from "../../Components/SubscribeCard";
 import {router} from "@inertiajs/react";
-import {
-    Form,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormMessage,
-} from "../../Components/Form";
+import {Form, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "../../Components/Form";
 import {InertiaSharedProps, QRCodeConversionOptions} from "../../config/site";
 import {
     AlertDialog,
     AlertDialogAction,
     AlertDialogCancel,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTrigger,
     AlertDialogContent,
     AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
     AlertDialogTitle,
+    AlertDialogTrigger,
 } from "../../Components/AlertDialog";
 import {Input} from "../../Components/Input";
 import {Icons} from "../../Components/Icons";
@@ -51,8 +37,10 @@ import {
 } from "../../Components/Dialog";
 import {useToPng} from '@hugocxl/react-to-image';
 import dataUrlToBlob from "dataurl-to-blob";
+import {Switch} from "../../Components/Switch";
 
 const SubscribePageCustomizationFormSchema = z.object({
+    showProfilePicture: z.boolean(),
     description: z.string().nonempty(),
 });
 
@@ -61,14 +49,16 @@ type PageCustomizationForm = z.infer<
 >;
 
 type DashBoardCustomizationPageProps = {
-    description: string;
-    subscribeUrl: string;
+    subscribePage: {
+        showProfilePicture: boolean;
+        description: string;
+        subscribeUrl: string;
+    }
 } & InertiaSharedProps;
 
 
 const Page = ({
-                  description,
-                  subscribeUrl,
+                  subscribePage,
                   auth,
                   errors,
                   message,
@@ -76,9 +66,10 @@ const Page = ({
     const toasts = useToast();
     const descriptionTextareaId = useId();
     const customizationFormId = useId();
-    const descriptionText = description ?? "";
+    const descriptionText = subscribePage.description ?? "";
     const customizationForm = useForm<PageCustomizationForm>({
-        defaultValues: {
+        values: {
+            showProfilePicture: subscribePage.showProfilePicture,
             description: descriptionText,
         },
         resolver: zodResolver(SubscribePageCustomizationFormSchema),
@@ -86,7 +77,7 @@ const Page = ({
 
     useMessageToast({errors, message});
 
-    const viewLiveUrl = subscribeUrl;
+    const viewLiveUrl = subscribePage.subscribeUrl;
 
     const currentDescriptionText = useWatch({
         control: customizationForm.control,
@@ -94,17 +85,13 @@ const Page = ({
         defaultValue: descriptionText,
     });
 
-    const customizationFormDescriptionController = useController({
-        name: "description",
-        control: customizationForm.control,
-    });
-
-    const descriptionTextHasChanged =
-        descriptionText !== currentDescriptionText;
+    const customizationFormHasChanged =
+        customizationForm.formState.isDirty;
 
     function handleDescriptionFormSubmit(data: PageCustomizationForm) {
-        router.post("/dashboard/page/description", {
+        router.post("/dashboard/subscribePage", {
             user_id: auth.user.id,
+            showProfilePicture: data.showProfilePicture,
             description: data.description,
         });
     }
@@ -141,7 +128,7 @@ const Page = ({
 
     useEffect(() => {
         // Generate QR code base on given subscribe page url
-        QRCode.toDataURL(subscribeUrl, QRCodeConversionOptions)
+        QRCode.toDataURL(subscribePage.subscribeUrl, QRCodeConversionOptions)
             .then((qrCodeURL) => {
                 setViewLiveQRCodeImage(qrCodeURL);
             });
@@ -150,7 +137,7 @@ const Page = ({
     return (
         <div className="flex flex-col justify-start items-center w-full gap-2 pt-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3 items-start max-w-[1300px]">
-                <Card className="self-stretch">
+                <Card className="self-start">
                     <CardHeader>
                         <CardTitle>Customize</CardTitle>
                         <CardDescription>
@@ -159,34 +146,43 @@ const Page = ({
                     </CardHeader>
                     <Separator/>
                     <CardContent className="flex flex-col gap-2 justify-start items-stretch pt-4">
-                        <div className="flex flex-row justify-between items-stretch">
-                            <Label
-                                htmlFor={descriptionTextareaId}
-                                className="flex flex-row gap-1 text-base text-card-foreground font-semibold "
-                            >
-                                Description
-                                {descriptionTextHasChanged && (
-                                    <span className="text-destructive">*</span>
-                                )}
-                            </Label>
-                        </div>
+
                         <Form {...customizationForm}>
                             <form
+                                className={"flex flex-col gap-4"}
                                 id={customizationFormId}
                                 onSubmit={customizationForm.handleSubmit(
                                     handleDescriptionFormSubmit
                                 )}
                             >
+                                <Card>
+                                    <CardContent className={"pt-2"}>
+                                        <FormField name={"showProfilePicture"} render={({field}) => {
+                                            return (
+                                                <FormItem className={"flex flex-row gap-4 items-center"}>
+                                                    <Switch checked={field.value} onCheckedChange={field.onChange} className={""}/>
+                                                    <div className={"flex flex-col justify-start items-start gap-1"}>
+                                                        <FormLabel>Show Profile Picture</FormLabel>
+                                                        <FormDescription>Decide whether or not you want to show picture
+                                                            of
+                                                            your profile in subscribe page</FormDescription>
+                                                    </div>
+                                                </FormItem>
+                                            )
+                                        }}/>
+                                    </CardContent>
+                                </Card>
                                 <FormField
                                     name="description"
                                     control={customizationForm.control}
                                     render={({field}) => (
                                         <FormItem>
+                                            <FormLabel>Description</FormLabel>
                                             <FormMessage/>
                                             <Textarea
                                                 {...field}
                                                 id={descriptionTextareaId}
-                                                className="min-h-[195px]"
+                                                className="min-h-[130px]"
                                             />
                                             <FormDescription className="text-xs text-muted-foreground">
                                                 This will show up on your
@@ -201,7 +197,7 @@ const Page = ({
                     <CardFooter className="flex flex-row justify-start gap-2">
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
-                                <Button disabled={!descriptionTextHasChanged}>
+                                <Button disabled={!customizationFormHasChanged}>
                                     Save
                                 </Button>
                             </AlertDialogTrigger>
@@ -228,14 +224,12 @@ const Page = ({
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
-                        {descriptionTextHasChanged && (
+                        {customizationFormHasChanged && (
                             <Button
                                 variant={"ghost"}
                                 size={"icon"}
                                 onClick={() =>
-                                    customizationFormDescriptionController.field.onChange(
-                                        descriptionText
-                                    )
+                                    customizationForm.reset()
                                 }
                             >
                                 <Icons.Undo2
@@ -259,8 +253,10 @@ const Page = ({
                         <SubscribeCard
                             user={{
                                 name: auth.user.name ?? "Unknown",
+                                profilePicture: auth.user.profilePicture
                             }}
-                            subscribe={{
+                            subscribePage={{
+                                showProfilePicture: subscribePage.showProfilePicture,
                                 description: currentDescriptionText,
                             }}
                             onSubscribe={() => {

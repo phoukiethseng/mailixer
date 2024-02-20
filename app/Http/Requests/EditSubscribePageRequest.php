@@ -6,7 +6,7 @@ use App\Models\SubscribePage;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
-class UpdateDescriptionRequest extends FormRequest
+class EditSubscribePageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,8 @@ class UpdateDescriptionRequest extends FormRequest
     {
         return [
             'user_id' => 'required|numeric',
-            'description' => 'required|string'
+            'description' => 'required|string',
+            'showProfilePicture' => 'required|boolean'
         ];
     }
 }

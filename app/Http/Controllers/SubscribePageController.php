@@ -23,6 +23,7 @@ class SubscribePageController extends Controller
 
         $userId = $this->subscribePageService->getAuthorIdByToken($token);
         $pageDescription = $this->subscribePageService->getDescriptionByToken($token);
+        $showProfilePicture = $this->subscribePageService->getShowProfilePicture($token);
 
         $user = $this->userRepository->findById($userId);
 
@@ -33,9 +34,8 @@ class SubscribePageController extends Controller
         }
 
         return Inertia::render('Subscribe/Index', [
-            'auth.user.name' => $user->name,
-            'auth.user.id' => $user->id,
-            'subscribe' => [
+            'subscribePage' => [
+                'showProfilePicture' => $showProfilePicture,
                 'description' => $pageDescription,
             ]
         ]);

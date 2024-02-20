@@ -1,17 +1,19 @@
-import { zodResolver } from "@hookform/resolvers/zod";
+import {zodResolver} from "@hookform/resolvers/zod";
 import React from "react";
-import { useForm } from "react-hook-form";
-import { Card, CardHeader, CardFooter, CardContent } from "./Card";
-import { z } from "zod";
+import {useForm} from "react-hook-form";
+import {Card, CardHeader, CardFooter, CardContent} from "./Card";
+import {z} from "zod";
 import SubscribePrompt from "./SubscribePrompt";
-import { Separator } from "./Separator";
+import {Separator} from "./Separator";
 import SubscribeDescription from "./SubscribeDescription";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "./Form";
-import { Input } from "./Input";
-import { Button } from "./Button";
-import { Alert, AlertDescription, AlertTitle } from "./Alert";
-import { Icons } from "./Icons";
-import { cn } from "../lib/utils";
+import {Form, FormControl, FormField, FormItem, FormMessage} from "./Form";
+import {Input} from "./Input";
+import {Button} from "./Button";
+import {Alert, AlertDescription, AlertTitle} from "./Alert";
+import {Icons} from "./Icons";
+import {cn} from "../lib/utils";
+import {Avatar, AvatarFallback, AvatarImage} from "./Avatar";
+import {User} from "@/resources/js/types/models";
 
 const emailFormSchema = z.object({
     email: z.string().email(),
@@ -22,8 +24,10 @@ export type EmailForm = z.infer<typeof emailFormSchema>;
 type SubscribeCardProps = {
     user: {
         name: string;
+        profilePicture: User["profilePicture"]
     };
-    subscribe: {
+    subscribePage: {
+        showProfilePicture: boolean
         description: string;
     };
     errors?: {
@@ -40,7 +44,8 @@ export default function SubscribeCard(props: SubscribeCardProps) {
         resolver: zodResolver(emailFormSchema),
     });
 
-    function defaultHandleSubmit(data: EmailForm) {}
+    function defaultHandleSubmit(data: EmailForm) {
+    }
 
     return (
         <Card
@@ -51,12 +56,17 @@ export default function SubscribeCard(props: SubscribeCardProps) {
         >
             <CardHeader>
                 <SubscribePrompt name={props.user.name}></SubscribePrompt>
+                {props.subscribePage.showProfilePicture &&
+                    <Avatar className={"w-[7.5rem] h-[7.5rem] self-center border-2 border-primary shadow-lg"}>
+                        <AvatarImage src={props.user.profilePicture ?? ""} alt={"Author's profile picture"}/>
+                        <AvatarFallback>MX</AvatarFallback>
+                    </Avatar>}
             </CardHeader>
             <CardContent>
-                <Separator className="mb-5" />
+                <Separator className="mb-5"/>
                 <div className="flex flex-col justify-start items-stretch gap-3 ">
                     <SubscribeDescription>
-                        {props?.subscribe?.description}
+                        {props?.subscribePage?.description}
                     </SubscribeDescription>
                     <Form {...form}>
                         <form
@@ -68,9 +78,9 @@ export default function SubscribeCard(props: SubscribeCardProps) {
                             <FormField
                                 control={form.control}
                                 name="email"
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <FormItem className="">
-                                        <FormMessage />
+                                        <FormMessage/>
                                         <FormControl>
                                             <Input
                                                 className="text-foreground h-10 w-full text-sm"
@@ -90,9 +100,9 @@ export default function SubscribeCard(props: SubscribeCardProps) {
             </CardContent>
             {props?.errors?.message && (
                 <CardFooter className="flex flex-col">
-                    <Separator className="mb-5" />
+                    <Separator className="mb-5"/>
                     <Alert variant={"destructive"}>
-                        <Icons.XCircle strokeWidth={1.5} size={20} />
+                        <Icons.XCircle strokeWidth={1.5} size={20}/>
                         <AlertTitle>Something went wrong</AlertTitle>
                         <AlertDescription>
                             {props.errors.message}

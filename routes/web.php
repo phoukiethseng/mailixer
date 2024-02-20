@@ -60,7 +60,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/blacklisted_subscribers', [DashboardPageController::class, 'blacklistedSubscribersPage']);
 
     // Dashboard actions
-    Route::post('/page/description', [DashboardActionController::class, 'updatePageDescription']);
+    Route::post('/subscribePage', [DashboardActionController::class, 'editSubscribePage']);
     Route::delete('/subscriber/{subscriberId}', [DashboardActionController::class, 'unsubscribe']);
     Route::get('/unsubscribe_url/{subscriberId}', [DashboardActionController::class, 'getUnsubscribeUrl']);
     Route::post('/sendNewsletter', [NewsletterActionController::class, 'sendNewsletter']);
