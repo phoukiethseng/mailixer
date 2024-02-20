@@ -8,6 +8,7 @@ use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
 use App\Services\Implementations\LaravelStringRandomGenerator;
 use App\Services\Interfaces\StringRandomGenerator;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Implementations\SubscriptionServiceImpl;
 use App\Services\Implementations\SubscribePageServiceImpl;
@@ -33,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
