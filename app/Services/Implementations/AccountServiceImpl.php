@@ -5,6 +5,8 @@ namespace App\Services\Implementations;
 use App\Models\ProfilePicture;
 use App\Models\User;
 use App\Services\Interfaces\AccountService;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 class AccountServiceImpl implements AccountService
 {
@@ -35,5 +37,17 @@ class AccountServiceImpl implements AccountService
             $newProfile->save();
         }
         $user->save();
+    }
+
+    public function setPassword(User $user, string $newPassword, string $oldPassword): bool
+    {
+        $userPassword = $user->password;
+        if (Hash::check($oldPassword, $userPassword)) {
+            $user->password = Hash::make($newPassword);
+            $user->save();
+            return true;
+        } else {
+            return false;
+        }
     }
 }

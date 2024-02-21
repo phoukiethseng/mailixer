@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditAccountFormRequest;
 use App\Http\Requests\EditProfileFormRequest;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\AccountService;
@@ -25,5 +26,28 @@ class AccountController extends Controller
         return back()->with([
             'message' => 'Successfully saved profile information'
         ]);
+    }
+
+    public function editAccount(EditAccountFormRequest $request)
+    {
+        $data = $request->validated();
+        $user = $this->userRepository->findById($request->user()->id);
+        $this->accountService->setEmail($user, $data['email']);
+        $success = true;
+
+        if ($data['newPassword'] != "") {
+            $success = $this->accountService->setPassword($user, $data['newPassword'], $data['oldPassword']);
+        }
+
+        if ($success) {
+            return back()->with([
+                'message' => 'Successfully Changed Email and Password'
+            ]);
+        } else {
+            return back()->withErrors([
+                'message' => 'Failed to change Email and Password'
+            ]);
+
+        }
     }
 }

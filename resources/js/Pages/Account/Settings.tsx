@@ -1,4 +1,4 @@
-import React, {MouseEventHandler, useState} from "react";
+import React, {MouseEventHandler, useEffect, useState} from "react";
 import {InertiaSharedProps} from "../../config/site";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "../../Components/Card";
 import {Separator} from "../../Components/Separator";
@@ -19,6 +19,7 @@ import {Dialog, DialogContent, DialogTrigger} from "../../Components/Dialog";
 import {UploadImage} from "../../Components/UploadImage";
 import imageCompression from "browser-image-compression";
 import {blobToBase64} from "base64-blob";
+import useServerValidationErrorMessage from "../../lib/hooks/useServerValidationErrorMessage";
 
 type SettingsPageProps = {
     account: {
@@ -57,6 +58,7 @@ export default function SettingsPage(props: SettingsPageProps) {
         }
     });
 
+
     const accountForm = useForm<z.infer<typeof accountFormZod>>({
         resolver: zodResolver(accountFormZod),
         defaultValues: {
@@ -65,6 +67,9 @@ export default function SettingsPage(props: SettingsPageProps) {
             oldPassword: "",
         }
     })
+
+    useServerValidationErrorMessage<z.infer<typeof profileFormZod>>(profileForm, "profile", props);
+    useServerValidationErrorMessage<z.infer<typeof accountFormZod>>(accountForm, "account", props);
 
     const currentProfilePicture = useWatch({name: "profilePicture", control: profileForm.control});
     const profilePictureHasChanged = props.account.profilePicture !== currentProfilePicture;
@@ -80,7 +85,7 @@ export default function SettingsPage(props: SettingsPageProps) {
             isChangeProfilePicture: profilePictureHasChanged,
             profilePictureType: profilePictureHasChanged ? currentProfilePictureType : undefined,
         };
-        router.post('/account/profile', formData);
+        router.post('/user/profile', formData);
     }
 
     function handleAccountFormSubmit(data: z.infer<typeof accountFormZod>) {
@@ -94,8 +99,9 @@ export default function SettingsPage(props: SettingsPageProps) {
             return;
         }
 
-        // TODO: Make endpoint to change user account's email and password
-        alert(JSON.stringify(data))
+        router.post('/user/account', {
+            ...data
+        });
     }
 
     const tabsTriggerClassName = "justify-start data-[state=active]:bg-secondary data-[state=active]:shadow-none py-2.5";
@@ -226,7 +232,7 @@ export default function SettingsPage(props: SettingsPageProps) {
                                                 return (
                                                     <FormItem className={"min-w-[200px]"}>
                                                         <FormLabel>New Password</FormLabel>
-                                                        <Input  {...field}/>
+                                                        <Input  {...field} type={"password"}/>
                                                         <FormDescription>Change your account password</FormDescription>
                                                         <FormMessage/>
                                                     </FormItem>
@@ -237,7 +243,7 @@ export default function SettingsPage(props: SettingsPageProps) {
                                                 return (
                                                     <FormItem className={"min-w-[200px]"}>
                                                         <FormLabel>Old Password</FormLabel>
-                                                        <Input  {...field}/>
+                                                        <Input  {...field} type={"password"}/>
                                                         <FormDescription>Enter your old password in order to change your
                                                             password</FormDescription>
                                                         <FormMessage/>

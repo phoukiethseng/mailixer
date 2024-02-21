@@ -3,9 +3,13 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class EditProfileFormRequest extends FormRequest
 {
+
+    protected $errorBag = 'profile';
+
     /**
      * Determine if the user is authorized to make this request.
      */

@@ -79,14 +79,14 @@ export const dashboardPageGroups: PageGroupDescription = {
 
 export type DashBoardMenuItems = keyof typeof siteConfig.dashboard.pages;
 
-export type InertiaSharedProps = {
+export type InertiaSharedProps<TErrorBagFormData = {}> = {
     auth: {
         user: User
     };
     message?: string;
     errors: {
         message?: string;
-    };
+    } & TErrorBagFormData;
 };
 
 export const QRCodeConversionOptions: QRCodeToDataURLOptions = {

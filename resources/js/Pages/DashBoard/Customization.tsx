@@ -178,16 +178,16 @@ const Page = ({
                                     render={({field}) => (
                                         <FormItem>
                                             <FormLabel>Description</FormLabel>
+                                            <FormDescription className="text-xs text-muted-foreground">
+                                                This will show up on your
+                                                subscribe page
+                                            </FormDescription>
                                             <FormMessage/>
                                             <Textarea
                                                 {...field}
                                                 id={descriptionTextareaId}
                                                 className="min-h-[130px]"
                                             />
-                                            <FormDescription className="text-xs text-muted-foreground">
-                                                This will show up on your
-                                                subscribe page
-                                            </FormDescription>
                                         </FormItem>
                                     )}
                                 />

@@ -72,7 +72,8 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::put('/whitelistSubscriber', [SubscribeActionController::class, 'whitelistSubscriber']);
 });
 
-Route::middleware('auth')->prefix('account')->group(function () {
+Route::middleware('auth')->prefix('user')->group(function () {
     Route::get('settings', [SettingsController::class, 'AccountSettingsPage']);
     Route::post('profile', [AccountController::class, 'editProfile']);
+    Route::post('account', [AccountController::class, 'editAccount']);
 });
