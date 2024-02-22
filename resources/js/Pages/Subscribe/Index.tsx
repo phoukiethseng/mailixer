@@ -1,10 +1,12 @@
 import { router, usePage } from "@inertiajs/react";
 import React from "react";
 import SubscribeCard, { EmailForm } from "../../Components/SubscribeCard";
-import { InertiaSharedProps } from "resources/js/config/site";
+import { InertiaSharedProps } from "../../config/site";
+import {User} from "../../types/models";
 
 type SubscribePageProps = {
     subscribePage: {
+        user: User,
         showProfilePicture: boolean;
         description: string;
     };
@@ -21,12 +23,10 @@ export default function SubscribePage({ auth, subscribePage }: SubscribePageProp
         });
     }
 
-    console.log(props.auth.user)
-
     return (
         <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6">
             <SubscribeCard
-                user={{ name: auth.user.name, profilePicture: auth.user.profilePicture }}
+                user={{ name: subscribePage.user.name, profilePicture: subscribePage.user.profilePicture }}
                 subscribePage={subscribePage}
                 errors={{ message: errors?.message }}
                 onSubscribe={handleFormSubmit}

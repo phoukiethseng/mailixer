@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTOs\UserDTO;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
@@ -26,6 +27,7 @@ class SubscribePageController extends Controller
         $showProfilePicture = $this->subscribePageService->getShowProfilePicture($token);
 
         $user = $this->userRepository->findById($userId);
+        $userDTO = new UserDTO($user);
 
         if (!$user) {
             return Inertia::render('Error', [
@@ -35,6 +37,7 @@ class SubscribePageController extends Controller
 
         return Inertia::render('Subscribe/Index', [
             'subscribePage' => [
+                'user' => $userDTO,
                 'showProfilePicture' => $showProfilePicture,
                 'description' => $pageDescription,
             ]
