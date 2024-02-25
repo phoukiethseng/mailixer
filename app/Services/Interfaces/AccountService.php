@@ -12,4 +12,8 @@ interface AccountService
     public function setPassword(User $user, string $newPassword, string $oldPassword): bool;
 
     public function setProfilePicture(User $user, string $base64Image, string $mimeType);
+
+    public function registerNewUser(string $name, string $email, string $password): User;
+
+    public function checkExistingUserByEmail($email): bool;
 }

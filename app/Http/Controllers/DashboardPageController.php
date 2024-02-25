@@ -6,6 +6,7 @@ use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use App\DTOs\SubscriberDTO;
 use App\Repositories\Interfaces\UserRepository;
@@ -56,7 +57,8 @@ class DashboardPageController extends Controller
             ]
         ]);
 
-        } catch (Exception) {
+        } catch (Exception $e) {
+            Log::debug("customization page", [$e]);
             return back()->withErrors([
                 'message' => "Couldn't retrieve page description or preview url"
             ]);

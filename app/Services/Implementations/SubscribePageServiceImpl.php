@@ -2,14 +2,16 @@
 
 namespace App\Services\Implementations;
 
+use App\Models\SubscribePage;
 use App\Repositories\Interfaces\SubscribePageRepository;
 use App\Repositories\Interfaces\UserRepository;
+use App\Services\Interfaces\StringRandomGenerator;
 use App\Services\Interfaces\SubscribePageService;
 use Illuminate\Support\Facades\Log;
 
 class SubscribePageServiceImpl implements SubscribePageService
 {
-    public function __construct(private UserRepository $userRepository, private SubscribePageRepository $subscribePageRepository)
+    public function __construct(private UserRepository $userRepository, private SubscribePageRepository $subscribePageRepository, private StringRandomGenerator $stringRandomGenerator)
     {
 
     }
@@ -56,5 +58,17 @@ class SubscribePageServiceImpl implements SubscribePageService
         $user = $this->userRepository->findById($authorId);
         $subscribePage = $user->subscribePage;
         return $subscribePage;
+    }
+
+    public function createNewSubscribePage($user): SubscribePage
+    {
+        $newSubscribePage = $this->subscribePageRepository->getNewInstance([
+            'token' => $this->stringRandomGenerator->generateRandom(20)
+        ]);
+        $user->subscribePage()->save($newSubscribePage);
+        $this->subscribePageRepository->save($newSubscribePage);
+
+        return $newSubscribePage;
+
     }
 }

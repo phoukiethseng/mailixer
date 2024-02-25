@@ -2,6 +2,8 @@
 
 namespace App\Services\Interfaces;
 
+use App\Models\SubscribePage;
+
 interface SubscribePageService
 {
     public function getSubscribePageTokenByAuthorId($authorId);
@@ -12,5 +14,7 @@ interface SubscribePageService
     public function setShowProfilePicture($token, $value);
     public function updateDescriptionByToken($token, $description);
     public function getAuthorIdByToken($token);
+
+    public function createNewSubscribePage($user): SubscribePage;
 
 }

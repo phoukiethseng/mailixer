@@ -77,3 +77,7 @@ Route::middleware('auth')->prefix('user')->group(function () {
     Route::post('profile', [AccountController::class, 'editProfile']);
     Route::post('account', [AccountController::class, 'editAccount']);
 });
+
+Route::get('/register', [AuthPageController::class, 'registerPage']);
+Route::post('/checkEmail', [AuthActionController::class, 'checkEmail']);
+Route::post('/register', [AuthActionController::class, 'createNewAccount']);

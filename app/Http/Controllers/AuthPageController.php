@@ -20,4 +20,9 @@ class AuthPageController extends Controller
         }
         return Inertia::render('Logout');
     }
+
+    public function registerPage()
+    {
+        return Inertia::render('Register');
+    }
 }
