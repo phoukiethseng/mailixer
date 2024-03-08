@@ -2,23 +2,24 @@
 
 namespace App\Services\Implementations;
 
+use App\Enums\NewsletterContentType;
 use App\Enums\NewsletterStatus;
-use App\Mail\SendNewsletter;
+use App\Jobs\SendNewsletter;
+use App\Mail\NewsletterEmail;
 use App\Models\Newsletter;
 use App\Models\User;
 use App\Repositories\Interfaces\NewsletterRepository;
+use App\Repositories\Interfaces\SubscriberRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\NewsletterService;
 use App\Services\Interfaces\SubscriptionService;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use App\Enums\NewsletterContentType;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
 
 class NewsletterServiceImpl implements NewsletterService
 {
 
-    public function __construct(private SubscriptionService $subscriptionService, private NewsletterRepository $newsletterRepository, private UserRepository $userRepository)
+    public function __construct(private SubscriptionService $subscriptionService, private NewsletterRepository $newsletterRepository, private UserRepository $userRepository, private SubscriberRepository $subscriberRepository)
     {
 
     }
@@ -28,17 +29,28 @@ class NewsletterServiceImpl implements NewsletterService
         $authorId = $this->newsletterRepository->getAuthorIdById($newsletter->id);
         $author = $this->userRepository->findById($authorId);
         $whitelistedSubscribers = $this->subscriptionService->getAllWhitelistedSubscribersByUserId($author->id);
-        foreach ($whitelistedSubscribers as $subscriber) {
-            // FYI: Laravel docs recommend that we should use new instance of mailable for each of receipiant
-            Mail::send(new SendNewsletter($newsletter, $author, $subscriber, URL::signedRoute('unsubscribe', ['unsubscribeToken' => $subscriber->unsubscribe_token])));
+
+        // Don't queue sending task if there is zero subscribers
+        if (sizeof($whitelistedSubscribers) <= 0) {
+            throw new \Exception('there is no subscriber to send newsletter');
         }
-        // Mark newsletter as Sent
+
+        foreach ($whitelistedSubscribers as $subscriber) {
+            // FYI: Laravel docs recommend that we should use new instance of mailable for each of subscribers
+            $unsubscribeUrl = URL::signedRoute('unsubscribe', ['unsubscribeToken' => $subscriber->unsubscribe_token]);
+            $mail = new NewsletterEmail($newsletter, $author, $subscriber, $unsubscribeUrl);
+            Queue::push(new SendNewsletter($newsletter, $subscriber, $mail));
+//            Mail::send(new NewsletterEmail($newsletter, $author, $subscriber, URL::signedRoute('unsubscribe', ['unsubscribeToken' => $subscriber->unsubscribe_token])));
+        }
+        // Mark newsletter as Pending
         $newsletter->status()->disassociate();
-        $newsletter->status()->associate(\App\Models\NewsletterStatus::find(NewsletterStatus::SENT->value));
-        $newsletter->save();
+        $newsletter->status()->associate(\App\Models\NewsletterStatus::find(NewsletterStatus::PENDING->value));
+
+        $this->newsletterRepository->save($newsletter);
     }
 
-    public function createNewsletter(NewsletterContentType $contentType, string $subject, string $content, User $author): Newsletter {
+    public function createNewsletter(NewsletterContentType $contentType, string $subject, string $content, User $author): Newsletter
+    {
         $data = [
             'content' => $content,
             'subject' => $subject,
@@ -53,20 +65,21 @@ class NewsletterServiceImpl implements NewsletterService
         return $draftNewsletter;
     }
 
-    public function getAllNewsletterForAuthor(User $author)
+    public function getAllNewsletterForAuthorUser(User $author)
     {
         $newsletters = $this->newsletterRepository->findAllByUserId($author->id);
         return $newsletters;
     }
 
-    public function getNewsletterById(int $id): Newsletter
+    public function getNewsletterById($id): Newsletter
     {
-        $newsletters = $this->newsletterRepository->findById($id);
-        return $newsletters;
+        $newsletter = $this->find($id);
+        return $newsletter;
     }
-    public function deleteNewsletter(int $newsletterId)
+
+    public function deleteNewsletter($newsletterId)
     {
-        $newsletter = $this->newsletterRepository->findById($newsletterId);
+        $newsletter = $this->find($newsletterId);
         if ($newsletter) {
             $this->newsletterRepository->delete($newsletter);
         }
@@ -81,7 +94,55 @@ class NewsletterServiceImpl implements NewsletterService
             $saveNewsletter->contentType()->disassociate();
             $saveNewsletter->contentType()->associate(\App\Models\NewsletterContentType::find($contentType->value));
 
-            $saveNewsletter->save();
+            $this->newsletterRepository->save($saveNewsletter);
         }
+    }
+
+    public function createSendSuccessResult($newsletterId, $subscriberId, $messageId)
+    {
+        $newsletter = $this->find($newsletterId);
+        $subscriber = $this->subscriberRepository->findById($subscriberId);
+
+        $newsletter->sendResults()->save($subscriber, [
+            'is_success' => true
+        ]);
+
+        $this->newsletterRepository->save($newsletter);
+    }
+
+    public function setNewsletterStatus($newsletterId, NewsletterStatus $newsletterStatusEnum)
+    {
+        $newsletter = $this->find($newsletterId);
+        $newsletter->status()->associate(\App\Models\NewsletterStatus::find($newsletterStatusEnum->value));
+        $this->newsletterRepository->save($newsletter);
+    }
+
+    /**
+     * @param $newsletterId
+     * @return Newsletter
+     */
+    private function find($newsletterId)
+    {
+        return $this->newsletterRepository->findById($newsletterId);
+    }
+
+    public function createSendFailedResult($newsletterId, $subscriberId)
+    {
+        $newsletter = $this->find($newsletterId);
+        $subscriber = $this->subscriberRepository->findById($subscriberId);
+
+        $newsletter->sendResults()->save($subscriber, [
+            'is_success' => false
+        ]);
+
+        $this->newsletterRepository->save($newsletter);
+    }
+
+    public function getAllSendResultsForNewsletterId($newsletterId)
+    {
+        return $this->find($newsletterId)->sendResults()
+            ->as('sendResult')
+            ->withPivot(['subscriber_id', 'newsletter_id', 'is_success'])
+            ->get();
     }
 }

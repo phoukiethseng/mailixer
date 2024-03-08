@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Mail\SendNewsletter;
+use App\Mail\NewsletterEmail;
 use App\Models\Newsletter;
 use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
@@ -47,7 +47,7 @@ class Kernel extends ConsoleKernel
                 'user_id' => $publisher->id
             ]);
 
-            $email = new SendNewsletter($newsletter, $publisher, $subscriber, URL::signedRoute('unsubscribe', [$subscriber->unsubscribe_token]));
+            $email = new NewsletterEmail($newsletter, $publisher, $subscriber, URL::signedRoute('unsubscribe', [$subscriber->unsubscribe_token]));
 
             Mail::to($subscriber->email)
                 ->send($email);

@@ -1,28 +1,15 @@
-import React, { useState } from "react";
-import { Button } from "../Components/Button";
-import { Link, router, usePage } from "@inertiajs/react";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "../Components/Card";
-import { useForm } from "react-hook-form";
+import React from "react";
+import {Button} from "@/Components/Button";
+import {router, usePage} from "@inertiajs/react";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/Components/Card";
+import {useForm} from "react-hook-form";
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    FormLabel,
-    Form,
-    FormField,
-    FormItem,
-    FormControl,
-    FormMessage,
-} from "../Components/Form";
-import { Input } from "../Components/Input";
-import { Alert, AlertDescription, AlertTitle } from "../Components/Alert";
-import { Icons } from "../Components/Icons";
-import LogoText from "../Components/LogoText";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@/Components/Form";
+import {Input} from "@/Components/Input";
+import {Alert, AlertDescription, AlertTitle} from "@/Components/Alert";
+import {Icons} from "@/Components/Icons";
+import LogoText from "@/Components/LogoText";
 
 const loginSchema = z.object({
     email: z.string().email().nonempty(),
@@ -31,7 +18,7 @@ const loginSchema = z.object({
 
 export default function LoginPage() {
     const page = usePage();
-    const { errors } = page.props;
+    const {errors} = page.props;
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -47,7 +34,7 @@ export default function LoginPage() {
 
     return (
         <div className="w-screen min-h-screen flex flex-col justify-center items-center gap-6">
-            <LogoText />
+            <LogoText/>
             <Card className="min-w-[350px]">
                 <CardHeader className="text-center">
                     <CardTitle className="text-2xl">Welcome Back!</CardTitle>
@@ -62,7 +49,7 @@ export default function LoginPage() {
                             <FormField
                                 control={form.control}
                                 name="email"
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
@@ -71,14 +58,14 @@ export default function LoginPage() {
                                                 placeholder="hello@example.com"
                                             />
                                         </FormControl>
-                                        <FormMessage className="text-sm text-right font-md" />
+                                        <FormMessage className="text-sm text-right font-md"/>
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
                                 name="password"
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
@@ -90,7 +77,7 @@ export default function LoginPage() {
                                                 />
                                             </div>
                                         </FormControl>
-                                        <FormMessage className="text-sm text-right font-md" />
+                                        <FormMessage className="text-sm text-right font-md"/>
                                     </FormItem>
                                 )}
                             />
@@ -101,7 +88,7 @@ export default function LoginPage() {
                     </Form>
                     {errors?.message && (
                         <Alert variant={"destructive"} className="mt-3">
-                            <Icons.XCircle size={20} strokeWidth={1} />
+                            <Icons.XCircle size={20} strokeWidth={1}/>
                             <AlertTitle>Error</AlertTitle>
                             <AlertDescription>
                                 {errors.message}

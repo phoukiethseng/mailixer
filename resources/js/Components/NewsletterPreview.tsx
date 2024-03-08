@@ -1,16 +1,10 @@
 import React from "react";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "./Card";
-import { Separator } from "./Separator";
-import { InertiaSharedProps, NewsletterContentType } from "../config/site";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "./Card";
+import {Separator} from "./Separator";
+import {InertiaSharedProps} from "@/config/site";
 import Markdown from "react-markdown";
-import { cn } from "../lib/utils";
+import {cn} from "@/lib/utils";
+import {NewsletterContentType} from "@/types/models";
 
 type NewsletterPreviewProps = {
     subject: string;
@@ -20,12 +14,12 @@ type NewsletterPreviewProps = {
     React.ComponentPropsWithoutRef<"div">;
 
 export default function NewsletterPreview({
-    auth,
-    subject,
-    contentType,
-    content,
-    className,
-}: NewsletterPreviewProps) {
+                                              auth,
+                                              subject,
+                                              contentType,
+                                              content,
+                                              className,
+                                          }: NewsletterPreviewProps) {
     return (
         <Card className={cn("h-full ", className)}>
             <CardHeader>
@@ -34,7 +28,7 @@ export default function NewsletterPreview({
                     Preview rendered content of your email
                 </CardDescription>
             </CardHeader>
-            <Separator />
+            <Separator/>
             <CardContent className="flex flex-col gap-4 pt-3">
                 <Card>
                     <CardContent className="py-2 text-sm">
@@ -48,7 +42,7 @@ export default function NewsletterPreview({
                         </p>
                     </CardContent>
                 </Card>
-                <Separator />
+                <Separator/>
                 <div className="p-2 w-full min-h-[60vh]">
                     {contentType === "HTML" && (
                         <iframe

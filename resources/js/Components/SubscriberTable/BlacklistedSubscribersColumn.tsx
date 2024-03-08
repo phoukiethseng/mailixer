@@ -1,20 +1,36 @@
 import {ColumnDef} from "@tanstack/react-table";
-import {Subscriber} from "../../types/models";
+import {Subscriber} from "@/types/models";
 import React from "react";
-import {Checkbox} from "../../Components/Checkbox";
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "../../Components/DropDownMenu";
-import {Button} from "../../Components/Button";
-import {Icons} from "../../Components/Icons";
+import {Checkbox} from "@/Components/Checkbox";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/Components/DropDownMenu";
+import {Button} from "@/Components/Button";
+import {Icons} from "@/Components/Icons";
 import {
-    AlertDialog, AlertDialogAction,
-    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
-    AlertDialogHeader, AlertDialogTitle,
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
     AlertDialogTrigger
 } from "../../Components/AlertDialog";
 import {AlertDialogCancel} from "@radix-ui/react-alert-dialog";
 import {router} from "@inertiajs/react";
 
-const column: ColumnDef<Subscriber>[] = [
+export const filterColumnList = [
+    {
+        name: "ID", value: "id"
+    },
+    {
+        name: "Email", value: "email"
+    },
+    {
+        name: "Unsubscribe Token", value: "unsubscribeToken"
+    },
+];
+
+export const columns: ColumnDef<Subscriber>[] = [
     {
         id: "select",
         header: ({table}) => (
@@ -32,10 +48,33 @@ const column: ColumnDef<Subscriber>[] = [
     },
     {
         accessorKey: "id",
-        header: "ID",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant={"ghost"}
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className={"flex flex-row justify-between gap-3"}
+                >
+                    ID
+                    <Icons.ChevronsUpDown strokeWidth={1.5} size={14}/>
+                </Button>
+            )
+        }
     },
     {
         accessorKey: "email",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant={"ghost"}
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    className={"flex flex-row justify-between gap-3"}
+                >
+                    Email
+                    <Icons.ChevronsUpDown strokeWidth={1.5} size={14}/>
+                </Button>
+            )
+        }
     },
     {
         id: "action",
@@ -156,4 +195,3 @@ const column: ColumnDef<Subscriber>[] = [
     }
 ];
 
-export default column;

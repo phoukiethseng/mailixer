@@ -2,9 +2,8 @@ import React from "react";
 import DashBoardLayout from "../../../Layouts/DashBoardLayout";
 import {Subscriber} from "../../../types/models";
 import {InertiaSharedProps} from "../../../config/site";
-import {DataTable} from "../../../Components/DataTable";
-import BlacklistedSubscribersColumn from "../../../Components/SubscriberTable/BlacklistedSubscribersColumn";
 import {useMessageToast} from "../../../lib/hooks/useMessageToast";
+import BlacklistedSubscribersTable from "../../../Components/SubscriberTable/BlacklistedSubscribersTable";
 
 type BlacklistedSubscribersPageProps = {
     subscribers: {
@@ -19,8 +18,7 @@ const BlacklistedSubscribers = (props: BlacklistedSubscribersPageProps) => {
         // Ignore this error since we didn't pass second type parameter to ColumnDef
         //@ts-ignore
         <div className={"w-full h-full"}>
-            <DataTable columns={BlacklistedSubscribersColumn} data={props.subscribers.blacklisted}
-                       className={"self-center"}
+            <BlacklistedSubscribersTable data={props.subscribers.blacklisted}
             />
         </div>
 

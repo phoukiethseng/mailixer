@@ -1,14 +1,8 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { SubscribersPageProps } from "../../Pages/DashBoard/Subscribers/AllSubscribers";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "../DropDownMenu";
-import { Button } from "../Button";
-import { Icons } from "../Icons";
-import { router } from "@inertiajs/react";
+import {ColumnDef} from "@tanstack/react-table";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "../DropDownMenu";
+import {Button} from "@/Components/Button";
+import {Icons} from "@/Components/Icons";
+import {router} from "@inertiajs/react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -19,42 +13,76 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "../AlertDialog";
-import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
-import { useToast } from "../use-toast";
+import {AlertDialogCancel} from "@radix-ui/react-alert-dialog";
+import {useToast} from "../use-toast";
 import axios from "axios";
-import { Checkbox } from "../Checkbox";
+import {Checkbox} from "../Checkbox";
 import React from "react";
-import {type Subscriber} from "../../types/models";
+import {type Subscriber} from "@/types/models";
 
 export const columns: ColumnDef<Subscriber>[] = [
     {
         id: "select",
-        header: ({ table }) => (
+        header: ({table}) => (
             <Checkbox
                 checked={table.getIsAllRowsSelected()}
                 onCheckedChange={() => table.toggleAllRowsSelected()}
             />
         ),
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <Checkbox
                 checked={row.getIsSelected()}
                 onCheckedChange={() => row.toggleSelected()}
             />
         ),
+        filterFn: (row, filterValue) => String(row.getValue('id')) === filterValue
     },
     {
         accessorKey: "id",
-        header: "ID",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant={"ghost"}
+                    className={"flex justify-between gap-1"}
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    ID
+                    <Icons.ChevronsUpDown strokeWidth={1.5} size={14}/>
+                </Button>
+            )
+        }
     },
     {
         accessorKey: "email",
-        header: "Email",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant={"ghost"}
+                    className={"flex justify-between gap-1"}
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Email
+                    <Icons.ChevronsUpDown strokeWidth={1.5} size={14}/>
+                </Button>
+            )
+        }
 
     },
     {
         accessorKey: "createdAt",
-        header: "Since",
-        cell: ({ row }) => {
+        header: ({column}) => {
+            return (
+                <Button
+                    variant={"ghost"}
+                    className={"flex justify-between gap-1"}
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Since
+                    <Icons.ChevronsUpDown strokeWidth={1.5} size={14}/>
+                </Button>
+            )
+        },
+        cell: ({row}) => {
             const createdAt: string = row.getValue("createdAt");
             const formatted = new Date(
                 Date.parse(createdAt)
@@ -64,8 +92,19 @@ export const columns: ColumnDef<Subscriber>[] = [
     },
     {
         accessorKey: "unsubscribeToken",
-        header: "Unsubscribe Token",
-        cell: ({ row }) => {
+        header: ({column}) => {
+            return (
+                <Button
+                    variant={"ghost"}
+                    className={"flex justify-between gap-1"}
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Unsubscribe Token
+                    <Icons.ChevronsUpDown strokeWidth={1.5} size={14}/>
+                </Button>
+            )
+        },
+        cell: ({row}) => {
             const token: string = row.getValue("unsubscribeToken");
             const subscriberId = row.getValue("id");
             const toasts = useToast();
@@ -105,12 +144,12 @@ export const columns: ColumnDef<Subscriber>[] = [
     },
     {
         id: "actions",
-        cell: ({ row }) => {
+        cell: ({row}) => {
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant={"ghost"} size={"icon"}>
-                            <Icons.List size={15} />
+                            <Icons.MoreHorizontal strokeWidth={1.5} size={15}/>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent sideOffset={8} align="end">
@@ -128,7 +167,8 @@ export const columns: ColumnDef<Subscriber>[] = [
                                             Are you sure?
                                         </AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            This action will move selected subscriber to blacklist and this subscriber won't be able to receive any more newsletter.
+                                            This action will move selected subscriber to blacklist and this subscriber
+                                            won't be able to receive any more newsletter.
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter className="flex flex-row start gap-3">
@@ -204,5 +244,16 @@ export const columns: ColumnDef<Subscriber>[] = [
                 </DropdownMenu>
             );
         },
+    },
+];
+export const filterColumnList = [
+    {
+        name: "ID", value: "id"
+    },
+    {
+        name: "Email", value: "email"
+    },
+    {
+        name: "Unsubscribe Token", value: "unsubscribeToken"
     },
 ];

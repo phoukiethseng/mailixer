@@ -1,22 +1,17 @@
 import React from "react";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "../Components/Card";
-import { Button } from "../Components/Button";
-import { router } from "@inertiajs/react";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle,} from "@/Components/Card";
+import {Button} from "@/Components/Button";
+import {router} from "@inertiajs/react";
 
 export default function LogoutPage() {
     function handleCancel() {
         router.visit("/");
     }
+
     function handleConfirm() {
         router.post("/logout");
     }
+
     return (
         <div className="min-h-screen w-full flex justify-center items-center">
             <Card>

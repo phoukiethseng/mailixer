@@ -1,19 +1,19 @@
 import {zodResolver} from "@hookform/resolvers/zod";
 import React from "react";
 import {useForm} from "react-hook-form";
-import {Card, CardHeader, CardFooter, CardContent} from "./Card";
+import {Card, CardContent, CardFooter, CardHeader} from "@/Components/Card";
 import {z} from "zod";
-import SubscribePrompt from "./SubscribePrompt";
-import {Separator} from "./Separator";
-import SubscribeDescription from "./SubscribeDescription";
-import {Form, FormControl, FormField, FormItem, FormMessage} from "./Form";
-import {Input} from "./Input";
-import {Button} from "./Button";
-import {Alert, AlertDescription, AlertTitle} from "./Alert";
-import {Icons} from "./Icons";
-import {cn} from "../lib/utils";
-import {Avatar, AvatarFallback, AvatarImage} from "./Avatar";
-import {User} from "@/resources/js/types/models";
+import SubscribePrompt from "@/Components/SubscribePrompt";
+import {Separator} from "@/Components/Separator";
+import SubscribeDescription from "@/Components/SubscribeDescription";
+import {Form, FormControl, FormField, FormItem, FormMessage} from "@/Components/Form";
+import {Input} from "@/Components/Input";
+import {Button} from "@/Components/Button";
+import {Alert, AlertDescription, AlertTitle} from "@/Components/Alert";
+import {Icons} from "@/Components/Icons";
+import {cn} from "@/lib/utils";
+import {Avatar, AvatarFallback, AvatarImage} from "@/Components/Avatar";
+import {User} from "@/types/models";
 
 const emailFormSchema = z.object({
     email: z.string().email(),

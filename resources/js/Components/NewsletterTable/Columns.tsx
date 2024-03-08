@@ -1,10 +1,10 @@
 import {ColumnDef} from "@tanstack/react-table";
-import {DraftNewsletterProps} from "../../Pages/DashBoard/Newsletter/DraftNewsletter";
-import {Button} from "../Button";
-import {Icons} from "../Icons";
+import {DraftNewsletterProps} from "@/Pages/DashBoard/Newsletter/DraftNewsletter";
+import {Button} from "@/Components/Button";
+import {Icons} from "@/Components/Icons";
 import React from "react";
 import {router} from "@inertiajs/react";
-import {Checkbox} from "../Checkbox";
+import {Checkbox} from "@/Components/Checkbox";
 
 type Newsletter = DraftNewsletterProps["newsletters"][number];
 export const columns: ColumnDef<Newsletter>[] = [

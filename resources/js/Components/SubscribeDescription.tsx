@@ -1,12 +1,12 @@
 import React from "react";
-import { cn } from "../lib/utils";
+import {cn} from "@/lib/utils";
 
 type SubscribeDescriptionProps = {} & React.HTMLAttributes<HTMLHeadingElement>;
 
 export default function SubscribeDescription({
-    children,
-    className,
-}: SubscribeDescriptionProps) {
+                                                 children,
+                                                 className,
+                                             }: SubscribeDescriptionProps) {
     return (
         <h2
             className={cn(

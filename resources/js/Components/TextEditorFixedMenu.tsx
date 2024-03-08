@@ -1,12 +1,12 @@
 import {Editor} from "@tiptap/react";
-import {Button} from "./Button";
-import {Icons} from "./Icons";
-import {Separator} from "./Separator";
+import {Button} from "@/Components/Button";
+import {Icons} from "@/Components/Icons";
+import {Separator} from "@/Components/Separator";
 import React, {useRef, useState} from "react";
-import {Dialog, DialogContent, DialogTrigger} from "./Dialog";
+import {Dialog, DialogContent, DialogTrigger} from "@/Components/Dialog";
 import imageCompression from "browser-image-compression";
 import {blobToBase64} from "base64-blob";
-import {UploadImage} from "./UploadImage";
+import {UploadImage} from "@/Components/UploadImage";
 
 const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
     iconSize: number,

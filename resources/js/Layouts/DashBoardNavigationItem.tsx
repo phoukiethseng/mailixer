@@ -1,6 +1,6 @@
 import React from "react";
-import { cn } from "../lib/utils";
-import { Link } from "@inertiajs/react";
+import {cn} from "@/lib/utils";
+import {Link} from "@inertiajs/react";
 
 type DashBoardNavigationItemProps = {
     name: string;
@@ -10,12 +10,12 @@ type DashBoardNavigationItemProps = {
 } & React.ComponentPropsWithoutRef<"a">;
 
 export default function DashBoardNavigationItem({
-    name,
-    url,
-    isActive = false,
-    icon,
-    className,
-}: DashBoardNavigationItemProps) {
+                                                    name,
+                                                    url,
+                                                    isActive = false,
+                                                    icon,
+                                                    className,
+                                                }: DashBoardNavigationItemProps) {
     const Icon = icon;
     return (
         <Link
@@ -29,7 +29,7 @@ export default function DashBoardNavigationItem({
             href={url}
         >
             <span className="hidden sm:block">
-                <Icon />
+                <Icon/>
             </span>
             <span>{name}</span>
         </Link>

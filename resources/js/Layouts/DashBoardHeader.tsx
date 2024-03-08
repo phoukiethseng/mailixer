@@ -1,12 +1,12 @@
 import React from "react";
-import { cn } from "../lib/utils";
+import {cn} from "@/lib/utils";
 
 type DashBoardHeaderProps = {} & React.ComponentPropsWithoutRef<"h2">;
 
 export default function DashBoardHeader({
-    className,
-    children,
-}: DashBoardHeaderProps) {
+                                            className,
+                                            children,
+                                        }: DashBoardHeaderProps) {
     return (
         <h2
             className={cn(

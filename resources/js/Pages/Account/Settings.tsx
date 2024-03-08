@@ -1,25 +1,25 @@
-import React, {MouseEventHandler, useEffect, useState} from "react";
-import {InertiaSharedProps} from "../../config/site";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "../../Components/Card";
-import {Separator} from "../../Components/Separator";
-import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "../../Components/Resizable";
-import {ScrollArea} from "../../Components/ScrollArea";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "../../Components/Tabs";
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "../../Components/Form";
+import React, {MouseEventHandler, useState} from "react";
+import {InertiaSharedProps} from "@/config/site";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/Components/Card";
+import {Separator} from "@/Components/Separator";
+import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/Components/Resizable";
+import {ScrollArea} from "@/Components/ScrollArea";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/Components/Tabs";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/Components/Form";
 import {useForm, useWatch} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod"
 import {z} from "zod";
-import {Input} from "../../Components/Input";
-import {Button} from "../../Components/Button";
+import {Input} from "@/Components/Input";
+import {Button} from "@/Components/Button";
 import {router} from "@inertiajs/react";
-import {useMessageToast} from "../../lib/hooks/useMessageToast";
-import {BASE64, MIME_TYPE} from "../../types/models";
-import {Avatar, AvatarFallback, AvatarImage} from "../../Components/Avatar";
-import {Dialog, DialogContent, DialogTrigger} from "../../Components/Dialog";
-import {UploadImage} from "../../Components/UploadImage";
+import {useMessageToast} from "@/lib/hooks/useMessageToast";
+import {BASE64, MIME_TYPE} from "@/types/models";
+import {Avatar, AvatarFallback, AvatarImage} from "@/Components/Avatar";
+import {Dialog, DialogContent, DialogTrigger} from "@/Components/Dialog";
+import {UploadImage} from "@/Components/UploadImage";
 import imageCompression from "browser-image-compression";
 import {blobToBase64} from "base64-blob";
-import useServerValidationErrorMessage from "../../lib/hooks/useServerValidationErrorMessage";
+import useServerValidationErrorMessage from "@/lib/hooks/useServerValidationErrorMessage";
 
 type SettingsPageProps = {
     account: {

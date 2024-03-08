@@ -5,9 +5,14 @@ export type HasCreationDate = { createdAt: Date };
 export type HasUpdateDate = { updatedAt: Date };
 export type HasTimestamp = HasUpdateDate & HasCreationDate;
 
+/*
+    All model type should have the same structure as
+    backend DTO class
+ */
+
 export const NEWSLETTER_CONTENT_TYPE = ["HTML", "MARKDOWN", 'PLAINTEXT'] as const;
 
-export const NEWSLETTER_STATUS = ["DRAFT", "SENT"];
+export const NEWSLETTER_STATUS = ["DRAFT", "SENT", "PENDING", "FAILED"];
 
 // TODO: change this to union of mime string, we use catch-all string type for now
 export type MIME_TYPE = string;
@@ -24,11 +29,22 @@ export type User = HasId & HasName & HasEmail & HasCreationDate & {
 export type Subscriber = HasId &
     HasEmail &
     HasTimestamp & { unsubscribeToken: string };
-export type Newsletter = HasId & HasTimestamp & {
+export type Newsletter = HasId & {
     subject: string;
     content: string;
     contentType: NewsletterContentType;
-    status: NewsletterStatus;
 };
 
+export type NewsletterWithStatus = Newsletter & {
+    status: NewsletterStatus;
+}
+
+export type NewsletterSendResult = NewsletterWithStatus & {
+    sendResults: {
+        subscriberId: number;
+        isSuccess: boolean;
+    }[]
+}
+
 export type ComposeNewsletter = Omit<Newsletter, "id" | "createdAt" | "updatedAt" | "status">;
+export type FilterColumn = { name: string, value: string }

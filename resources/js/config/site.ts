@@ -1,7 +1,7 @@
 import React from "react";
-import {Icons} from "../Components/Icons";
+import {Icons} from "@/Components/Icons";
 import {type QRCodeToDataURLOptions} from "qrcode";
-import {User} from "../types/models";
+import {User} from "@/types/models";
 
 export type PageDescription = {
     displayName: string;
@@ -56,6 +56,12 @@ const siteConfig = {
                 url: "/account/settings",
                 icon: Icons.UserX,
                 description: "Account Settings"
+            },
+            NewsletterStatus: {
+                displayName: "Newsletter Status",
+                url: "/dashboard/newsletter_status_page",
+                icon: Icons.Send,
+                description: "List of newsletter status"
             }
         } satisfies { [key: string]: PageDescription },
     },
@@ -73,7 +79,7 @@ export const dashboardPageGroups: PageGroupDescription = {
     },
     Newsletter: {
         icon: Icons.Newspaper,
-        pages: ["ComposeNewsletter", "DraftNewsletter"],
+        pages: ["ComposeNewsletter", "DraftNewsletter", "NewsletterStatus"],
     },
 };
 
@@ -95,7 +101,6 @@ export const QRCodeConversionOptions: QRCodeToDataURLOptions = {
     },
     width: 250
 }
-
 
 
 export default siteConfig;

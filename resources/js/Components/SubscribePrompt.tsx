@@ -1,14 +1,14 @@
 import React from "react";
-import { cn } from "../lib/utils";
+import {cn} from "@/lib/utils";
 
 type SubscribePromptProps = {
     name: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export default function SubscribePrompt({
-    name,
-    className,
-}: SubscribePromptProps) {
+                                            name,
+                                            className,
+                                        }: SubscribePromptProps) {
     return (
         <div
             className={cn(

@@ -58,6 +58,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/compose_newsletter_page', [NewsletterPageController::class, 'composeNewsletterPage'])->name('dashboard.composeNewsletter');
     Route::get('/draft_newsletter_page', [NewsletterPageController::class, 'draftNewsletterPage'])->name('dashboard.draftNewsletter');
     Route::get('/blacklisted_subscribers', [DashboardPageController::class, 'blacklistedSubscribersPage']);
+    Route::get('/newsletter_status_page', [NewsletterPageController::class, 'newsletterStatusPage']);
 
     // Dashboard actions
     Route::post('/subscribePage', [DashboardActionController::class, 'editSubscribePage']);
@@ -78,6 +79,9 @@ Route::middleware('auth')->prefix('user')->group(function () {
     Route::post('account', [AccountController::class, 'editAccount']);
 });
 
-Route::get('/register', [AuthPageController::class, 'registerPage']);
-Route::post('/checkEmail', [AuthActionController::class, 'checkEmail']);
-Route::post('/register', [AuthActionController::class, 'createNewAccount']);
+Route::middleware('userTo:dashboard.index')->group(function () {
+    Route::get('/register', [AuthPageController::class, 'registerPage']);
+    Route::post('/checkEmail', [AuthActionController::class, 'checkEmail']);
+    Route::post('/register', [AuthActionController::class, 'createNewAccount']);
+});
+

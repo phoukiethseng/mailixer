@@ -11,4 +11,5 @@ use App\Models\User;
 interface UserRepository extends CRUDRepository
 {
     public function findByEmail(string $email): User | null;
+
 }

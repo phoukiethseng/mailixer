@@ -1,11 +1,6 @@
 import React from "react";
-import {
-    ResponsivePie,
-    type CommonPieProps,
-    type DefaultRawDatum,
-    type MayHaveLabel,
-} from "@nivo/pie";
-import defaultTheme from "./config/theme";
+import {type CommonPieProps, type DefaultRawDatum, type MayHaveLabel, ResponsivePie,} from "@nivo/pie";
+import defaultTheme from "@/Components/Charts/config/theme";
 
 type PieChartProps = {
     data: Array<DefaultRawDatum & MayHaveLabel>;
@@ -26,7 +21,7 @@ const PieChart = (props: PieChartProps) => {
         },
         colors: {scheme: "green_blue"}
     };
-    const finalProps = { ...defaultProsp, ...props };
+    const finalProps = {...defaultProsp, ...props};
     return <ResponsivePie {...finalProps} />;
 };
 export default PieChart;

@@ -23,12 +23,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         $defaultUser = User::factory()->createOne([
             'name' => 'Kiethseng',
             'email' => 'puseng123@gmail.com',
@@ -49,27 +43,23 @@ class DatabaseSeeder extends Seeder
         $defaultUser->subscribePage()->save($subscribePage);
         $subscribePage->save();
 
-        $htmlContentType = NewsletterContentType::factory()->createOne([
-            'name' => 'html',
-            'id' => 1,
-        ]);
-        $markDownContentType = NewsletterContentType::factory()->createOne([
-            'name' => 'markdown',
-            'id' => 2,
-        ]);
-        $plainTextContentType = NewsletterContentType::factory()->createOne([
-            'name' => 'plaintext',
-            'id' => 3,
-        ]);
+        foreach(\App\Enums\NewsletterContentType::cases() as $newsletterContentTypeEnum) {
+            NewsletterContentType::factory()->createOne([
+                'id' => $newsletterContentTypeEnum->value,
+                'name' => $newsletterContentTypeEnum->name
+            ]);
+        }
 
-        $draftNewsletterStatus = NewsletterStatus::factory()->createOne([
-            'id' => 1,
-            'name' => 'DRAFT'
-        ]);
-        $sentNewsletterStatus = NewsletterStatus::factory()->createOne([
-            'id' => 2,
-            'name' => 'SENT'
-        ]);
+        $htmlContentType = NewsletterContentType::where('name', \App\Enums\NewsletterContentType::HTML->name)->first();
+
+        foreach (\App\Enums\NewsletterStatus::cases() as $newsletterStatusEnum) {
+            NewsletterStatus::factory()->createOne([
+                'id' => $newsletterStatusEnum->value,
+                'name' => $newsletterStatusEnum->name
+            ]);
+        }
+
+        $draftNewsletterStatus = NewsletterStatus::where('name', \App\Enums\NewsletterStatus::DRAFT->name)->first();
 
         $defaultNewsletter = Newsletter::factory()->makeOne([
             'subject' => 'Mailixer Sample Newsletter Subject',

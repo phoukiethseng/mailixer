@@ -1,11 +1,11 @@
 import React from "react";
-import DashBoardLayout from "../../../Layouts/DashBoardLayout";
+import DashBoardLayout from "@/Layouts/DashBoardLayout";
 
-import {InertiaSharedProps} from "../../../config/site";
+import {InertiaSharedProps} from "@/config/site";
 import {router} from "@inertiajs/react";
-import {useMessageToast} from "../../../lib/hooks/useMessageToast";
-import {ComposeNewsletter} from "../../../types/models";
-import ComposeNewsletterTextEditor from "../../../Components/ComposeNewsletterTextEditor";
+import {useMessageToast} from "@/lib/hooks/useMessageToast";
+import {ComposeNewsletter} from "@/types/models";
+import ComposeNewsletterTextEditor from "@/Components/ComposeNewsletterTextEditor";
 
 type NewsletterPageProps = {} & InertiaSharedProps;
 

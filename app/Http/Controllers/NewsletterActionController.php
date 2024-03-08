@@ -10,8 +10,6 @@ use App\Repositories\Interfaces\UserRepository;
 use App\Enums\NewsletterContentType;
 use App\Services\Interfaces\NewsletterService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rules\Enum;
 
 class NewsletterActionController extends Controller
 {

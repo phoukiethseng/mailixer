@@ -1,13 +1,13 @@
 import React, {useEffect, useRef} from "react";
 import {EditorContent, useEditor} from "@tiptap/react";
-import {Card, CardContent} from "./Card";
-import {Separator} from "./Separator";
-import {Button} from "./Button";
-import TextEditorFixedMenu from "./TextEditorFixedMenu";
-import {ComposeNewsletter} from "../types/models";
-import {ScrollArea} from "./ScrollArea";
-import {cn} from "../lib/utils";
-import {EditorExtensionList} from "../config/tiptap/extensions";
+import {Card, CardContent} from "@/Components/Card";
+import {Separator} from "@/Components/Separator";
+import {Button} from "@/Components/Button";
+import TextEditorFixedMenu from "@/Components/TextEditorFixedMenu";
+import {ComposeNewsletter} from "@/types/models";
+import {ScrollArea} from "@/Components/ScrollArea";
+import {cn} from "@/lib/utils";
+import {EditorExtensionList} from "@/config/tiptap/extensions";
 
 function ComposeNewsletterTextEditor(props: {
     newsletter?: ComposeNewsletter,

@@ -1,59 +1,17 @@
-import {
-    ColumnDef,
-    Row,
-    TableOptions,
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    useReactTable,
-    type SortingState, getSortedRowModel
-} from "@tanstack/react-table";
+import {ColumnDef, flexRender, type Table as TTable} from "@tanstack/react-table";
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "./Table";
-import { cn } from "../lib/utils";
-import React, {useState} from "react";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/Components/Table";
+import {cn} from "@/lib/utils";
+import React from "react";
 
 type DataTableProps<TData, TValue> = {
-    columns: ColumnDef<TData, TValue>[];
-    data: TData[];
-    tableOptions: Partial<TableOptions<TData>>;
+    table: TTable<TData>;
+    columns: ColumnDef<TData>[]
 } & React.ComponentPropsWithoutRef<"div">;
 
-export function DataTable<TData, TValue>({
-    data,
-    columns,
-    className,
-    tableOptions,
-}: DataTableProps<TData, TValue>) {
-
-    const [sorting, setSorting] = useState<SortingState>();
-
-    const {state, ...tableOptionsWithoutState} = tableOptions?.state ? tableOptions : {state: {}, ...tableOptions};
-
-    const table = useReactTable({
-        data,
-        columns,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        state: {
-            sorting,
-
-            // Parent component managed state will take
-            // precedence over default managed state
-            ...(state ?? {})
-        },
-
-        // We do this so parent component can overwrite pre-defined configuration
-        ...tableOptionsWithoutState,
-    });
+export function BaseDataTable<TData, TValue>({
+                                                 table, className, columns
+                                             }: DataTableProps<TData, TValue>) {
     return (
         <div className={cn("rounded-xl border text-foreground", className)}>
             <Table>
@@ -66,10 +24,10 @@ export function DataTable<TData, TValue>({
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
-                                                  header.column.columnDef
-                                                      .header,
-                                                  header.getContext()
-                                              )}
+                                                header.column.columnDef
+                                                    .header,
+                                                header.getContext()
+                                            )}
                                     </TableHead>
                                 );
                             })}

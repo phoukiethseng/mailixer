@@ -22,13 +22,13 @@ class AccountServiceImpl implements AccountService
     public function setDisplayName(User $user, string $displayName)
     {
         $user->name = $displayName;
-        $user->save();
+        $this->userRepository->save($user);
     }
 
     public function setEmail(User $user, string $email)
     {
         $user->email = $email;
-        $user->save();
+        $this->userRepository->save($user);
     }
 
     public function setProfilePicture(User $user, string $base64Image, string $mimeType)
@@ -36,16 +36,18 @@ class AccountServiceImpl implements AccountService
         $profile = $user->profilePicture;
         if ($profile) {
             $profile->base64_data = $base64Image;
-            $profile->save();
+//            $profile->save();
+            $user->profilePicture()->save($profile);
         } else {
             $newProfile = ProfilePicture::factory()->makeOne([
                 'base64_data' => $base64Image,
                 'mime_type' => $mimeType
             ]);
             $user->profilePicture()->save($newProfile);
-            $newProfile->save();
+//            $newProfile->save();
         }
-        $user->save();
+        $this->userRepository->save($user);
+
     }
 
     public function setPassword(User $user, string $newPassword, string $oldPassword): bool

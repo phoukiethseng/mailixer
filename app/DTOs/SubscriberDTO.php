@@ -2,16 +2,17 @@
 
 namespace App\DTOs;
 
-use \App\Models\Subscriber;
-use App\Traits\HasId;
+use App\Models\Subscriber;
 use App\Traits\HasEmail;
+use App\Traits\HasId;
 
-class SubscriberDTO
+class SubscriberDTO extends BaseDTO
 {
     use HasId, HasEmail;
 
     public $unsubscribeToken;
     public $createdAt;
+
     public function __construct(Subscriber $subscriber)
     {
         $this->id = $subscriber->id;

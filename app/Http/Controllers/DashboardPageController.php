@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\DTOs\NewsletterDTO;
+use App\Services\Interfaces\NewsletterService;
 use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
 use Exception;
@@ -14,7 +16,7 @@ use App\Repositories\Interfaces\UserRepository;
 class DashboardPageController extends Controller
 {
 
-    public function __construct(private SubscribePageService $subscribePageService, private SubscriptionService $subscriptionService, private UserRepository $userRepository)
+    public function __construct(private SubscribePageService $subscribePageService, private SubscriptionService $subscriptionService, private UserRepository $userRepository, private NewsletterService $newsletterService)
     {
 
     }
@@ -79,6 +81,8 @@ class DashboardPageController extends Controller
             'subscribers.blacklisted' => $this->subscriptionService->getAllBlacklistedSubscribersByUserId($userId)->mapInto(SubscriberDTO::class)
         ]);
     }
+
+
 }
 
 

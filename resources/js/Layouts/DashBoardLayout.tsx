@@ -20,7 +20,7 @@ import DashBoardNavigationItemGroup from "./DashBoardNavigationItemGroup";
 
 type DashBoardLayoutProps = {
     activePage: DashBoardMenuItems; // Current active page, must be any key from `siteConfig.dashboard.pages`
-} & InertiaSharedProps & React.ComponentPropsWithoutRef<"div">;
+} & React.ComponentPropsWithoutRef<"div">;
 
 export default function DashBoardLayout({
     children,

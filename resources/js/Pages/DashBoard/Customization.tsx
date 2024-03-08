@@ -1,16 +1,16 @@
 import React, {useEffect, useId, useState} from "react";
-import DashBoardLayout from "../../Layouts/DashBoardLayout";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "../../Components/Card";
-import {Separator} from "../../Components/Separator";
-import {useController, useForm, useWatch} from "react-hook-form";
+import DashBoardLayout from "@/Layouts/DashBoardLayout";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/Components/Card";
+import {Separator} from "@/Components/Separator";
+import {useForm, useWatch} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Textarea} from "../../Components/TextArea";
-import {Button} from "../../Components/Button";
+import {Textarea} from "@/Components/TextArea";
+import {Button} from "@/Components/Button";
 import SubscribeCard from "../../Components/SubscribeCard";
 import {router} from "@inertiajs/react";
-import {Form, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "../../Components/Form";
-import {InertiaSharedProps, QRCodeConversionOptions} from "../../config/site";
+import {Form, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@/Components/Form";
+import {InertiaSharedProps, QRCodeConversionOptions} from "@/config/site";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -21,23 +21,16 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "../../Components/AlertDialog";
-import {Input} from "../../Components/Input";
-import {Icons} from "../../Components/Icons";
-import {useToast} from "../../Components/use-toast";
-import {useMessageToast} from "../../lib/hooks/useMessageToast";
+} from "@/Components/AlertDialog";
+import {Input} from "@/Components/Input";
+import {Icons} from "@/Components/Icons";
+import {useToast} from "@/Components/use-toast";
+import {useMessageToast} from "@/lib/hooks/useMessageToast";
 import QRCode from "qrcode";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from "../../Components/Dialog";
+import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger} from "@/Components/Dialog";
 import {useToPng} from '@hugocxl/react-to-image';
 import dataUrlToBlob from "dataurl-to-blob";
-import {Switch} from "../../Components/Switch";
+import {Switch} from "@/Components/Switch";
 
 const SubscribePageCustomizationFormSchema = z.object({
     showProfilePicture: z.boolean(),
@@ -160,7 +153,8 @@ const Page = ({
                                         <FormField name={"showProfilePicture"} render={({field}) => {
                                             return (
                                                 <FormItem className={"flex flex-row gap-4 items-center"}>
-                                                    <Switch checked={field.value} onCheckedChange={field.onChange} className={""}/>
+                                                    <Switch checked={field.value} onCheckedChange={field.onChange}
+                                                            className={""}/>
                                                     <div className={"flex flex-col justify-start items-start gap-1"}>
                                                         <FormLabel>Show Profile Picture</FormLabel>
                                                         <FormDescription>Decide whether or not you want to show picture

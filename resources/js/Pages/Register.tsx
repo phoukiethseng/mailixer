@@ -1,21 +1,21 @@
-import React, {ChangeEvent, useEffect, useId, useRef, useState} from "react";
-import LogoText from "../Components/LogoText";
-import {Form, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "../Components/Form";
-import {useForm, useWatch} from "react-hook-form";
+import React, {ChangeEvent, useEffect, useId, useState} from "react";
+import LogoText from "@/Components/LogoText";
+import {Form, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/Components/Form";
+import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Carousel, CarouselApi, CarouselContent, CarouselItem} from "../Components/Carousel";
-import {Input} from "../Components/Input";
-import {Button} from "../Components/Button";
-import {Avatar, AvatarImage} from "../Components/Avatar";
-import {InertiaSharedProps} from "../config/site";
-import {BASE64, MIME_TYPE} from "../types/models";
-import {Dialog, DialogContent, DialogTrigger} from "../Components/Dialog";
-import {UploadImage} from "../Components/UploadImage";
+import {Carousel, CarouselApi, CarouselContent, CarouselItem} from "@/Components/Carousel";
+import {Input} from "@/Components/Input";
+import {Button} from "@/Components/Button";
+import {Avatar, AvatarImage} from "@/Components/Avatar";
+import {InertiaSharedProps} from "@/config/site";
+import {BASE64, MIME_TYPE} from "@/types/models";
+import {Dialog, DialogContent, DialogTrigger} from "@/Components/Dialog";
+import {UploadImage} from "@/Components/UploadImage";
 import imageCompression from "browser-image-compression";
 import {blobToBase64} from "base64-blob";
 import axios, {AxiosError} from "axios";
-import useLoader from "../lib/hooks/useLoader";
+import useLoader from "@/lib/hooks/useLoader";
 import {router} from "@inertiajs/react";
 
 // https://www.abstractapi.com/guides/email-address-pattern-validation

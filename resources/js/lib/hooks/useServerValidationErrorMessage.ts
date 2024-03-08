@@ -1,5 +1,5 @@
 import {UseFormReturn} from "react-hook-form";
-import {InertiaSharedProps} from "../../config/site";
+import {InertiaSharedProps} from "@/config/site";
 import useErrorBag from "./useErrorBag";
 import {useEffect} from "react";
 

@@ -7,7 +7,7 @@ use App\Traits\HasEmail;
 use App\Traits\HasId;
 use App\Traits\HasName;
 
-class UserDTO
+class UserDTO extends BaseDTO
 {
     use HasId, HasName, HasEmail;
 

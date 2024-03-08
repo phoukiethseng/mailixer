@@ -5,18 +5,14 @@ namespace App\Mail;
 use App\Models\Newsletter;
 use App\Models\Subscriber;
 use App\Models\User;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\URL;
 
-class SendNewsletter extends Mailable implements ShouldQueue
+class NewsletterEmail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use SerializesModels;
 
     public function __construct(private Newsletter $newsletter, private User $publisher, private Subscriber $subscriber, private string $unsubscribeUrl)
     {
@@ -70,6 +66,9 @@ class SendNewsletter extends Mailable implements ShouldQueue
         return new Content(
             html: 'email.html_template',
             with: [
+                'subject' => $this->newsletter->subject,
+                'subscriberId' => $this->subscriber->id,
+                'newsletterId' => $this->newsletter->id,
                 'content' => $content,
                 'contentType' => $contentType,
                 'unsubscribe_url' => $this->unsubscribeUrl

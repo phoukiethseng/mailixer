@@ -1,7 +1,7 @@
 import React, {ChangeEvent, MouseEvent} from "react";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "./Tabs";
-import {Input} from "./Input";
-import {Button} from "./Button";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/Components/Tabs";
+import {Input} from "@/Components/Input";
+import {Button} from "@/Components/Button";
 
 export function UploadImage(props: {
     ref?: React.MutableRefObject<HTMLInputElement | null>,
@@ -18,7 +18,7 @@ export function UploadImage(props: {
         </TabsList>
         <TabsContent value={"upload"}>
             {!(props?.disbaleFileUpload) && <Input type={"file"} ref={props.ref} accept={"image/*"}
-                   onChange={e => props.onImageFileSelectionChange(e)}/>}
+                                                   onChange={e => props.onImageFileSelectionChange(e)}/>}
             {(props?.disbaleFileUpload) && disableFunctionality()}
         </TabsContent>
         <TabsContent value={"fromUrl"} className={"flex flex-row gap-2 justify-center items-center"}>

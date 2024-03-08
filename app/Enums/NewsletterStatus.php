@@ -2,15 +2,18 @@
 
 namespace App\Enums;
 
-enum NewsletterStatus: int implements CaseNameSearchableBackedEnum {
+enum NewsletterStatus: int implements CaseNameSearchableBackedEnum
+{
     case DRAFT = 1;
-    case SENT = 2;
+    case PENDING = 2;
+    case SENT = 3;
 
     public static function getCase(string $caseName): NewsletterStatus
     {
         return match ($caseName) {
             'DRAFT' => NewsletterStatus::DRAFT,
-            'SENT' => NewsletterStatus::SENT
+            'PENDING' => NewsletterStatus::PENDING,
+            'SENT' => NewsletterStatus::SENT,
         };
     }
 }

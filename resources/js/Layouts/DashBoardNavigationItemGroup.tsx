@@ -1,16 +1,8 @@
 import React from "react";
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "../Components/Collapsible";
-import DashBoardNavigationItem from "./DashBoardNavigationItem";
-import siteConfig, {
-    DashBoardMenuItems,
-    PageDescription,
-    dashboardPageGroups,
-} from "../config/site";
-import { cn } from "../lib/utils";
+import {Collapsible, CollapsibleContent, CollapsibleTrigger,} from "@/Components/Collapsible";
+import DashBoardNavigationItem from "@/Layouts/DashBoardNavigationItem";
+import siteConfig, {DashBoardMenuItems, PageDescription,} from "@/config/site";
+import {cn} from "@/lib/utils";
 
 type DashBoardNavigationItemGroupProps = {
     groupName: string;
@@ -20,23 +12,23 @@ type DashBoardNavigationItemGroupProps = {
 } & React.ComponentPropsWithoutRef<"div">;
 
 export default function DashBoardNavigationItemGroup({
-    icon,
-    groupName,
-    pages,
-    activePage,
-    className,
-}: DashBoardNavigationItemGroupProps) {
+                                                         icon,
+                                                         groupName,
+                                                         pages,
+                                                         activePage,
+                                                         className,
+                                                     }: DashBoardNavigationItemGroupProps) {
     const GroupIcon = icon;
     return (
         <Collapsible
             className={cn("text-foreground hover:text-primary", className)}
         >
             <CollapsibleTrigger className="w-full flex flex-row gap-3 justify-start p-0">
-                <GroupIcon />
+                <GroupIcon/>
                 <p className={"text-lg font-bold "}>{groupName}</p>
             </CollapsibleTrigger>
             <CollapsibleContent className="flex flex-col">
-                {pages.map(({ displayName, url, icon }, index) => (
+                {pages.map(({displayName, url, icon}, index) => (
                     <DashBoardNavigationItem
                         className="mt-1"
                         key={index}
