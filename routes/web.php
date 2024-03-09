@@ -1,16 +1,16 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthActionController;
 use App\Http\Controllers\AuthPageController;
-use App\Http\Controllers\DashboardPageController;
 use App\Http\Controllers\DashboardActionController;
+use App\Http\Controllers\DashboardPageController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\NewsletterActionController;
 use App\Http\Controllers\NewsletterPageController;
-use App\Http\Controllers\AccountController;
 use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\SubscribePageController;
 use App\Http\Controllers\SubscribeActionController;
+use App\Http\Controllers\SubscribePageController;
 use App\Http\Controllers\UnsubscribePageController;
 use Illuminate\Support\Facades\Route;
 
@@ -71,6 +71,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::put('/updateNewsletter', [NewsletterActionController::class, 'updateNewsletter']);
     Route::put('/blacklistSubscriber', [SubscribeActionController::class, 'blacklistSubscriber']);
     Route::put('/whitelistSubscriber', [SubscribeActionController::class, 'whitelistSubscriber']);
+    Route::get('/previewNewsletter/{newsletterId}', [NewsletterPageController::class, 'previewNewsletter']);
 });
 
 Route::middleware('auth')->prefix('user')->group(function () {

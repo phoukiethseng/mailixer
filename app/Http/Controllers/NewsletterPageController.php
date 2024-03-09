@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\DTOs\NewsletterSendResultDTO;
 use App\DTOs\NewsletterStatusDTO;
+use App\Http\Requests\PreviewNewsletterRequest;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\NewsletterService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\View;
 use Inertia\Inertia;
 
 class NewsletterPageController extends Controller
@@ -41,6 +43,20 @@ class NewsletterPageController extends Controller
         });
         return Inertia::render('DashBoard/Newsletter/NewsletterStatus', [
             'newsletters' => $newsletterSendResultsDTOs
+        ]);
+    }
+
+    public function previewNewsletter($newsletterId)
+    {
+        $newsletter = $this->newsletterService->getNewsletterById($newsletterId);
+        $previewNewsletterRawHTML = View::make('email.html_template', [
+            'subject' => $newsletter->subject,
+            'contentType' => $newsletter->contentType,
+            'content' => $newsletter->content,
+            'unsubscribe_url' => "",
+        ])->render();
+        return response()->json([
+            'html' => $previewNewsletterRawHTML
         ]);
     }
 }

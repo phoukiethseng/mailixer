@@ -4,6 +4,7 @@ import defaultTheme from "@/Components/Charts/config/theme";
 
 type PieChartProps = {
     data: Array<DefaultRawDatum & MayHaveLabel>;
+    className: string;
 } & CommonPieProps<DefaultRawDatum>;
 
 const PieChart = (props: PieChartProps) => {
@@ -12,15 +13,20 @@ const PieChart = (props: PieChartProps) => {
         theme: defaultTheme,
         innerRadius: 0.35,
         activeOuterRadiusOffset: 5,
-        borderWidth: 2,
-        padAngle: 3,
-        cornerRadius: 8,
-        margin: {
-            top: 8,
-            bottom: 8,
+        borderWidth: 1,
+        padAngle: 4,
+        cornerRadius: 4,
+
+        colors: {scheme: "set2"},
+        borderColor: {
+            from: "color",
+            modifiers: [
+                ["darker", 0.5]
+            ]
         },
-        colors: {scheme: "green_blue"}
+
     };
+
     const finalProps = {...defaultProsp, ...props};
     return <ResponsivePie {...finalProps} />;
 };

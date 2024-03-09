@@ -59,7 +59,7 @@ function ComposeNewsletterTextEditor(props: {
         <CardContent className={"flex flex-col items-center justify-start"}>
             <TextEditorFixedMenu editor={textEditor} iconSize={14} iconStrokeWidth={2.5}/>
             <ScrollArea className={"w-full h-[57vh] mt-2"}>
-                <EditorContent editor={textEditor} className={"w-full h-full"}/>
+                <EditorContent editor={textEditor} className={"border-l-2 border-secondary"}/>
             </ScrollArea>
             <Separator className={"mb-4"}/>
             <div className={"w-full flex flex-row justify-start items-center gap-4"}>

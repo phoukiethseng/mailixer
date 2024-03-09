@@ -19,8 +19,8 @@ const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
 
     const [isImageDialogOpen, setIsImageDialogOpen] = useState<boolean>(false);
 
-    async function handleImageUpload() {
-        const imageFile = uploadInputRef.current?.files?.[0];
+    async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+        const imageFile = e.target.files?.[0];
         if (imageFile) {
             const imageCompressionOptions = {
                 maxSizeMB: 1,
@@ -38,8 +38,8 @@ const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
         }
     }
 
-    function handleImageUrlSubmission() {
-        const imageUrl = imageUrlInputRef.current?.value;
+    function handleImageUrlSubmission(url: string) {
+        const imageUrl = url;
         if (imageUrl) {
             editor.chain().focus()
                 .setImage({
@@ -90,14 +90,14 @@ const TextEditorFixedMenu = ({iconSize, iconStrokeWidth, editor}: {
 
         <Separator orientation={"vertical"} className={"h-5"}/>
         <Dialog open={isImageDialogOpen} onOpenChange={setIsImageDialogOpen}>
-            <DialogTrigger>
+            <DialogTrigger asChild>
                 <Button variant={editor.isActive("strike") ? "default" : "ghost"} size={"icon"}>
                     <Icons.Image size={iconSize} strokeWidth={iconStrokeWidth}/>
                 </Button>
             </DialogTrigger>
             <DialogContent>
-                <UploadImage ref={uploadInputRef} onImageFileSelectionChange={async () => await handleImageUpload()}
-                             ref1={imageUrlInputRef} onImageURLSubmission={() => handleImageUrlSubmission()}/>
+                <UploadImage onImageFileSelectionChange={handleImageUpload}
+                             onImageURLSubmission={handleImageUrlSubmission}/>
             </DialogContent>
         </Dialog>
         <Separator orientation={"vertical"} className={"h-5"}/>

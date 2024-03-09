@@ -1,31 +1,33 @@
-import React, {ChangeEvent, MouseEvent} from "react";
+import React, {Ref, useRef} from "react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/Components/Tabs";
 import {Input} from "@/Components/Input";
 import {Button} from "@/Components/Button";
 
 export function UploadImage(props: {
-    ref?: React.MutableRefObject<HTMLInputElement | null>,
-    onImageFileSelectionChange: (e: ChangeEvent<HTMLInputElement>) => (Promise<void> | void),
-    ref1?: React.MutableRefObject<HTMLInputElement | null>,
-    onImageURLSubmission: (e: MouseEvent<HTMLButtonElement>) => void,
+    onImageFileSelectionChange: (e: React.ChangeEvent<HTMLInputElement>) => (Promise<void> | void),
+    onImageURLSubmission: (url: string) => void,
     disableFromUrl?: boolean,
-    disbaleFileUpload?: boolean,
+    disableFileUpload?: boolean,
 }) {
+
+    const urlInputRef = useRef<HTMLInputElement | null>();
+
     return <Tabs className={"w-full flex flex-col justify-start items-center"} defaultValue={"upload"}>
         <TabsList className={"mb-4"}>
             <TabsTrigger value={"upload"} defaultChecked>Upload</TabsTrigger>
             <TabsTrigger value={"fromUrl"}>From URL</TabsTrigger>
         </TabsList>
         <TabsContent value={"upload"}>
-            {!(props?.disbaleFileUpload) && <Input type={"file"} ref={props.ref} accept={"image/*"}
+            {!(props?.disableFileUpload) && <Input type={"file"} accept={"image/*"}
                                                    onChange={e => props.onImageFileSelectionChange(e)}/>}
-            {(props?.disbaleFileUpload) && disableFunctionality()}
+            {(props?.disableFileUpload) && disableFunctionality()}
         </TabsContent>
         <TabsContent value={"fromUrl"} className={"flex flex-row gap-2 justify-center items-center"}>
             {!(props.disableFromUrl) && <>
-                <Input type={"text"} ref={props.ref1} placeholder={"Enter your image url"}
+                <Input type={"text"} ref={urlInputRef as Ref<HTMLInputElement>} placeholder={"Enter your image url"}
                        className={"w-60"}/>
-                <Button variant={"default"} onClick={e => props.onImageURLSubmission(e)}>Confirm</Button>
+                <Button variant={"default"}
+                        onClick={e => props.onImageURLSubmission(urlInputRef.current?.value ?? "")}>Confirm</Button>
             </>}
             {(props?.disableFromUrl) && disableFunctionality()}
         </TabsContent>

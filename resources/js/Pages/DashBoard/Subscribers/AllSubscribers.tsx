@@ -2,7 +2,7 @@ import React from "react";
 import {InertiaSharedProps} from "../../../config/site";
 import DashBoardLayout from "../../../Layouts/DashBoardLayout";
 import {useMessageToast} from "../../../lib/hooks/useMessageToast";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "../../../Components/Card";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "../../../Components/Card";
 import {Icons} from "../../../Components/Icons";
 import PieChart from "../../../Components/Charts/Pie";
 import {getSubscriberESP} from "../../../lib/analytics/subscriber";
@@ -75,17 +75,38 @@ const SubscribersPage = ({
                                 Subscriber's Email Service Providers
                             </CardDescription>
                         </CardHeader>
-                        <div className="h-[200px] w-full flex flex-col justify-center items-center">
+                        <CardContent className="h-[200px] pb-0 w-[300px] flex flex-col justify-center items-center">
                             {ESPStats.length > 0 && (
                                 <PieChart
+                                    className={"shadow-md"}
                                     data={ESPStats}
-                                    innerRadius={0.3}
-                                    arcLabel={(data) =>
-                                        `${data.id[0].toUpperCase()}${data.id.slice(
-                                            1
-                                        )}`
-                                    }
-                                    enableArcLinkLabels={false}
+                                    innerRadius={0.5}
+                                    // arcLabel={(data) =>
+                                    //     `${data.id[0].toUpperCase()}${data.id?.slice(
+                                    //         1
+                                    //     )}`
+                                    // }
+                                    enableArcLabels={false}
+                                    enableArcLinkLabels={true}
+                                    arcLinkLabelsDiagonalLength={10}
+                                    arcLinkLabelsStraightLength={7}
+                                    margin={{
+                                        bottom: 0,
+                                        top: 5,
+                                        left: 60,
+                                        right: 60
+                                    }}
+                                    // legends={[
+                                    //     {
+                                    //         anchor: "bottom",
+                                    //         direction: "row",
+                                    //         itemDirection: "top-to-bottom",
+                                    //         symbolShape: "square",
+                                    //         itemHeight: 0,
+                                    //         itemWidth: 55,
+                                    //         translateY: 15
+                                    //     }
+                                    // ]}
                                 />
                             )}
                             {ESPStats.length < 1 && (
@@ -93,8 +114,7 @@ const SubscribersPage = ({
                                     No Data
                                 </p>
                             )}
-                        </div>
-                        <CardFooter/>
+                        </CardContent>
                     </Card>
 
                 </div>

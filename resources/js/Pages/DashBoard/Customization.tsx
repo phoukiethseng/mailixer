@@ -29,7 +29,10 @@ import {useMessageToast} from "@/lib/hooks/useMessageToast";
 import QRCode from "qrcode";
 import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger} from "@/Components/Dialog";
 import {useToPng} from '@hugocxl/react-to-image';
+
+// @ts-ignore
 import dataUrlToBlob from "dataurl-to-blob";
+
 import {Switch} from "@/Components/Switch";
 
 const SubscribePageCustomizationFormSchema = z.object({

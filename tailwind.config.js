@@ -1,4 +1,4 @@
-const { fontFamily } = require("tailwindcss/defaultTheme");
+const {fontFamily} = require("tailwindcss/defaultTheme");
 const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
@@ -23,6 +23,7 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ["Inclusive Sans", ...defaultTheme.fontFamily.sans],
+                "futura-pt": ["futura-pt", ...defaultTheme.fontFamily.sans]
             },
             colors: {
                 border: "hsl(var(--border))",
@@ -69,12 +70,12 @@ module.exports = {
             },
             keyframes: {
                 "accordion-down": {
-                    from: { height: 0 },
-                    to: { height: "var(--radix-accordion-content-height)" },
+                    from: {height: 0},
+                    to: {height: "var(--radix-accordion-content-height)"},
                 },
                 "accordion-up": {
-                    from: { height: "var(--radix-accordion-content-height)" },
-                    to: { height: 0 },
+                    from: {height: "var(--radix-accordion-content-height)"},
+                    to: {height: 0},
                 },
             },
             animation: {
