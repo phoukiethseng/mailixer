@@ -12,10 +12,10 @@ import {cn} from "@/lib/utils";
 
 const HomePage = () => {
     return (
-        <div className={"w-screen min-h-screen bg-[url(/background.png)] bg-top bg-no-repeat"}>
+        <div className={"w-screen min-h-screen bg-[url(/background.png)] bg-top bg-cover dark  text-foreground"}>
             <header className={"w-full pb-4 flex justify-center items-center"}>
                 <section
-                    className={"m-0 flex flex-row py-5 px-7 justify-between items-center w-[60%] min-h-[60px] "}>
+                    className={"m-0 flex flex-row py-5 px-1 justify-between items-center w-[60%] min-h-[60px] "}>
                     <nav className={"flex flex-row justify-start gap-3 items-center"}>
                         <a href={"/"}>
                             <LogoText className={"text-3xl"}/>
@@ -23,7 +23,7 @@ const HomePage = () => {
                         <NavigationMenu>
                             <NavigationMenuList>
                                 <NavigationMenuItem>
-                                    <a href={"/login"}>
+                                    <a href={"/docs"}>
                                         <NavigationMenuLink
                                             className={cn(navigationMenuTriggerStyle(), "bg-transparent")}>
                                             Documentation
@@ -44,11 +44,11 @@ const HomePage = () => {
 
             </header>
             <main className={"flex flex-col justify-start items-center"}>
-                <h1 className={"text-6xl font-extrabold text-center mt-[150px] text-[#29332D] font-['futura-pt'] leading-tight"}>Hassle
+                <h1 className={"text-6xl font-extrabold text-center mt-[120px] text-[#29332D] font-['futura-pt'] leading-tight text-foreground"}>Hassle
                     Free<br/>
                     <span className={"text-primary drop-shadow-xl"}>Newsletter</span> List
                     Management</h1>
-                <h2 className={"text-center text-xl max-w-xl mt-4 mx-auto font-light"}>No need
+                <h2 className={"text-center text-2xl max-w-xl mt-4 mx-auto font-medium font-['futura-pt']"}>No need
                     to setup your
                     own
                     subscribe page.
@@ -58,7 +58,9 @@ const HomePage = () => {
                     <a href={"/login"}>
                         <Button size={"lg"} variant={"default"} className={"rounded-xl"}>Get Started</Button>
                     </a>
-                    <Button size={"lg"} variant={"outline"} className={"rounded-xl"}>Learn More</Button>
+                    <a href={"/docs"}>
+                        <Button size={"lg"} variant={"secondary"} className={"rounded-xl"}>Learn More</Button>
+                    </a>
                 </div>
             </main>
         </div>

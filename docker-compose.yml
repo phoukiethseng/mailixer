@@ -8,3 +8,10 @@ services:
             POSTGRES_PASSWORD: example
             POSTGRES_USER: app
             POSTGRES_DB: mailixer
+        volumes:
+            - type: volume
+              source: db-data
+              target: /var/lib/postgres/data
+
+volumes:
+    db-data:

@@ -32,7 +32,9 @@ import {
     Users2,
     UserX,
     X,
-    XCircle
+    XCircle,
+    Mail,
+    Lock,
 } from "lucide-react";
 
 const Icons = {
@@ -69,7 +71,9 @@ const Icons = {
     Link: Link,
     ChevronsUpDown: ChevronsUpDown,
     MoreHorizontal: MoreHorizontal,
-    Columns: Columns
+    Columns: Columns,
+    Mail: Mail,
+    Lock: Lock,
 };
 
 export {Icons};

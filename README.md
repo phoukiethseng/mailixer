@@ -15,7 +15,7 @@ composer update
 NPM Dependencies
 
 ```shell
-npm run dev
+npm install
 ```
 
 ## Setup Postgresql Database

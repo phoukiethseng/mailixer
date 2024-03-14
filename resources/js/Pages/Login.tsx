@@ -1,7 +1,7 @@
 import React from "react";
 import {Button} from "@/Components/Button";
 import {router, usePage} from "@inertiajs/react";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/Components/Card";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/Components/Card";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -10,6 +10,7 @@ import {Input} from "@/Components/Input";
 import {Alert, AlertDescription, AlertTitle} from "@/Components/Alert";
 import {Icons} from "@/Components/Icons";
 import LogoText from "@/Components/LogoText";
+import IconInput from "@/Components/IconInput";
 
 const loginSchema = z.object({
     email: z.string().email().nonempty(),
@@ -53,7 +54,8 @@ export default function LoginPage() {
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input
+                                            <IconInput
+                                                icon={Icons.Mail}
                                                 {...field}
                                                 placeholder="hello@example.com"
                                             />
@@ -70,7 +72,8 @@ export default function LoginPage() {
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
                                             <div className="flex flex-row justify-between">
-                                                <Input
+                                                <IconInput
+                                                    icon={Icons.Lock}
                                                     {...field}
                                                     placeholder="Password"
                                                     type={"password"}
@@ -82,7 +85,7 @@ export default function LoginPage() {
                                 )}
                             />
                             <Button type="submit" className="mt-4 w-full">
-                                Login
+                                Sign In
                             </Button>
                         </form>
                     </Form>
@@ -96,6 +99,9 @@ export default function LoginPage() {
                         </Alert>
                     )}
                 </CardContent>
+                <CardFooter>
+                    <p className={"text-xs text-muted-foreground"}>Don't have account yet? <a className={"text-primary font-semibold"} href={"/register"}>Sign Up</a></p>
+                </CardFooter>
             </Card>
         </div>
     );
