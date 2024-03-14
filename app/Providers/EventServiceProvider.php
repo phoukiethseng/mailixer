@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
+use App\Listeners\CreateProfilePicture;
+use App\Listeners\CreateSubscribePage;
 use App\Listeners\SetNewsletterMessageId;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Mail\Events\MessageSent;
-use Illuminate\Queue\Events\JobFailed;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -19,7 +19,9 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Registered::class => [
-            SendEmailVerificationNotification::class,
+//            SendEmailVerificationNotification::class,
+            CreateSubscribePage::class,
+            CreateProfilePicture::class,
         ],
         MessageSent::class => [
             SetNewsletterMessageId::class

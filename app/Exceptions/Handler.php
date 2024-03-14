@@ -27,24 +27,18 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-
-        });
-    }
-
-    public function render($request, Throwable $e)
-    {
-        if ($e instanceof NotFoundHttpException) {
-
-            $response = parent::render($request, $e);
-
+        $this->renderable(function (NotFoundHttpException $e, Request $request) {
             return Inertia::render('NotFoundError', [
                 'error.message' => App::isLocal() ? $e->getMessage() : null,
-                'error.statusCode' => $response->getStatusCode()
-            ])->toResponse($request)->setStatusCode($response->status());
-        }
-        return parent::render($request, $e);
+                'error.statusCode' => 404
+            ])->toResponse($request)->setStatusCode(404);
+        });
+
+        $this->renderable(function (ServiceException | \ErrorException $e, Request $request) {
+            return Inertia::render('InternalError', [
+                'error.message' => App::isLocal() ? $e->getMessage() : null,
+                'error.statusCode' => 500
+            ])->toResponse($request)->setStatusCode(500);
+        });
     }
-
-
 }

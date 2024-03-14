@@ -26,7 +26,7 @@ export default function SubscribePage({auth, subscribePage}: SubscribePageProps)
     return (
         <div className="min-h-screen w-full flex flex-col justify-center items-center gap-6">
             <SubscribeCard
-                user={{name: subscribePage.user.name, profilePicture: subscribePage.user.profilePicture}}
+                user={{name: subscribePage.user.name, profilePictureUrl: subscribePage.user.profilePictureUrl}}
                 subscribePage={subscribePage}
                 errors={{message: errors?.message}}
                 onSubscribe={handleFormSubmit}

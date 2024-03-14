@@ -14,6 +14,7 @@ import {Icons} from "@/Components/Icons";
 import {cn} from "@/lib/utils";
 import {Avatar, AvatarFallback, AvatarImage} from "@/Components/Avatar";
 import {User} from "@/types/models";
+import {useProfilePicture} from "@/lib/hooks/useProfilePicture";
 
 const emailFormSchema = z.object({
     email: z.string().email(),
@@ -24,7 +25,7 @@ export type EmailForm = z.infer<typeof emailFormSchema>;
 type SubscribeCardProps = {
     user: {
         name: string;
-        profilePicture: User["profilePicture"]
+        profilePictureUrl: User["profilePictureUrl"]
     };
     subscribePage: {
         showProfilePicture: boolean
@@ -44,6 +45,8 @@ export default function SubscribeCard(props: SubscribeCardProps) {
         resolver: zodResolver(emailFormSchema),
     });
 
+    const profilePicture = useProfilePicture(props.user.profilePictureUrl)
+
     function defaultHandleSubmit(data: EmailForm) {
     }
 
@@ -58,7 +61,7 @@ export default function SubscribeCard(props: SubscribeCardProps) {
                 <SubscribePrompt name={props.user.name}></SubscribePrompt>
                 {props.subscribePage.showProfilePicture &&
                     <Avatar className={"w-[7.5rem] h-[7.5rem] self-center border-2 border-primary shadow-lg"}>
-                        <AvatarImage src={props.user.profilePicture ?? ""} alt={"Author's profile picture"}/>
+                        <AvatarImage src={profilePicture ?? ""} alt={"Author's profile picture"}/>
                         <AvatarFallback>MX</AvatarFallback>
                     </Avatar>}
             </CardHeader>

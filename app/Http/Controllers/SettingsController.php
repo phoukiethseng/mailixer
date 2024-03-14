@@ -21,7 +21,7 @@ class SettingsController extends Controller
         $userDTO = new UserDTO($user);
         return Inertia::render('Account/Settings', [
             'account' => [
-                'profilePicture' => $userDTO->profilePicture,
+                'profilePictureUrl' => $userDTO->profilePictureUrl,
                 'profilePictureType' => $userDTO->profilePictureType,
                 'displayName' => $userDTO->name,
                 'email' => $userDTO->email,

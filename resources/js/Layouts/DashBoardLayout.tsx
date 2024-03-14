@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import { Separator } from "../Components/Separator";
+import React from "react";
+import {Separator} from "../Components/Separator";
 import LogoText from "../Components/LogoText";
-import { Avatar, AvatarFallback, AvatarImage } from "../Components/Avatar";
-import { router, usePage } from "@inertiajs/react";
-import {dashboardPageGroups, type DashBoardMenuItems, InertiaSharedProps} from "../config/site";
-import siteConfig from "../config/site";
-import { Button } from "../Components/Button";
+import {Avatar, AvatarFallback, AvatarImage} from "@/Components/Avatar";
+import {router, usePage} from "@inertiajs/react";
+import siteConfig, {type DashBoardMenuItems, dashboardPageGroups, InertiaSharedProps} from "@/config/site";
+import {Button} from "@/Components/Button";
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-    DropdownMenuItem,
-} from "../Components/DropDownMenu";
-import { Icons } from "../Components/Icons";
+} from "@/Components/DropDownMenu";
+import {Icons} from "@/Components/Icons";
 import DashBoardSubPageHeader from "./DashBoardSubPageHeader";
 import DashBoardNavigationItemGroup from "./DashBoardNavigationItemGroup";
+import {useProfilePicture} from "@/lib/hooks/useProfilePicture";
 
 type DashBoardLayoutProps = {
     activePage: DashBoardMenuItems; // Current active page, must be any key from `siteConfig.dashboard.pages`
@@ -29,13 +29,16 @@ export default function DashBoardLayout({
     const {props: {auth}} = usePage<InertiaSharedProps>();
     const pageDescription = siteConfig.dashboard.pages[activePage].description;
     const pageTitle = siteConfig.dashboard.pages[activePage].displayName;
+
+    const profilePictureBase64 = useProfilePicture(auth.user.profilePictureUrl);
+
     return (
         <div className="flex flex-row items-stretch min-h-screen w-full">
             <aside className="w-[90%] sm:w-[70%] md:w-[50%] lg:w-[30%] xl:w-[20%] border-r border-border pt-4 flex flex-col justify-start items-center gap-4">
                 <LogoText className="text-3xl" />
                 <Separator className="my-4" />
                 <Avatar className="w-12 h-12 lg:w-16 lg:h-16">
-                    <AvatarImage src={auth.user.profilePicture ?? "/default_avatar.png"} />
+                    <AvatarImage src={profilePictureBase64 ?? "/default_avatar.png"} />
                     <AvatarFallback className="text-sm font-bold">
                         MX
                     </AvatarFallback>

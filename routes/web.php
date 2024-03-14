@@ -8,10 +8,12 @@ use App\Http\Controllers\DashboardPageController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\NewsletterActionController;
 use App\Http\Controllers\NewsletterPageController;
+use App\Http\Controllers\ProfileResourceController;
 use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\SubscribeActionController;
+use App\Http\Controllers\SubscriptionActionController;
 use App\Http\Controllers\SubscribePageController;
 use App\Http\Controllers\UnsubscribePageController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,12 +43,17 @@ Route::prefix('subscribe_page')->group(function () {
     Route::get('/{token}', [SubscribePageController::class, 'subscribePage'])->name("subscribe.index");
     Route::get('/{token}/success', [SubscribePageController::class, 'successPage'])->name('subscribe.success');
 
-    Route::post('/', [SubscribeActionController::class, 'subscribe']);
+    Route::post('/', [SubscriptionActionController::class, 'subscribe']);
 
 });
 
 Route::prefix('/unsubscribe')->group(function () {
     Route::middleware('signed')->get('/{unsubscribeToken}', [UnsubscribePageController::class, 'unsubscribePage'])->name('unsubscribe');
+
+    // List-Unsubscribe One Click POST request from gmail
+    Route::middleware('signed')->post('/{unsubscribeToken}', [SubscriptionActionController::class, 'listUnsubscribeOneClick'])->name('unsubscribe.oneClick');
+
+
 });
 
 
@@ -69,8 +76,8 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::post('/saveNewsletter', [NewsletterActionController::class, 'saveNewsletter']);
     Route::delete('/deleteNewsletter', [NewsletterActionController::class, 'deleteNewsletter']);
     Route::put('/updateNewsletter', [NewsletterActionController::class, 'updateNewsletter']);
-    Route::put('/blacklistSubscriber', [SubscribeActionController::class, 'blacklistSubscriber']);
-    Route::put('/whitelistSubscriber', [SubscribeActionController::class, 'whitelistSubscriber']);
+    Route::put('/blacklistSubscriber', [SubscriptionActionController::class, 'blacklistSubscriber']);
+    Route::put('/whitelistSubscriber', [SubscriptionActionController::class, 'whitelistSubscriber']);
     Route::get('/previewNewsletter/{newsletterId}', [NewsletterPageController::class, 'previewNewsletter']);
 });
 
@@ -78,6 +85,7 @@ Route::middleware('auth')->prefix('user')->group(function () {
     Route::get('settings', [SettingsController::class, 'AccountSettingsPage']);
     Route::post('profile', [AccountController::class, 'editProfile']);
     Route::post('account', [AccountController::class, 'editAccount']);
+    Route::get('profilePicture/{userId}', [ProfileResourceController::class, 'getProfilePicture'])->name('user.profile');
 });
 
 Route::middleware('userTo:dashboard.index')->group(function () {
@@ -85,4 +93,12 @@ Route::middleware('userTo:dashboard.index')->group(function () {
     Route::post('/checkEmail', [AuthActionController::class, 'checkEmail']);
     Route::post('/register', [AuthActionController::class, 'createNewAccount']);
 });
+
+
+// TODO: Make email verification actually work
+//Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//    $request->fulfill();
+//
+//    return to_route('home');
+//})->middleware(['auth', 'signed'])->name('verification.verify');
 

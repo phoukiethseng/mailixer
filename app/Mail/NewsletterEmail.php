@@ -8,7 +8,9 @@ use App\Models\User;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Headers;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\URL;
 
 class NewsletterEmail extends Mailable
 {
@@ -30,6 +32,14 @@ class NewsletterEmail extends Mailable
             to: $this->subscriber->email,
             from: $this->publisher->name . '@mailixer.cc',
         );
+    }
+
+    public function headers(): Headers
+    {
+        return new Headers(text: [
+            'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click',
+            'List-Unsubscribe' => '<'. $this->unsubscribeUrl . '>'
+        ]);
     }
 
     /**

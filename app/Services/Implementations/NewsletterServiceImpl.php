@@ -4,6 +4,7 @@ namespace App\Services\Implementations;
 
 use App\Enums\NewsletterContentType;
 use App\Enums\NewsletterStatus;
+use App\Exceptions\ServiceException;
 use App\Jobs\SendNewsletter;
 use App\Mail\NewsletterEmail;
 use App\Models\Newsletter;
@@ -32,7 +33,7 @@ class NewsletterServiceImpl implements NewsletterService
 
         // Don't queue sending task if there is zero subscribers
         if (sizeof($whitelistedSubscribers) <= 0) {
-            throw new \Exception('there is no subscriber to send newsletter');
+            throw new ServiceException('there is no subscriber to send newsletter');
         }
 
         foreach ($whitelistedSubscribers as $subscriber) {

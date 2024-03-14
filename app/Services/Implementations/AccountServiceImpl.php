@@ -2,13 +2,16 @@
 
 namespace App\Services\Implementations;
 
+use App\Exceptions\ServiceException;
 use App\Models\ProfilePicture;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\AccountService;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 
 class AccountServiceImpl implements AccountService
@@ -64,16 +67,30 @@ class AccountServiceImpl implements AccountService
 
     public function registerNewUser(string $name, string $email, string $password): User
     {
-        $newUser = $this->userRepository->getNewInstance([
-            'name' => $name,
-            'email' => $email,
-            'password' => Hash::make($password)
-        ]);
+        try {
+            DB::beginTransaction();
 
-        $this->userRepository->save($newUser);
-        Event::dispatch(new Registered($newUser));
+            $newUser = $this->userRepository->getNewInstance([
+                'name' => $name,
+                'email' => $email,
+                'password' => Hash::make($password)
+            ]);
 
-        return $newUser;
+            $this->userRepository->save($newUser);
+
+            // Make sure any side-effect run successfully before committing,
+            // rollback if any of side-effect failed to run
+            Event::dispatch(new Registered($newUser));
+
+            DB::commit();
+
+            return $newUser;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::debug('verifyEmail', [$e]);
+            throw new ServiceException("Failed to create new user");
+        }
     }
 
     public function checkExistingUserByEmail($email): bool

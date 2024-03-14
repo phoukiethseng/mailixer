@@ -10,7 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class SubscribeActionController extends Controller
+class SubscriptionActionController extends Controller
 {
     public function __construct(private SubscriptionService $subscriptionService, private SubscribePageService $subscribePageService)
     {
@@ -66,6 +66,15 @@ class SubscribeActionController extends Controller
             return back()->withErrors([
                 'message' => 'Error while whitelisting subscriber'
             ]);
+        }
+    }
+
+    public function listUnsubscribeOneClick($unsubscribeToken) {
+        try {
+            $this->subscriptionService->unsusbscribeByToken($unsubscribeToken);
+            return response()->setStatusCode(200);
+        } catch (Exception $e) {
+            Log::debug('listUnsubscribeOneClick', [$e]);
         }
     }
 }

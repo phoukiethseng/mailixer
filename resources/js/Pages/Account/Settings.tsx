@@ -1,4 +1,4 @@
-import React, {MouseEventHandler, useState} from "react";
+import React, {MouseEventHandler, useEffect, useState} from "react";
 import {InertiaSharedProps} from "@/config/site";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/Components/Card";
 import {Separator} from "@/Components/Separator";
@@ -13,17 +13,18 @@ import {Input} from "@/Components/Input";
 import {Button} from "@/Components/Button";
 import {router} from "@inertiajs/react";
 import {useMessageToast} from "@/lib/hooks/useMessageToast";
-import {BASE64, MIME_TYPE} from "@/types/models";
+import { MIME_TYPE } from "@/types/models";
 import {Avatar, AvatarFallback, AvatarImage} from "@/Components/Avatar";
 import {Dialog, DialogContent, DialogTrigger} from "@/Components/Dialog";
 import {UploadImage} from "@/Components/UploadImage";
 import imageCompression from "browser-image-compression";
 import {blobToBase64} from "base64-blob";
 import useServerValidationErrorMessage from "@/lib/hooks/useServerValidationErrorMessage";
+import {useProfilePicture} from "@/lib/hooks/useProfilePicture";
 
 type SettingsPageProps = {
     account: {
-        profilePicture: BASE64,
+        profilePictureUrl: string,
         profilePictureType: MIME_TYPE
         displayName: string;
         email: string;
@@ -50,10 +51,18 @@ function FormAction(props: { onBackButtonClick: MouseEventHandler<HTMLButtonElem
 export default function SettingsPage(props: SettingsPageProps) {
     useMessageToast(props);
 
+    const profilePicture = useProfilePicture(props.account.profilePictureUrl);
+
+    useEffect(() => {
+        if (profilePicture && profilePicture !== "") {
+            profileForm.setValue('profilePicture', profilePicture);
+        }
+    }, [profilePicture]);
+
     const profileForm = useForm<z.infer<typeof profileFormZod>>({
         resolver: zodResolver(profileFormZod),
         defaultValues: {
-            profilePicture: props.account.profilePicture ?? "",
+            profilePicture: profilePicture ?? "/default_avatar.png",
             displayName: props.account.displayName,
         }
     });
@@ -72,8 +81,8 @@ export default function SettingsPage(props: SettingsPageProps) {
     useServerValidationErrorMessage<z.infer<typeof accountFormZod>>(accountForm, "account", props);
 
     const currentProfilePicture = useWatch({name: "profilePicture", control: profileForm.control});
-    const profilePictureHasChanged = props.account.profilePicture !== currentProfilePicture;
-    console.log(profilePictureHasChanged)
+    const profilePictureHasChanged =  profilePicture !== currentProfilePicture;
+    console.log(currentProfilePicture)
 
     const [currentProfilePictureType, setCurrentProfilePictureType] = useState<string>(props.account.profilePictureType);
 
@@ -151,7 +160,7 @@ export default function SettingsPage(props: SettingsPageProps) {
                                                                        className={"w-[110px] h-[110px] border-2 shadow-md border-primary "}>
                                                                        <AvatarImage src={field.value}
                                                                                     alt={"profile picture"}
-                                                                                    className={"object-contain"}/>
+                                                                                    className={"object-cover"}/>
                                                                        <AvatarFallback>
                                                                            X
                                                                        </AvatarFallback>

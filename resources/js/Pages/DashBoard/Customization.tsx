@@ -250,7 +250,7 @@ const Page = ({
                         <SubscribeCard
                             user={{
                                 name: auth.user.name ?? "Unknown",
-                                profilePicture: auth.user.profilePicture
+                                profilePictureUrl: auth.user.profilePictureUrl
                             }}
                             subscribePage={{
                                 showProfilePicture: subscribePage.showProfilePicture,

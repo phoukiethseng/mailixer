@@ -2,7 +2,9 @@
 
 namespace App\Services\Implementations;
 
+use App\Exceptions\ServiceException;
 use App\Models\SubscribePage;
+use App\Models\User;
 use App\Repositories\Interfaces\SubscribePageRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\StringRandomGenerator;
@@ -60,7 +62,7 @@ class SubscribePageServiceImpl implements SubscribePageService
         return $subscribePage;
     }
 
-    public function createNewSubscribePage($user): SubscribePage
+    public function createNewSubscribePage(User $user): SubscribePage
     {
         $newSubscribePage = $this->subscribePageRepository->getNewInstance([
             'token' => $this->stringRandomGenerator->generateRandom(20)

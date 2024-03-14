@@ -62,8 +62,6 @@ class AuthActionController extends Controller
             $this->accountService->setProfilePicture($newUser, $data['profilePicture'], $data['profilePictureType']);
         }
 
-        $this->subscribePageService->createNewSubscribePage($newUser);
-
         Auth::login($newUser);
 
         return to_route('dashboard.customization');

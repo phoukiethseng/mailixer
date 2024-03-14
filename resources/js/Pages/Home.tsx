@@ -44,16 +44,21 @@ const HomePage = () => {
 
             </header>
             <main className={"flex flex-col justify-start items-center"}>
-                <h1 className={"text-6xl font-extrabold text-center mt-[120px] text-[#29332D] font-['futura-pt'] leading-tight text-foreground"}>Hassle
+                <h1 className={"text-6xl font-extrabold text-center mt-[120px] text-[#29332D] font-['futura-pt'] leading-tight drop-shadow-xl text-foreground"}>Hassle
                     Free<br/>
-                    <span className={"text-primary drop-shadow-xl"}>Newsletter</span> List
-                    Management</h1>
+                    <span
+                        className={"text-primary drop-shadow-xl decoration-wavy underline decoration-4 decoration-red-600 underline-offset-8"}>Newsletter</span> List
+                    Management </h1>
+                <span className={"w-24 h-24"}>
+                        <img alt={"sunglasses-face"} src={"/sunglasses_face.gif"} className={"object-contain"}/>
+                    </span>
                 <h2 className={"text-center text-2xl max-w-xl mt-4 mx-auto font-medium font-['futura-pt']"}>No need
                     to setup your
                     own
                     subscribe page.
                     Send
-                    newsletter to your subscribers with ease.</h2>
+                    newsletter to your subscribers with ease. </h2>
+
                 <div className={"mt-7 flex flex-row gap-4 justify-center items-center"}>
                     <a href={"/login"}>
                         <Button size={"lg"} variant={"default"} className={"rounded-xl"}>Get Started</Button>

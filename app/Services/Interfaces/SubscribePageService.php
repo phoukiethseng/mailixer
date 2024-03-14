@@ -3,6 +3,7 @@
 namespace App\Services\Interfaces;
 
 use App\Models\SubscribePage;
+use App\Models\User;
 
 interface SubscribePageService
 {
@@ -15,6 +16,6 @@ interface SubscribePageService
     public function updateDescriptionByToken($token, $description);
     public function getAuthorIdByToken($token);
 
-    public function createNewSubscribePage($user): SubscribePage;
+    public function createNewSubscribePage(User $user): SubscribePage;
 
 }
