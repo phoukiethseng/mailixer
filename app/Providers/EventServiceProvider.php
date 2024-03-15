@@ -6,7 +6,6 @@ use App\Listeners\CreateProfilePicture;
 use App\Listeners\CreateSubscribePage;
 use App\Listeners\SetNewsletterMessageId;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Mail\Events\MessageSent;
 
