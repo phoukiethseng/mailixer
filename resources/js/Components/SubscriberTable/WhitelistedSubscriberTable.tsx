@@ -9,7 +9,7 @@ import {
     useReactTable
 } from "@tanstack/react-table";
 import {columns, filterColumnList} from "@/Components/SubscriberTable/WhitelistedSubscribersColumns";
-import {FilterColumn, Subscriber} from "@/types/models";
+import {FilterColumn, Subscriber} from "@/types/DTO";
 import {BaseDataTable} from "@/Components/BaseDataTable";
 import {Input} from "@/Components/Input";
 import {FilterColumnCombobox} from "@/Components/FilterColumnCombobox";

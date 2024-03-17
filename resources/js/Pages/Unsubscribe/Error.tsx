@@ -1,6 +1,6 @@
 import React from "react";
-import {InertiaSharedProps} from "@/config/site";
 import {Card, CardContent, CardHeader, CardTitle,} from "@/Components/Card";
+import {InertiaSharedProps} from "@/types/inertia";
 
 type UnsubscribeErrorPageProps = {} & InertiaSharedProps;
 

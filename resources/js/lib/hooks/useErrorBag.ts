@@ -1,4 +1,4 @@
-import {InertiaSharedProps} from "@/config/site";
+import {InertiaSharedProps} from "@/types/inertia";
 
 export default function useErrorBag<TFormData = {}>(errorBagName: string, props: InertiaSharedProps<Partial<TFormData>>): Partial<TFormData> | null {
     let errorBag = null;

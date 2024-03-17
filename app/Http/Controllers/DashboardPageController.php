@@ -36,9 +36,9 @@ class DashboardPageController extends Controller
                 'blacklistedSubscribersCount' => $blacklistedSubscribersCount
             ]);
         } catch (Exception) {
-            return back()->withErrors([
-                'message' => "Couldn't retrieve subscribers list"
-            ]);
+            return back()->withErrors(
+                $this->responseMessage("Couldn't retrieve subscribers list")
+            );
         }
     }
 
@@ -61,9 +61,9 @@ class DashboardPageController extends Controller
 
         } catch (Exception $e) {
             Log::debug("customization page", [$e]);
-            return back()->withErrors([
-                'message' => "Couldn't retrieve page description or preview url"
-            ]);
+            return back()->withErrors(
+                $this->responseMessage("Couldn't retrieve page description or preview url")
+            );
         }
 
     }

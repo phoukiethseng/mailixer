@@ -3,7 +3,7 @@ import {Separator} from "../Components/Separator";
 import LogoText from "../Components/LogoText";
 import {Avatar, AvatarFallback, AvatarImage} from "@/Components/Avatar";
 import {router, usePage} from "@inertiajs/react";
-import siteConfig, {type DashBoardMenuItems, dashboardPageGroups, InertiaSharedProps} from "@/config/site";
+import siteConfig, {DashBoardMenuItems, dashboardPageGroups} from "@/config/site";
 import {Button} from "@/Components/Button";
 import {
     DropdownMenu,
@@ -17,6 +17,7 @@ import {Icons} from "@/Components/Icons";
 import DashBoardSubPageHeader from "./DashBoardSubPageHeader";
 import DashBoardNavigationItemGroup from "./DashBoardNavigationItemGroup";
 import {useProfilePicture} from "@/lib/hooks/useProfilePicture";
+import {InertiaSharedProps} from "@/types/inertia";
 
 type DashBoardLayoutProps = {
     activePage: DashBoardMenuItems; // Current active page, must be any key from `siteConfig.dashboard.pages`

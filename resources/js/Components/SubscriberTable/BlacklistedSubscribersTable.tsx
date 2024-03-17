@@ -8,7 +8,7 @@ import {
     useReactTable
 } from "@tanstack/react-table";
 import React, {useState} from "react";
-import {FilterColumn, Subscriber} from "@/types/models";
+import {FilterColumn, Subscriber} from "@/types/DTO";
 import {columns, filterColumnList} from "@/Components/SubscriberTable/BlacklistedSubscribersColumn";
 import {BaseDataTable} from "@/Components/BaseDataTable";
 import {FilterColumnCombobox} from "@/Components/FilterColumnCombobox";

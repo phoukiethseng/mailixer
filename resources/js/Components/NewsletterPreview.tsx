@@ -1,10 +1,10 @@
 import React from "react";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "./Card";
 import {Separator} from "./Separator";
-import {InertiaSharedProps} from "@/config/site";
 import Markdown from "react-markdown";
 import {cn} from "@/lib/utils";
-import {NewsletterContentType} from "@/types/models";
+import {NewsletterContentType} from "@/types/DTO";
+import {InertiaSharedProps} from "@/types/inertia";
 
 type NewsletterPreviewProps = {
     subject: string;

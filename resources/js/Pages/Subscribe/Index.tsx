@@ -1,8 +1,8 @@
 import {router, usePage} from "@inertiajs/react";
 import React from "react";
 import SubscribeCard, {EmailForm} from "@/Components/SubscribeCard";
-import {InertiaSharedProps} from "@/config/site";
-import {User} from "@/types/models";
+import {User} from "@/types/DTO";
+import {InertiaSharedProps} from "@/types/inertia";
 
 type SubscribePageProps = {
     subscribePage: {

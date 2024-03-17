@@ -32,9 +32,9 @@ class SubscriptionActionController extends Controller
             ]);
         } catch (Exception $e) {
             Log::debug('', [$e]);
-            return back()->withErrors([
-                'message' => $e->getMessage()
-            ]);
+            return back()->withErrors(
+                $this->responseMessage($e->getMessage())
+            );
         }
     }
 
@@ -48,9 +48,9 @@ class SubscriptionActionController extends Controller
             ]);
         } catch (Exception $e) {
             Log::debug('', [$e]);
-            return back()->withErrors([
-                'message' => $e->getMessage()
-            ]);
+            return back()->withErrors(
+                $this->responseMessage($e->getMessage())
+            );
         }
     }
 
@@ -59,13 +59,13 @@ class SubscriptionActionController extends Controller
         $data = $request->validated();
         try {
             $this->subscriptionService->whitelistById($data['id']);
-            return back()->with([
-                'message' => 'Successfully whitelisted subscriber'
-            ]);
+            return back()->with(
+                $this->responseMessage('Successfully whitelisted subscriber')
+            );
         } catch(Exception $e) {
-            return back()->withErrors([
-                'message' => 'Error while whitelisting subscriber'
-            ]);
+            return back()->with(
+                $this->responseMessage('Successfully whitelisted subscriber')
+            );
         }
     }
 

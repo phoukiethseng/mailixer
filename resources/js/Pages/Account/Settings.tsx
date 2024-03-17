@@ -1,5 +1,4 @@
 import React, {MouseEventHandler, useEffect, useState} from "react";
-import {InertiaSharedProps} from "@/config/site";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/Components/Card";
 import {Separator} from "@/Components/Separator";
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/Components/Resizable";
@@ -13,7 +12,7 @@ import {Input} from "@/Components/Input";
 import {Button} from "@/Components/Button";
 import {router} from "@inertiajs/react";
 import {useMessageToast} from "@/lib/hooks/useMessageToast";
-import { MIME_TYPE } from "@/types/models";
+import { MIME_TYPE } from "@/types/DTO";
 import {Avatar, AvatarFallback, AvatarImage} from "@/Components/Avatar";
 import {Dialog, DialogContent, DialogTrigger} from "@/Components/Dialog";
 import {UploadImage} from "@/Components/UploadImage";
@@ -21,6 +20,7 @@ import imageCompression from "browser-image-compression";
 import {blobToBase64} from "base64-blob";
 import useServerValidationErrorMessage from "@/lib/hooks/useServerValidationErrorMessage";
 import {useProfilePicture} from "@/lib/hooks/useProfilePicture";
+import {InertiaSharedProps} from "@/types/inertia";
 
 type SettingsPageProps = {
     account: {

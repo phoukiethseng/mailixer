@@ -23,9 +23,9 @@ class AccountController extends Controller
             $this->accountService->setProfilePicture($user, $data['profilePicture'], $data['profilePictureType']);
         }
         $this->accountService->setDisplayName($user, $data['displayName']);
-        return back()->with([
-            'message' => 'Successfully saved profile information'
-        ]);
+        return back()->with(
+            $this->responseMessage('Successfully saved profile information')
+        );
     }
 
     public function editAccount(EditAccountFormRequest $request)
@@ -40,13 +40,13 @@ class AccountController extends Controller
         }
 
         if ($success) {
-            return back()->with([
-                'message' => 'Successfully Changed Email and Password'
-            ]);
+            return back()->with(
+                $this->responseMessage('Successfully Changed Email and Password')
+            );
         } else {
-            return back()->withErrors([
-                'message' => 'Failed to change Email and Password'
-            ]);
+            return back()->withErrors(
+                $this->responseMessage('Failed to change Email and Password')
+            );
 
         }
     }

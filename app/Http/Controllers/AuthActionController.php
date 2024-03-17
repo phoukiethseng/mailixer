@@ -28,7 +28,9 @@ class AuthActionController extends Controller
         if (Auth::attempt($validatedData)) {
             return to_route('home');
         } else {
-            return back()->withErrors(['message' => 'Email or Password is incorrect']);
+            return back()->withErrors(
+                $this->responseMessage('Email or Password is incorrect')
+            );
         }
     }
 

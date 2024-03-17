@@ -1,20 +1,6 @@
-import React from "react";
 import {Icons} from "@/Components/Icons";
 import {type QRCodeToDataURLOptions} from "qrcode";
-import {User} from "@/types/models";
-
-export type PageDescription = {
-    displayName: string;
-    url: string;
-    icon: React.FunctionComponent;
-    description: string;
-};
-type PageGroupDescription = {
-    [key: string]: {
-        pages: Array<DashBoardMenuItems>;
-        icon: React.FunctionComponent;
-    };
-};
+import {DashBoardPageDescription, DashBoardPageGroupDescription} from "@/types/dashboard_page";
 
 const siteConfig = {
     dashboard: {
@@ -63,12 +49,12 @@ const siteConfig = {
                 icon: Icons.Send,
                 description: "List of newsletter status"
             }
-        } satisfies { [key: string]: PageDescription },
+        } satisfies { [key: string]: DashBoardPageDescription },
     },
 };
 
 // Defining a grouping of dashboard sub pages
-export const dashboardPageGroups: PageGroupDescription = {
+export const dashboardPageGroups: DashBoardPageGroupDescription = {
     "Subscribe Page": {
         icon: Icons.Layout,
         pages: ["CustomizePage"],
@@ -83,18 +69,6 @@ export const dashboardPageGroups: PageGroupDescription = {
     },
 };
 
-export type DashBoardMenuItems = keyof typeof siteConfig.dashboard.pages;
-
-export type InertiaSharedProps<TErrorBagFormData = {}> = {
-    auth: {
-        user: User
-    };
-    message?: string;
-    errors: {
-        message?: string;
-    } & TErrorBagFormData;
-};
-
 export const QRCodeConversionOptions: QRCodeToDataURLOptions = {
     color: {
         dark: "#16a34a"
@@ -104,3 +78,4 @@ export const QRCodeConversionOptions: QRCodeToDataURLOptions = {
 
 
 export default siteConfig;
+export type DashBoardMenuItems = keyof typeof siteConfig.dashboard.pages;

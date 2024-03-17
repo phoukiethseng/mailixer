@@ -1,14 +1,14 @@
 import DashBoardLayout from "@/Layouts/DashBoardLayout";
-import {InertiaSharedProps} from "@/config/site";
 import React, {useEffect, useState} from "react";
 import {useMessageToast} from "@/lib/hooks/useMessageToast";
-import {NewsletterWithStatus} from "@/types/models";
+import {NewsletterWithStatus} from "@/types/DTO";
 import ComposeNewsletterTextEditor from "@/Components/ComposeNewsletterTextEditor";
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/Components/Resizable";
 import {Card, CardContent} from "@/Components/Card";
 import {cn, htmlToText} from "@/lib/utils";
 import {Icons} from "@/Components/Icons";
 import {router} from "@inertiajs/react";
+import {InertiaSharedProps} from "@/types/inertia";
 
 export type DraftNewsletterProps = {
     newsletters: NewsletterWithStatus[];

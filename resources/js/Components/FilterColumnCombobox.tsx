@@ -1,4 +1,4 @@
-import {FilterColumn} from "@/types/models";
+import {FilterColumn} from "@/types/DTO";
 import React, {useState} from "react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/Components/Popover";
 import {Button} from "@/Components/Button";

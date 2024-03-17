@@ -27,13 +27,13 @@ class DashboardActionController extends Controller
             $this->subscribePageService->updateDescriptionByToken($subscribePageToken, $data['description']);
             $this->subscribePageService->setShowProfilePicture($subscribePageToken, $data['showProfilePicture']);
         } catch (Exception) {
-            return back()->withErrors([
-                'message' => "Couldn't update subscribe page description"
-            ]);
+            return back()->withErrors(
+                $this->responseMessage("Couldn't update subscribe page description")
+            );
         }
-        return back()->with([
-            'message' => 'Successfully updated page description'
-        ]);
+        return back()->with(
+            $this->responseMessage('Successfully updated page description')
+        );
     }
 
     public function unsubscribe($subscriberId)
@@ -42,13 +42,13 @@ class DashboardActionController extends Controller
             $this->subscriptionService->unsubscribeById($subscriberId);
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return back()->withErrors([
-                'message' => "Couldn't unsubscribe {$this->subscriptionService->getSubscriberById($subscriberId)}"
-            ]);
+            return back()->withErrors(
+                $this->responseMessage("Couldn't unsubscribe {$this->subscriptionService->getSubscriberById($subscriberId)}")
+            );
         }
-        return back()->with([
-            'message' => 'Successfully unsubscribed'
-        ]);
+        return back()->with(
+            $this->responseMessage('Successfully unsubscribed')
+        );
     }
 
     public function getUnsubscribeUrl($subscriberId)
@@ -61,9 +61,9 @@ class DashboardActionController extends Controller
             ]);
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return response(status: 500)->json([
-                'message' => 'Error while generating unsubscribe url'
-            ]);
+            return response(status: 500)->json(
+                $this->responseMessage('Error while generating unsubscribe url')
+            );
         }
 
     }

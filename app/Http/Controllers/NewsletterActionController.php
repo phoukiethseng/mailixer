@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\NewsletterContentType;
+use App\Exceptions\ServiceException;
 use App\Http\Requests\SaveNewsletterRequest;
 use App\Http\Requests\SendDraftNewsletterRequest;
 use App\Http\Requests\SendNewsletterRequest;
 use App\Http\Requests\UpdateNewsletter;
+use App\Models\Newsletter;
+use App\Models\User;
 use App\Repositories\Interfaces\UserRepository;
-use App\Enums\NewsletterContentType;
 use App\Services\Interfaces\NewsletterService;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class NewsletterActionController extends Controller
 {
+
     public function __construct(
         private NewsletterService $newsletterService,
         private UserRepository $userRepository
@@ -26,33 +31,40 @@ class NewsletterActionController extends Controller
         $newsletter = $this->newsletterService->getNewsletterById($data['id']);
         $this->newsletterService->sendNewsletter($newsletter);
         return back()->with([
-            'message' => 'Successfully sent newsletter'
+            $this->responseMessageWithData('Successfully sent newsletter')
         ]);
     }
     public function sendNewsletter(SendNewsletterRequest $request)
     {
         $data = $request->validated();
 
-        $user = $this->userRepository->findById($request->user()->id);
+        try {
+            $user = $this->userRepository->findById($request->user()->id);
+            $newsletter = $this->createNewsletter($data, $user);
+            $this->newsletterService->sendNewsletter($newsletter);
+            return back()->with([
+                $this->responseMessageWithData('Successfully sent newsletter')
+            ]);
+        } catch (ServiceException $e) {
+            return back()->withErrors(
+                $this->responseMessage('Failed to send newsletter. An error occurred')
+            );
+        }
 
-        $newsletter = $this->createNewsletter($data, $user);
-
-        $this->newsletterService->sendNewsletter($newsletter);
-
-        return back()->with([
-            'message' => 'Successfully sent newsletter',
-        ]);
     }
     public function saveNewsletter(SaveNewsletterRequest $request)
     {
-        $user = $this->userRepository->findById($request->user()->id);
         $data = $request->validated();
 
+        $user = $this->userRepository->findById($request->user()->id);
+
         $newsletter = $this->createNewsletter($data, $user);
-        return back()->with([
-            'id' => $newsletter->id,
-            'message' => 'Successfully save newsletter'
-        ]);
+
+        return back()->with(
+            $this->responseMessageWithData('Successfully save newsletter', [
+                'id' => $newsletter->id
+            ])
+        );
     }
     public function deleteNewsletter(Request $request)
     {
@@ -60,15 +72,17 @@ class NewsletterActionController extends Controller
             'id' => "numeric",
         ]);
         $this->newsletterService->deleteNewsletter($data["id"]);
-        return back()->with([
-            'message' => "Successfully deleted newsletter"
-        ]);
+        return back()->with(
+            $this->responseMessage('Successfully deleted newsletter')
+        );
     }
 
     /**
+     * Create and save newsletter
+     *
      * @param mixed $data
-     * @param \Illuminate\Database\Eloquent\Model|\App\Models\User $user
-     * @return \App\Models\Newsletter
+     * @param Model|User $user
+     * @return Newsletter
      */
     private function createNewsletter(mixed $data, \Illuminate\Database\Eloquent\Model|\App\Models\User $user): \App\Models\Newsletter
     {
@@ -84,8 +98,8 @@ class NewsletterActionController extends Controller
     {
         $data = $request->validated();
         $this->newsletterService->saveNewsletter($data['id'], $data['subject'], $data['content'], NewsletterContentType::getCase($data['contentType']));
-        return back()->with([
-            'message' => 'Successfully updated draft newsletter'
-        ]);
+        return back()->with(
+            $this->responseMessage('Successfully updated draft newsletter')
+        );
     }
 }

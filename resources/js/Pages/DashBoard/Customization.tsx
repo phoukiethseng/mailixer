@@ -10,7 +10,7 @@ import {Button} from "@/Components/Button";
 import SubscribeCard from "../../Components/SubscribeCard";
 import {router} from "@inertiajs/react";
 import {Form, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@/Components/Form";
-import {InertiaSharedProps, QRCodeConversionOptions} from "@/config/site";
+import {QRCodeConversionOptions} from "@/config/site";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -34,6 +34,7 @@ import {useToPng} from '@hugocxl/react-to-image';
 import dataUrlToBlob from "dataurl-to-blob";
 
 import {Switch} from "@/Components/Switch";
+import {InertiaSharedProps} from "@/types/inertia";
 
 const SubscribePageCustomizationFormSchema = z.object({
     showProfilePicture: z.boolean(),

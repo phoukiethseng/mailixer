@@ -1,5 +1,5 @@
 import {ColumnDef} from "@tanstack/react-table";
-import {Subscriber} from "@/types/models";
+import {Subscriber} from "@/types/DTO";
 import React from "react";
 import {Checkbox} from "@/Components/Checkbox";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/Components/DropDownMenu";

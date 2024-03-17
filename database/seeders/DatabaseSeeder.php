@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $subscribePage = SubscribePage::factory()->makeOne([
-            'description' => 'Subscribe to recieve latest about tech related news',
+            'description' => 'Subscribe to receive latest news about tech related news',
         ]);
         $profile = ProfilePicture::factory()->makeOne([
             'mime_type' => 'image/png',

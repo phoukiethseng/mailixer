@@ -1,5 +1,5 @@
 import type {Table} from "@tanstack/react-table";
-import {Subscriber} from "@/types/models";
+import {Subscriber} from "@/types/DTO";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,

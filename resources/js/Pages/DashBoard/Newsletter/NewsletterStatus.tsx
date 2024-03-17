@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from "react";
-import {NewsletterSendResult} from "@/types/models";
+import {NewsletterSendResult} from "@/types/DTO";
 import DashBoardLayout from "@/Layouts/DashBoardLayout";
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/Components/Resizable";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/Components/Card";

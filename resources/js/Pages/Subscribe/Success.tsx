@@ -1,7 +1,7 @@
 import React from "react";
 import LogoText from "@/Components/LogoText";
-import {InertiaSharedProps} from "@/config/site";
 import Confetti from "react-confetti";
+import {InertiaSharedProps} from "@/types/inertia";
 
 type SuccessPageProps = {
     author: {

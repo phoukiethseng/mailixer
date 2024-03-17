@@ -1,9 +1,9 @@
 import React from "react";
 import DashBoardLayout from "../../../Layouts/DashBoardLayout";
-import {Subscriber} from "../../../types/models";
-import {InertiaSharedProps} from "../../../config/site";
+import {Subscriber} from "../../../types/DTO";
 import {useMessageToast} from "../../../lib/hooks/useMessageToast";
 import BlacklistedSubscribersTable from "../../../Components/SubscriberTable/BlacklistedSubscribersTable";
+import {InertiaSharedProps} from "@/types/inertia";
 
 type BlacklistedSubscribersPageProps = {
     subscribers: {

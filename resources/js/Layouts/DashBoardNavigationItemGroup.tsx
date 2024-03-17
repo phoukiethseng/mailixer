@@ -1,13 +1,14 @@
 import React from "react";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger,} from "@/Components/Collapsible";
 import DashBoardNavigationItem from "@/Layouts/DashBoardNavigationItem";
-import siteConfig, {DashBoardMenuItems, PageDescription,} from "@/config/site";
+import siteConfig, {DashBoardMenuItems} from "@/config/site";
 import {cn} from "@/lib/utils";
+import {DashBoardPageDescription} from "@/types/dashboard_page";
 
 type DashBoardNavigationItemGroupProps = {
     groupName: string;
     icon: React.FunctionComponent;
-    pages: Array<PageDescription>;
+    pages: Array<DashBoardPageDescription>;
     activePage: DashBoardMenuItems;
 } & React.ComponentPropsWithoutRef<"div">;
 

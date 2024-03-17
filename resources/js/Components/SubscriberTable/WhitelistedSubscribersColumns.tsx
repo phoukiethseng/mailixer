@@ -18,7 +18,7 @@ import {useToast} from "../use-toast";
 import axios from "axios";
 import {Checkbox} from "../Checkbox";
 import React from "react";
-import {type Subscriber} from "@/types/models";
+import {type Subscriber} from "@/types/DTO";
 
 export const columns: ColumnDef<Subscriber>[] = [
     {

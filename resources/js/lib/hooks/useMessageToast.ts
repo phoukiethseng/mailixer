@@ -1,8 +1,8 @@
 import {useEffect} from "react";
-import {InertiaSharedProps} from "@/config/site";
 import {useToast} from "@/Components/use-toast";
+import {InertiaSharedProps, ResponseMessage} from "@/types/inertia";
 
-type UseMessageToastProps = Partial<Omit<InertiaSharedProps, "auth">>;
+type UseMessageToastProps = ResponseMessage;
 
 export function useMessageToast(
     props: UseMessageToastProps
@@ -32,7 +32,7 @@ export function useMessageToast(
                     errorToast.dismiss();
                 }
                 if (messageToast !== null) {
-                    errorToast.dismiss();
+                    messageToast.dismiss();
                 }
             } catch (err) {
                 // Do nothing

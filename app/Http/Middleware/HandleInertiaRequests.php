@@ -3,11 +3,9 @@
 namespace App\Http\Middleware;
 
 use App\DTOs\UserDTO;
-use App\Models\ProfilePicture;
 use App\Repositories\Interfaces\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Log;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -24,7 +22,7 @@ class HandleInertiaRequests extends Middleware
      * Determines the current asset version.
      *
      * @see https://inertiajs.com/asset-versioning
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return string|null
      */
     public function version(Request $request): ?string
@@ -36,13 +34,13 @@ class HandleInertiaRequests extends Middleware
      * Defines the props that are shared by default.
      *
      * @see https://inertiajs.com/shared-data
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function share(Request $request): array
     {
         $userDTO = null;
-        if($request->user()) {
+        if ($request->user()) {
             $user = App::get(UserRepository::class)->findById($request->user()->id);
             $userDTO = new UserDTO($user);
         }
