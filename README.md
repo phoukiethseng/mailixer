@@ -3,7 +3,6 @@
 Mailixer is a web-based platform that allows users to effortlessly design and host email newsletter webpages for their audience to subscribe to. Mailixer also handles the delivery and management of the email newsletters, saving users time and hassle. Mailixer is the ultimate solution for email newsletter creation and distribution.
 
 # Get Started
-
 ## Install Dependencies
 
 PHP dependencies
@@ -18,14 +17,6 @@ NPM Dependencies
 npm install
 ```
 
-## Setup Postgresql Database
-
-Make sure you have [Docker](https://docs.docker.com/desktop/) Installed
-
-```
-docker compose up -d
-```
-
 ## Copy Environment File
 
 Copy all cotent of `.env.example` into `.env`
@@ -37,40 +28,36 @@ cp .env.example .env
 Change database connection configuration in `.env`
 
 -   DB_CONNECTION=pgsql
--   DB_HOST=127.0.0.1
--   DB_PORT=8080
+-   DB_HOST=postgres
+-   DB_PORT=5432
 -   DB_DATABASE=mailixer
 -   DB_USERNAME=app
 -   DB_PASSWORD=example
 
-## Migrate Database
+## Start up service containers
+
+Make sure you have [Docker](https://docs.docker.com/desktop/) Installed. 
+This will start up PHP server, Vite server, A single queue worker 
+and PostgreSQL database all running in separate container (See:`docker-compose.yml`).
+
 
 ```shell
-php artisan migrate
+docker compose up -d
 ```
 
-## Seed Database
+## (Optional) Database migration and seeding
+
+Since we run PHP inside container, we need to invoke migration command inside `app` service container
 
 ```shell
-php artisan db:seed
+docker compose exec -t app php artisan migrate
 ```
 
-## Start Development Server
-
-Open a terminal, run the following command
-Laravel
-
+For database seeding:
 ```shell
-php artisan serve
-```
-
-Open another terminal, run the following command
-Vite
-
-```shell
-npm run dev
+docker compose exec -t app php artisan db:seed
 ```
 
 ## Visit website
 
-Go to `http:://localhost:8000` or `http://127.0.0.1:8000`
+Go to `http:://localhost` or `http://127.0.0.1`

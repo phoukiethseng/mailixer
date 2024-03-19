@@ -1,17 +1,60 @@
 services:
-    db:
+    postgres:
+        hostname: postgres
         image: postgres
         restart: always
-        ports:
-            - 8080:5432
         environment:
             POSTGRES_PASSWORD: example
             POSTGRES_USER: app
             POSTGRES_DB: mailixer
         volumes:
-            - type: volume
-              source: db-data
-              target: /var/lib/postgres/data
+            -   type: volume
+                source: db-data
+                target: /var/lib/postgres/data
+        networks:
+            - mailixer-net
+    app:
+        hostname: app
+        build:
+            context: .
+        restart: always
+        entrypoint: ["php", "artisan", "serve", "--host=app"]
+        ports:
+            - 80:8000
+        volumes:
+            -   type: bind
+                source: .
+                target: /app
+        networks:
+            - mailixer-net
+    ui:
+        hostname: ui
+        image: node:14.21.3-bullseye
+        restart: always
+        working_dir: /app
+        command: [ "npx", "vite", "--host" ] # use `--host` so vite listen on all addresses
+        ports:
+            - 5173:5173
+        volumes:
+            -   type: bind
+                source: .
+                target: /app
+
+    queue-worker:
+        image: php:8.3.4-cli-bullseye
+        restart: always
+        working_dir: /app
+        entrypoint: [ "php", "artisan", "queue:listen" ]
+        volumes:
+            -   type: bind
+                source: ./
+                target: /app
+        networks:
+            - mailixer-net
+
+networks:
+    mailixer-net:
 
 volumes:
     db-data:
+
