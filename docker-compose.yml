@@ -32,7 +32,7 @@ services:
         image: node:14.21.3-bullseye
         restart: always
         working_dir: /app
-        command: [ "npx", "vite", "--host" ] # use `--host` so vite listen on all addresses
+        command: [ "npx", "vite", "--host" ] # use `--host` so Vite listen on all addresses
         ports:
             - 5173:5173
         volumes:
@@ -41,7 +41,8 @@ services:
                 target: /app
 
     queue-worker:
-        image: php:8.3.4-cli-bullseye
+        build:
+            context: .
         restart: always
         working_dir: /app
         entrypoint: [ "php", "artisan", "queue:listen" ]
