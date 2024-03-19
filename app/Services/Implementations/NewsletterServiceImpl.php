@@ -105,7 +105,8 @@ class NewsletterServiceImpl implements NewsletterService
         $subscriber = $this->subscriberRepository->findById($subscriberId);
 
         $newsletter->sendResults()->save($subscriber, [
-            'is_success' => true
+            'is_success' => true,
+            'message_id' => $messageId
         ]);
 
         $this->newsletterRepository->save($newsletter);

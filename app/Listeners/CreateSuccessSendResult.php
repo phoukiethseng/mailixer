@@ -7,7 +7,7 @@ use App\Services\Interfaces\NewsletterService;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Facades\Log;
 
-class SetNewsletterMessageId
+class CreateSuccessSendResult
 {
     /**
      * Create the event listener.

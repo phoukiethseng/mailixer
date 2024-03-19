@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Listeners\CreateProfilePicture;
 use App\Listeners\CreateSubscribePage;
-use App\Listeners\SetNewsletterMessageId;
+use App\Listeners\CreateSuccessSendResult;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Mail\Events\MessageSent;
@@ -23,7 +23,7 @@ class EventServiceProvider extends ServiceProvider
             CreateProfilePicture::class,
         ],
         MessageSent::class => [
-            SetNewsletterMessageId::class
+            CreateSuccessSendResult::class
         ],
     ];
 
