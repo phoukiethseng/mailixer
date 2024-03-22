@@ -11,6 +11,7 @@ import {Alert, AlertDescription, AlertTitle} from "@/Components/Alert";
 import {Icons} from "@/Components/Icons";
 import LogoText from "@/Components/LogoText";
 import IconInput from "@/Components/IconInput";
+import {useRoute} from "ziggy-js";
 
 const loginSchema = z.object({
     email: z.string().email().nonempty(),
@@ -29,8 +30,10 @@ export default function LoginPage() {
         },
     });
 
+    const route = useRoute();
+
     function handleLoginSubmit(values: z.infer<typeof loginSchema>) {
-        router.post("/login", values);
+        router.post(route("login"), values);
     }
 
     return (

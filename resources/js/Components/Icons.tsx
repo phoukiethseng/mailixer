@@ -35,6 +35,8 @@ import {
     XCircle,
     Mail,
     Lock,
+    Clock4,
+    CircleEllipsis
 } from "lucide-react";
 
 const Icons = {
@@ -74,6 +76,8 @@ const Icons = {
     Columns: Columns,
     Mail: Mail,
     Lock: Lock,
+    Clock4: Clock4,
+    CircleEllipsis: CircleEllipsis
 };
 
 export {Icons};

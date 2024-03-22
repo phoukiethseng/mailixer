@@ -22,6 +22,8 @@ class CreateProfilePicture
     public function handle(Registered $event): void
     {
         $user = $this->userRepository->findById($event->user->id);
+
+        // Create empty profile picture if not existed
         if (is_null($user->profilePicture)) {
             $this->accountService->setProfilePicture($user, "", "image/png");
         }

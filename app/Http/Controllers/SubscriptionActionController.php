@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BlacklistSubscriberRequest;
-use App\Http\Requests\WhitelistSubscriberRequest;
 use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
 use Exception;
@@ -38,38 +36,8 @@ class SubscriptionActionController extends Controller
         }
     }
 
-    public function blacklistSubscriber(BlacklistSubscriberRequest $request)
+    public function listUnsubscribeOneClick($unsubscribeToken)
     {
-        $data = $request->validated();
-        try {
-            $this->subscriptionService->blacklistById($data['id']);
-            return back()->with([
-                'message' => 'Blacklisted'
-            ]);
-        } catch (Exception $e) {
-            Log::debug('', [$e]);
-            return back()->withErrors(
-                $this->responseMessage($e->getMessage())
-            );
-        }
-    }
-
-    public function whitelistSubscriber(WhitelistSubscriberRequest $request)
-    {
-        $data = $request->validated();
-        try {
-            $this->subscriptionService->whitelistById($data['id']);
-            return back()->with(
-                $this->responseMessage('Successfully whitelisted subscriber')
-            );
-        } catch(Exception $e) {
-            return back()->with(
-                $this->responseMessage('Successfully whitelisted subscriber')
-            );
-        }
-    }
-
-    public function listUnsubscribeOneClick($unsubscribeToken) {
         try {
             $this->subscriptionService->unsusbscribeByToken($unsubscribeToken);
             return response()->setStatusCode(200);

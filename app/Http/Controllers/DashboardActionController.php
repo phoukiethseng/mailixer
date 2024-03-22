@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BatchBlackListRequest;
+use App\Http\Requests\BatchUnsubscribeRequest;
+use App\Http\Requests\BlacklistSubscriberRequest;
 use App\Http\Requests\EditSubscribePageRequest;
+use App\Http\Requests\WhitelistSubscriberRequest;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
@@ -51,6 +55,46 @@ class DashboardActionController extends Controller
         );
     }
 
+    public function batchUnsubscribe(BatchUnsubscribeRequest $request)
+    {
+        $data = $request->validated();
+        $list = $data['subscriberIdList'];
+        $listLength = sizeof($list);
+        if ( $listLength > 0) {
+            $collection = collect($list);
+            foreach ($collection as $entry) {
+                $this->subscriptionService->unsubscribeById($entry['id']);
+            }
+            return back()->with(
+                $this->responseMessage("Successfully unsubscribed" . $listLength . "subscribers")
+            );
+        } else {
+            return back()->withErrors(
+                $this->responseMessage('List is empty')
+            );
+        }
+    }
+
+    public function batchBlacklist(BatchBlackListRequest $request)
+    {
+        $data = $request->validated();
+        $subscriberIdList = $data['subscriberIdList'];
+        $listLength = sizeof($subscriberIdList);
+        if ( $listLength > 0 ) {
+            $collection = collect($subscriberIdList);
+            foreach ($collection as $entry) {
+                $this->subscriptionService->blacklistById($entry['id']);
+            }
+            return back()->with(
+                $this->responseMessage("Successfully blacklisted" . $listLength . "subscribers")
+            );
+        } else {
+            return back()->withErrors(
+                $this->responseMessage('List is empty')
+            );
+        }
+    }
+
     public function getUnsubscribeUrl($subscriberId)
     {
         try {
@@ -66,5 +110,36 @@ class DashboardActionController extends Controller
             );
         }
 
+    }
+
+    public function blacklistSubscriber(BlacklistSubscriberRequest $request)
+    {
+        $data = $request->validated();
+        try {
+            $this->subscriptionService->blacklistById($data['id']);
+            return back()->with([
+                'message' => 'Blacklisted'
+            ]);
+        } catch (Exception $e) {
+            Log::debug('', [$e]);
+            return back()->withErrors(
+                $this->responseMessage($e->getMessage())
+            );
+        }
+    }
+
+    public function whitelistSubscriber(WhitelistSubscriberRequest $request)
+    {
+        $data = $request->validated();
+        try {
+            $this->subscriptionService->whitelistById($data['id']);
+            return back()->with(
+                $this->responseMessage('Successfully whitelisted subscriber')
+            );
+        } catch(Exception $e) {
+            return back()->with(
+                $this->responseMessage('Successfully whitelisted subscriber')
+            );
+        }
     }
 }

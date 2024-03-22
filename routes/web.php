@@ -10,10 +10,10 @@ use App\Http\Controllers\NewsletterActionController;
 use App\Http\Controllers\NewsletterPageController;
 use App\Http\Controllers\ProfileResourceController;
 use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\SubscriptionActionController;
 use App\Http\Controllers\SubscribePageController;
+use App\Http\Controllers\SubscriptionActionController;
 use App\Http\Controllers\UnsubscribePageController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Requests\MailixerEmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -76,9 +76,11 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::post('/saveNewsletter', [NewsletterActionController::class, 'saveNewsletter']);
     Route::delete('/deleteNewsletter', [NewsletterActionController::class, 'deleteNewsletter']);
     Route::put('/updateNewsletter', [NewsletterActionController::class, 'updateNewsletter']);
-    Route::put('/blacklistSubscriber', [SubscriptionActionController::class, 'blacklistSubscriber']);
-    Route::put('/whitelistSubscriber', [SubscriptionActionController::class, 'whitelistSubscriber']);
+    Route::put('/blacklistSubscriber', [DashboardActionController::class, 'blacklistSubscriber']);
+    Route::put('/whitelistSubscriber', [DashboardActionController::class, 'whitelistSubscriber']);
     Route::get('/previewNewsletter/{newsletterId}', [NewsletterPageController::class, 'previewNewsletter']);
+    Route::delete('/batchUnsubscribe', [DashboardActionController::class, 'batchUnsubscribe'])->name('dashboard.batch.unsubscribe');
+    Route::post('/batchBlacklist', [DashboardActionController::class, 'batchBlacklist'])->name('dashboard.batch.blacklist');
 });
 
 Route::middleware('auth')->prefix('user')->group(function () {
@@ -89,16 +91,16 @@ Route::middleware('auth')->prefix('user')->group(function () {
 });
 
 Route::middleware('userTo:dashboard.index')->group(function () {
-    Route::get('/register', [AuthPageController::class, 'registerPage']);
+    Route::get('/register', [AuthPageController::class, 'registerPage'])->name('register.page');
     Route::post('/checkEmail', [AuthActionController::class, 'checkEmail']);
     Route::post('/register', [AuthActionController::class, 'createNewAccount']);
 });
 
 
 // TODO: Make email verification actually work
-//Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-//    $request->fulfill();
-//
-//    return to_route('home');
-//})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}', function (MailixerEmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return to_route('home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 

@@ -10,6 +10,7 @@ import {cn} from "@/lib/utils";
 import axios from "axios";
 import {ScrollArea} from "@/Components/ScrollArea";
 import {HashLoader} from "react-spinners";
+import dateTimeFormater from "date-format";
 
 type NewsletterStatusPageProps = {
     newsletters: NewsletterSendResult[]
@@ -42,6 +43,8 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
         };
     }, [currentNewsletter]);
 
+    console.log(list.values())
+
     return (
         <ResizablePanelGroup direction={"horizontal"}>
             <ResizablePanel minSize={23} maxSize={35} defaultSize={25} onClick={(e) => {
@@ -64,6 +67,10 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
                                         <CardTitle className={"text-lg"}>
                                             {item.value.subject}
                                         </CardTitle>
+                                        <div className={"flex flex-row gap-2 justify-start items-center"}>
+                                            <Icons.Clock4 strokeWidth={1.5} size={12} />
+                                            <span className={"text-xs text-muted-foreground"}>{dateTimeFormater('yyyy/MM/dd hh:mm', new Date())}</span>
+                                        </div>
                                     </CardHeader>
                                     {/*<CardContent>*/}
                                     {/*    <p>{newsletter.content}</p>*/}
@@ -71,7 +78,7 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
                                     <CardFooter>
                                         <div className={"flex flex-row gap-2 justify-between w-full"}>
                                             <Badge variant={"outline"}>{item.value.status}</Badge>
-                                            <div className={"flex flex-row justify-between gap-2"}>
+                                            <div className={cn("flex flex-row justify-between gap-2", (item.value.status === "PENDING") && "hidden")}>
                                                 <div
                                                     className={"flex flex-row gap-1.5 justify-between items-center rounded-lg px-2 py-1 bg-muted"}>
 

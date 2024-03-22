@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\DTOs\NewsletterSendResultDTO;
+use App\DTOs\NewsletterWithSendResultsDTO;
 use App\DTOs\NewsletterStatusDTO;
 use App\Http\Requests\PreviewNewsletterRequest;
 use App\Repositories\Interfaces\UserRepository;
@@ -39,7 +39,7 @@ class NewsletterPageController extends Controller
         $newsletters = $this->newsletterService->getAllNewsletterForAuthorUser($user);
         $newsletterSendResultsDTOs = $newsletters->map(function ($newsletter) {
             $sendResults = App::get(NewsletterService::class)->getAllSendResultsForNewsletterId($newsletter->id);
-            return new NewsletterSendResultDTO($newsletter, $sendResults);
+            return new NewsletterWithSendResultsDTO($newsletter, $sendResults);
         });
         return Inertia::render('DashBoard/Newsletter/NewsletterStatus', [
             'newsletters' => $newsletterSendResultsDTOs

@@ -2,18 +2,22 @@ services:
     postgres:
         hostname: postgres
         image: postgres
-        restart: always
         environment:
             POSTGRES_PASSWORD: example
             POSTGRES_USER: app
             POSTGRES_DB: mailixer
         volumes:
-            -   type: volume
-                source: db-data
-                target: /var/lib/postgres/data
+            - type: volume
+              source: db-data
+              target: /var/lib/postgresql/data
+              volume:
+                  nocopy: true
         networks:
             - mailixer-net
     app:
+        depends_on:
+            -   ui
+            -   postgres
         hostname: app
         build:
             context: .
@@ -32,7 +36,7 @@ services:
         image: node:14.21.3-bullseye
         restart: always
         working_dir: /app
-        command: [ "npx", "vite", "--host" ] # use `--host` so Vite listen on all addresses
+        command: [ "npm", "run", "dev" ]
         ports:
             - 5173:5173
         volumes:

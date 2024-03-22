@@ -2,19 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
+use Illuminate\Foundation\Auth\User as BaseUser;
 use Illuminate\Notifications\Notifiable;
-use \Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 
-class User extends Model implements MustVerifyEmail, Authenticatable
+class User extends BaseUser implements MustVerifyEmail
 {
-    use HasFactory, MustVerifyEmailTrait, Notifiable, AuthenticatableTrait;
+    use HasFactory, Notifiable;
+
+
 
     public function subscribers(): HasMany {
         return $this->hasMany(Subscriber::class);

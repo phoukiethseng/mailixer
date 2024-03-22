@@ -2,10 +2,11 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --host",
         "build": "vite build"
     },
     "devDependencies": {
+        "@kiwilan/typescriptable-laravel": "^2.4.30",
         "@tailwindcss/typography": "^0.5.10",
         "@types/html-to-text": "^9.0.4",
         "@types/react": "^18.2.22",
@@ -60,6 +61,7 @@
         "clsx": "^2.0.0",
         "cmdk": "^0.2.1",
         "dataurl-to-blob": "^0.0.1",
+        "date-format": "^4.0.14",
         "embla-carousel-react": "^8.0.0-rc23",
         "html-to-image": "^1.11.11",
         "html-to-text": "^9.0.5",
@@ -75,6 +77,7 @@
         "tailwind-merge": "^1.14.0",
         "tailwindcss-animate": "^1.0.7",
         "uuid": "^9.0.1",
+        "ziggy-js": "^2.0.5",
         "zod": "^3.22.2"
     }
 }

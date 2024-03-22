@@ -21,7 +21,7 @@ class ProfileResourceController extends Controller
                 'base64Data' => $profilePictureDTO->base64Data
             ]);
         } else {
-            return response()->setStatusCode(404);
+            return response(status: 404);
         }
     }
 }

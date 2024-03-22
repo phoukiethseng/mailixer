@@ -15,7 +15,7 @@ export function ColumnVisibilityDropdownMenu(props: {
 }) {
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>
-            <Button variant={"outline"} size={"icon"} className="ml-auto">
+            <Button variant={"outline"} size={"icon"} >
                 <Icons.Columns strokeWidth={1.5} size={14}/>
             </Button>
         </DropdownMenuTrigger>

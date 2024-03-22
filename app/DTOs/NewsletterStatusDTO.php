@@ -7,6 +7,10 @@ use App\Models\Newsletter;
 
 class NewsletterStatusDTO extends NewsletterDTO
 {
+
+    /**
+     * @var "DRAFT" | "PENDING" | "SENT" | "FAILED"
+     */
     public $status;
 
     public function __construct(Newsletter $newsletter)

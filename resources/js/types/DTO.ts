@@ -44,8 +44,8 @@ export type NewsletterSendResult = NewsletterWithStatus & {
     sendResults: {
         subscriberId: number;
         isSuccess: boolean;
+        timestamp: Date
     }[]
 }
 
 export type ComposeNewsletter = Omit<Newsletter, "id" | "createdAt" | "updatedAt" | "status">;
-export type FilterColumn = { name: string, value: string }

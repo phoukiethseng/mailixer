@@ -19,6 +19,7 @@ import axios from "axios";
 import {Checkbox} from "../Checkbox";
 import React from "react";
 import {type Subscriber} from "@/types/DTO";
+import {FilterColumnDef} from "@/types/util";
 
 export const columns: ColumnDef<Subscriber>[] = [
     {
@@ -246,7 +247,7 @@ export const columns: ColumnDef<Subscriber>[] = [
         },
     },
 ];
-export const filterColumnList = [
+export const filterColumnList: FilterColumnDef[] = [
     {
         name: "ID", value: "id"
     },

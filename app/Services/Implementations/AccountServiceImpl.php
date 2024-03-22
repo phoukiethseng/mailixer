@@ -88,7 +88,7 @@ class AccountServiceImpl implements AccountService
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::debug('verifyEmail', [$e]);
+            Log::debug('verifyEmail', ['trace' => $e->getTraceAsString()]);
             throw new ServiceException("Failed to create new user");
         }
     }

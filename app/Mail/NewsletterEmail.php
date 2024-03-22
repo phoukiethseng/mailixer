@@ -38,7 +38,8 @@ class NewsletterEmail extends Mailable
     {
         return new Headers(text: [
             'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click',
-            'List-Unsubscribe' => '<'. $this->unsubscribeUrl . '>'
+            'List-Unsubscribe' => '<'. $this->unsubscribeUrl . '>',
+            'X-Mailixer-Newsletter' => true
         ]);
     }
 

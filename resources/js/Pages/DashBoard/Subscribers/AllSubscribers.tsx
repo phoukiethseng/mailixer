@@ -1,13 +1,13 @@
 import React from "react";
-import DashBoardLayout from "../../../Layouts/DashBoardLayout";
-import {useMessageToast} from "../../../lib/hooks/useMessageToast";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "../../../Components/Card";
-import {Icons} from "../../../Components/Icons";
-import PieChart from "../../../Components/Charts/Pie";
-import {getSubscriberESP} from "../../../lib/analytics/subscriber";
-import {Subscriber} from "../../../types/DTO";
-import WhitelistedSubscriberTable from "../../../Components/SubscriberTable/WhitelistedSubscriberTable";
-import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "../../../Components/Resizable";
+import DashBoardLayout from "@/Layouts/DashBoardLayout";
+import {useMessageToast} from "@/lib/hooks/useMessageToast";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/Components/Card";
+import {Icons} from "@/Components/Icons";
+import PieChart from "@/Components/Charts/Pie";
+import {getSubscriberESP} from "@/lib/analytics/subscriber";
+import {Subscriber} from "@/types/DTO";
+import WhitelistedSubscriberTable from "@/Components/SubscriberTable/WhitelistedSubscriberTable";
+import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/Components/Resizable";
 import {InertiaSharedProps} from "@/types/inertia";
 
 export type SubscribersPageProps = {

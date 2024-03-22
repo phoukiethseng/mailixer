@@ -1,15 +1,15 @@
-import {FilterColumn} from "@/types/DTO";
 import React, {useState} from "react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/Components/Popover";
 import {Button} from "@/Components/Button";
 import {Icons} from "@/Components/Icons";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/Components/Command";
 import {filterColumnList} from "@/Components/SubscriberTable/WhitelistedSubscribersColumns";
+import {FilterColumnDef} from "@/types/util";
 
 export function FilterColumnCombobox(props: {
-    filterColumn: FilterColumn | undefined,
-    onFilterColumnChange: (column: FilterColumn) => any;
-    filterColumnList: FilterColumn[],
+    filterColumn: FilterColumnDef | undefined,
+    onFilterColumnChange: (column: FilterColumnDef) => any;
+    filterColumnList: FilterColumnDef[],
 }) {
     const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
 

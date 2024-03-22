@@ -6,6 +6,7 @@ use App\Listeners\CreateProfilePicture;
 use App\Listeners\CreateSubscribePage;
 use App\Listeners\CreateSuccessSendResult;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Mail\Events\MessageSent;
 
@@ -18,7 +19,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Registered::class => [
-//            SendEmailVerificationNotification::class,
+            SendEmailVerificationNotification::class,
             CreateSubscribePage::class,
             CreateProfilePicture::class,
         ],

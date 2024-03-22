@@ -120,156 +120,159 @@ export default function SettingsPage(props: SettingsPageProps) {
     };
     const newPasswordFieldIsDirty = accountForm.getFieldState("newPassword").isDirty;
     return (
-        <Card className={"m-6 min-h-[90vh]"}>
-            <CardHeader className={"p-4"}>
-                <CardTitle className={"text-2xl"}>Settings</CardTitle>
-                <CardDescription>Edit your settings</CardDescription>
-            </CardHeader>
-            <Separator/>
-            <CardContent>
-                <Tabs defaultValue={"profile"}>
-                    <ResizablePanelGroup direction={"horizontal"}>
-                        <ResizablePanel defaultSize={17} minSize={15} maxSize={20}>
-                            <TabsList
-                                className={"w-full min-h-[80vh] mt-3 pr-2.5 gap-1 flex flex-col justify-start items-stretch bg-background"}>
-                                <TabsTrigger className={tabsTriggerClassName} value={"profile"}>
-                                    Profile
-                                </TabsTrigger>
-                                <TabsTrigger value={"account"} className={tabsTriggerClassName}>Account</TabsTrigger>
-                            </TabsList>
-                        </ResizablePanel>
-                        <ResizableHandle/>
-                        <ResizablePanel defaultSize={85}>
-                            <ScrollArea>
-                                <TabsContent value={"profile"}>
-                                    <CardHeader>
-                                        <CardTitle>Profile</CardTitle>
-                                        <CardDescription>Edit your personal information</CardDescription>
-                                    </CardHeader>
-                                    <Separator/>
-                                    <Form {...profileForm} >
-                                        <form onSubmit={profileForm.handleSubmit(handleProfileFormSubmit)}
-                                              className={formClassName}>
-                                            <FormField control={profileForm.control} name={"profilePicture"}
-                                                       render={({field}) => {
-                                                           const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-                                                           return (
-                                                               <FormItem>
-                                                                   <FormLabel>Profile Picture</FormLabel>
-                                                                   <Avatar
-                                                                       className={"w-[110px] h-[110px] border-2 shadow-md border-primary "}>
-                                                                       <AvatarImage src={field.value}
-                                                                                    alt={"profile picture"}
-                                                                                    className={"object-cover"}/>
-                                                                       <AvatarFallback>
-                                                                           X
-                                                                       </AvatarFallback>
-                                                                   </Avatar>
-                                                                   <FormDescription>Your profile
-                                                                       picture. Maximum size is 1MB</FormDescription>
-                                                                   <FormMessage/>
-                                                                   <Dialog open={isDialogOpen}
-                                                                           onOpenChange={setIsDialogOpen}>
-                                                                       <DialogTrigger asChild>
-                                                                           <Button variant={"secondary"}>Change</Button>
-                                                                       </DialogTrigger>
-                                                                       <DialogContent>
-                                                                           <UploadImage
-                                                                               disableFromUrl
-                                                                               onImageFileSelectionChange={async e => {
-                                                                                   const imageFile = e.target.files?.[0];
-                                                                                   if (imageFile) {
-                                                                                       const fileMIMEType = imageFile.type;
-                                                                                       const compressedImageFile = await imageCompression(imageFile, {
-                                                                                           maxSizeMB: 1,
-                                                                                           maxWidthOrHeight: 800,
-                                                                                           useWebWorker: true,
-                                                                                       });
-                                                                                       const base64Image = await blobToBase64(compressedImageFile);
-                                                                                       field.onChange(base64Image);
-                                                                                       setIsDialogOpen(false);
-                                                                                       setCurrentProfilePictureType(fileMIMEType);
-                                                                                   }
-                                                                               }} onImageURLSubmission={e => {
-                                                                           }}/>
-                                                                       </DialogContent>
-                                                                   </Dialog>
-                                                               </FormItem>
-                                                           )
-                                                       }}
-                                            />
-                                            <FormField control={profileForm.control} name={"displayName"}
-                                                       render={({field}) => {
-                                                           return (
-                                                               <FormItem className={"min-w-[200px]"}>
-                                                                   <FormLabel>Name</FormLabel>
-                                                                   <FormControl>
-                                                                       <Input {...field}/>
-                                                                   </FormControl>
-                                                                   <FormDescription>Your display name. This will also
-                                                                       show up on your subscribe page as
-                                                                       well.</FormDescription>
-                                                                   <FormMessage/>
-                                                               </FormItem>
-                                                           )
-                                                       }}/>
-                                            <FormAction onBackButtonClick={onBackButtonClick}/>
-                                        </form>
-                                    </Form>
-                                </TabsContent>
-                                <TabsContent value={"account"}>
-                                    <CardHeader>
-                                        <CardTitle>Account</CardTitle>
-                                        <CardDescription>Edit your account's credentials</CardDescription>
-                                    </CardHeader>
-                                    <Separator/>
-                                    <Form {...accountForm}>
-                                        <form onSubmit={accountForm.handleSubmit(handleAccountFormSubmit)}
-                                              className={formClassName}>
-                                            <FormField name={"email"} render={({field}) => {
-                                                return (
-                                                    <FormItem className={"min-w-[200px]"}>
-                                                        <FormLabel>Email</FormLabel>
-                                                        <Input  {...field}/>
-                                                        <FormDescription>Your account's email. This will be used for
-                                                            login</FormDescription>
-                                                        <FormMessage/>
-                                                    </FormItem>
-                                                )
-                                            }}/>
-                                            <FormField name={"newPassword"} render={({field}) => {
-                                                return (
-                                                    <FormItem className={"min-w-[200px]"}>
-                                                        <FormLabel>New Password</FormLabel>
-                                                        <Input  {...field} type={"password"}/>
-                                                        <FormDescription>Change your account password</FormDescription>
-                                                        <FormMessage/>
-                                                    </FormItem>
-                                                )
-                                            }}/>
-                                            <FormField disabled={!newPasswordFieldIsDirty}
-                                                       name={"oldPassword"} render={({field, fieldState}) => {
-                                                return (
-                                                    <FormItem className={"min-w-[200px]"}>
-                                                        <FormLabel>Old Password</FormLabel>
-                                                        <Input  {...field} type={"password"}/>
-                                                        <FormDescription>Enter your old password in order to change your
-                                                            password</FormDescription>
-                                                        <FormMessage/>
-                                                    </FormItem>
-                                                )
-                                            }}/>
+        <div className={"w-full h-full flex justify-center items-center"}>
+            <Card className={"m-6 min-h-[70vh] min-w-[50vw]"}>
+                <CardHeader className={"p-4"}>
+                    <CardTitle className={"text-2xl"}>Settings</CardTitle>
+                    <CardDescription>Edit your settings</CardDescription>
+                </CardHeader>
+                <Separator/>
+                <CardContent>
+                    <Tabs defaultValue={"profile"}>
+                        <ResizablePanelGroup direction={"horizontal"}>
+                            <ResizablePanel defaultSize={17} minSize={20} maxSize={25}>
+                                <TabsList
+                                    className={"w-full min-h-[80vh] mt-3 pr-2.5 gap-1 flex flex-col justify-start items-stretch bg-background"}>
+                                    <TabsTrigger className={tabsTriggerClassName} value={"profile"}>
+                                        Profile
+                                    </TabsTrigger>
+                                    <TabsTrigger value={"account"} className={tabsTriggerClassName}>Account</TabsTrigger>
+                                </TabsList>
+                            </ResizablePanel>
+                            <ResizableHandle/>
+                            <ResizablePanel defaultSize={85}>
+                                <ScrollArea>
+                                    <TabsContent value={"profile"}>
+                                        <CardHeader>
+                                            <CardTitle>Profile</CardTitle>
+                                            <CardDescription>Edit your personal information</CardDescription>
+                                        </CardHeader>
+                                        <Separator/>
+                                        <Form {...profileForm} >
+                                            <form onSubmit={profileForm.handleSubmit(handleProfileFormSubmit)}
+                                                  className={formClassName}>
+                                                <FormField control={profileForm.control} name={"profilePicture"}
+                                                           render={({field}) => {
+                                                               const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+                                                               return (
+                                                                   <FormItem>
+                                                                       <FormLabel>Profile Picture</FormLabel>
+                                                                       <Avatar
+                                                                           className={"w-[110px] h-[110px] border-2 shadow-md border-primary "}>
+                                                                           <AvatarImage src={field.value}
+                                                                                        alt={"profile picture"}
+                                                                                        className={"object-cover"}/>
+                                                                           <AvatarFallback>
+                                                                               X
+                                                                           </AvatarFallback>
+                                                                       </Avatar>
+                                                                       <FormDescription>Your profile
+                                                                           picture. Maximum size is 1MB</FormDescription>
+                                                                       <FormMessage/>
+                                                                       <Dialog open={isDialogOpen}
+                                                                               onOpenChange={setIsDialogOpen}>
+                                                                           <DialogTrigger asChild>
+                                                                               <Button variant={"secondary"}>Change</Button>
+                                                                           </DialogTrigger>
+                                                                           <DialogContent>
+                                                                               <UploadImage
+                                                                                   disableFromUrl
+                                                                                   onImageFileSelectionChange={async e => {
+                                                                                       const imageFile = e.target.files?.[0];
+                                                                                       if (imageFile) {
+                                                                                           const fileMIMEType = imageFile.type;
+                                                                                           const compressedImageFile = await imageCompression(imageFile, {
+                                                                                               maxSizeMB: 1,
+                                                                                               maxWidthOrHeight: 800,
+                                                                                               useWebWorker: true,
+                                                                                           });
+                                                                                           const base64Image = await blobToBase64(compressedImageFile);
+                                                                                           field.onChange(base64Image);
+                                                                                           setIsDialogOpen(false);
+                                                                                           setCurrentProfilePictureType(fileMIMEType);
+                                                                                       }
+                                                                                   }} onImageURLSubmission={e => {
+                                                                               }}/>
+                                                                           </DialogContent>
+                                                                       </Dialog>
+                                                                   </FormItem>
+                                                               )
+                                                           }}
+                                                />
+                                                <FormField control={profileForm.control} name={"displayName"}
+                                                           render={({field}) => {
+                                                               return (
+                                                                   <FormItem className={"min-w-[200px]"}>
+                                                                       <FormLabel>Name</FormLabel>
+                                                                       <FormControl>
+                                                                           <Input {...field}/>
+                                                                       </FormControl>
+                                                                       <FormDescription>Your display name. This will also
+                                                                           show up on your subscribe page as
+                                                                           well.</FormDescription>
+                                                                       <FormMessage/>
+                                                                   </FormItem>
+                                                               )
+                                                           }}/>
+                                                <FormAction onBackButtonClick={onBackButtonClick}/>
+                                            </form>
+                                        </Form>
+                                    </TabsContent>
+                                    <TabsContent value={"account"}>
+                                        <CardHeader>
+                                            <CardTitle>Account</CardTitle>
+                                            <CardDescription>Edit your account's credentials</CardDescription>
+                                        </CardHeader>
+                                        <Separator/>
+                                        <Form {...accountForm}>
+                                            <form onSubmit={accountForm.handleSubmit(handleAccountFormSubmit)}
+                                                  className={formClassName}>
+                                                <FormField name={"email"} render={({field}) => {
+                                                    return (
+                                                        <FormItem className={"min-w-[200px]"}>
+                                                            <FormLabel>Email</FormLabel>
+                                                            <Input  {...field}/>
+                                                            <FormDescription>Your account's email. This will be used for
+                                                                login</FormDescription>
+                                                            <FormMessage/>
+                                                        </FormItem>
+                                                    )
+                                                }}/>
+                                                <FormField name={"newPassword"} render={({field}) => {
+                                                    return (
+                                                        <FormItem className={"min-w-[200px]"}>
+                                                            <FormLabel>New Password</FormLabel>
+                                                            <Input  {...field} type={"password"}/>
+                                                            <FormDescription>Change your account password</FormDescription>
+                                                            <FormMessage/>
+                                                        </FormItem>
+                                                    )
+                                                }}/>
+                                                <FormField disabled={!newPasswordFieldIsDirty}
+                                                           name={"oldPassword"} render={({field, fieldState}) => {
+                                                    return (
+                                                        <FormItem className={"min-w-[200px]"}>
+                                                            <FormLabel>Old Password</FormLabel>
+                                                            <Input  {...field} type={"password"}/>
+                                                            <FormDescription>Enter your old password in order to change your
+                                                                password</FormDescription>
+                                                            <FormMessage/>
+                                                        </FormItem>
+                                                    )
+                                                }}/>
 
-                                            <FormAction onBackButtonClick={onBackButtonClick}/>
-                                        </form>
-                                    </Form>
-                                </TabsContent>
-                            </ScrollArea>
-                        </ResizablePanel>
-                    </ResizablePanelGroup>
-                </Tabs>
-            </CardContent>
-        </Card>
+                                                <FormAction onBackButtonClick={onBackButtonClick}/>
+                                            </form>
+                                        </Form>
+                                    </TabsContent>
+                                </ScrollArea>
+                            </ResizablePanel>
+                        </ResizablePanelGroup>
+                    </Tabs>
+                </CardContent>
+            </Card>
+        </div>
+
     )
 }
 

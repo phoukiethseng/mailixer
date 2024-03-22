@@ -8,12 +8,13 @@ import {
     useReactTable
 } from "@tanstack/react-table";
 import React, {useState} from "react";
-import {FilterColumn, Subscriber} from "@/types/DTO";
+import {Subscriber} from "@/types/DTO";
 import {columns, filterColumnList} from "@/Components/SubscriberTable/BlacklistedSubscribersColumn";
 import {BaseDataTable} from "@/Components/BaseDataTable";
 import {FilterColumnCombobox} from "@/Components/FilterColumnCombobox";
 import {Input} from "@/Components/Input";
 import {ColumnVisibilityDropdownMenu} from "@/Components/ColumnVisibilityDropdownMenu";
+import {FilterColumnDef} from "@/types/util";
 
 type BlacklistedSubscribersTableProps = {
     data: Subscriber[]
@@ -23,7 +24,7 @@ const BlacklistedSubscribersTable = ({data}: BlacklistedSubscribersTableProps) =
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
-    const [currentFilterColumn, setCurrentFilterColumn] = useState<FilterColumn>();
+    const [currentFilterColumn, setCurrentFilterColumn] = useState<FilterColumnDef>();
 
     const table: Table<Subscriber> = useReactTable({
         columns,

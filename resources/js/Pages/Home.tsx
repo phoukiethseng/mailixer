@@ -12,7 +12,7 @@ import {cn} from "@/lib/utils";
 
 const HomePage = () => {
     return (
-        <div className={"w-screen min-h-screen bg-[url(/background.png)] bg-top bg-cover dark  text-foreground"}>
+        <div className={"w-screen min-h-screen bg-top bg-cover  text-foreground"}>
             <header className={"w-full pb-4 flex justify-center items-center"}>
                 <section
                     className={"m-0 flex flex-row py-5 px-1 justify-between items-center w-[60%] min-h-[60px] "}>
@@ -44,15 +44,15 @@ const HomePage = () => {
 
             </header>
             <main className={"flex flex-col justify-start items-center"}>
-                <h1 className={"text-6xl font-extrabold text-center mt-[120px] text-[#29332D] font-['futura-pt'] leading-tight drop-shadow-xl text-foreground"}>Hassle
+                <h1 className={"text-6xl font-extrabold text-center mt-[120px] text-[#29332D] font-['futura-pt'] leading-tight"}>Hassle
                     Free<br/>
                     <span
-                        className={"text-primary drop-shadow-xl decoration-wavy underline decoration-4 decoration-red-600 underline-offset-8"}>Newsletter</span> List
+                        className={"text-primary decoration-wavy underline decoration-4 decoration-red-600 underline-offset-8"}>Newsletter</span> List
                     Management </h1>
                 <span className={"w-24 h-24"}>
                         <img alt={"sunglasses-face"} src={"/sunglasses_face.gif"} className={"object-contain"}/>
                     </span>
-                <h2 className={"text-center text-2xl max-w-xl mt-4 mx-auto font-medium font-['futura-pt']"}>No need
+                <h2 className={"text-center text-2xl max-w-xl mt-4 mx-auto text-muted-foreground font-medium font-['futura-pt']"}>No need
                     to setup your
                     own
                     subscribe page.

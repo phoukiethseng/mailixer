@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -35,6 +36,11 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (ServiceException | \ErrorException $e, Request $request) {
+            if (App::isLocal()) {
+                Log::debug("Unhandled Exception", [
+                    'exceptionTrace' => $e->getTraceAsString()
+                ]);
+            }
             return Inertia::render('InternalError', [
                 'error.message' => App::isLocal() ? $e->getMessage() : null,
                 'error.statusCode' => 500
