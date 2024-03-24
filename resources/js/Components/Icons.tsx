@@ -36,7 +36,8 @@ import {
     Mail,
     Lock,
     Clock4,
-    CircleEllipsis
+    CircleEllipsis,
+    ChevronRight
 } from "lucide-react";
 
 const Icons = {
@@ -77,7 +78,8 @@ const Icons = {
     Mail: Mail,
     Lock: Lock,
     Clock4: Clock4,
-    CircleEllipsis: CircleEllipsis
+    CircleEllipsis: CircleEllipsis,
+    ChevronRight: ChevronRight
 };
 
 export {Icons};

@@ -1,5 +1,5 @@
 import React from "react";
-import {DashBoardMenuItems} from "@/config/site";
+import siteConfig from "@/config/site";
 
 export type DashBoardPageDescription = {
     displayName: string;
@@ -7,9 +7,9 @@ export type DashBoardPageDescription = {
     icon: React.FunctionComponent;
     description: string;
 };
+export type DashBoardMenuItems = keyof typeof siteConfig.dashboard.pages;
 export type DashBoardPageGroupDescription = {
-    [key: string]: {
-        pages: Array<DashBoardMenuItems>;
-        icon: React.FunctionComponent;
-    };
+    displayName: string;
+    pages: Array<DashBoardMenuItems>;
+    icon: React.FunctionComponent;
 };

@@ -86,6 +86,7 @@ declare module 'ziggy-js' {
     "dashboard.draftNewsletter": [],
     "dashboard.batch.unsubscribe": [],
     "dashboard.batch.blacklist": [],
+    "setting.account": [],
     "user.profile": [
         {
             "name": "userId"

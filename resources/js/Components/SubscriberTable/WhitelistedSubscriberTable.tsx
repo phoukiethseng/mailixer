@@ -52,11 +52,13 @@ const WhitelistedSubscriberTable = ({data}: WhitelistedSubscriberTableProps) => 
     return (
         <div className={"flex flex-col gap-2 justify-start items-stretch"}>
             <div className={"flex flex-row gap-2 justify-start w-full"}>
-                <ColumnVisibilityDropdownMenu table={table}/>
+                <ColumnVisibilityDropdownMenu table={table} className={"bg-card text-card-foreground"}/>
                 <FilterColumnCombobox filterColumn={currentFilterColumn}
                                       onFilterColumnChange={setCurrentFilterColumn}
-                                      filterColumnList={filterColumnList}/>
-                <Input disabled={!Boolean(currentFilterColumn)} className={"w-[300px]"} placeholder={"Search"}
+                                      filterColumnList={filterColumnList}
+                                      className={"bg-card text-card-foreground"}
+                />
+                <Input disabled={!Boolean(currentFilterColumn)} className={"w-[300px] bg-card text-card-foreground"} placeholder={"Search"}
                        onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                            const searchText = e.target.value;
                            table.getColumn(currentFilterColumn?.value ?? "email")?.setFilterValue(searchText);
@@ -65,7 +67,7 @@ const WhitelistedSubscriberTable = ({data}: WhitelistedSubscriberTableProps) => 
                     isAnyRowSelected &&
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant={"ghost"} className={"ml-auto"} size={"icon"}>
+                            <Button variant={"outline"} className={"ml-auto"} size={"icon"}>
                                 <Icons.CircleEllipsis strokeWidth={1.5} size={15}/>
                             </Button>
                         </DropdownMenuTrigger>

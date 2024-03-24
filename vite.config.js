@@ -13,5 +13,11 @@ export default defineConfig({
     ],
     resolve: {
         alias: {find: '@', replacement: path.resolve(__dirname, '/resources/js')}
+    },
+    server: {
+        host: true,
+        cors: {
+            origin: true
+        }
     }
 });

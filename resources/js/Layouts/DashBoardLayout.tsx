@@ -1,9 +1,9 @@
 import React from "react";
-import {Separator} from "../Components/Separator";
-import LogoText from "../Components/LogoText";
+import {Separator} from "@/Components/Separator";
+import LogoText from "@/Components/LogoText";
 import {Avatar, AvatarFallback, AvatarImage} from "@/Components/Avatar";
 import {router, usePage} from "@inertiajs/react";
-import siteConfig, {DashBoardMenuItems, dashboardPageGroups} from "@/config/site";
+import siteConfig, {dashboardPageGroups} from "@/config/site";
 import {Button} from "@/Components/Button";
 import {
     DropdownMenu,
@@ -18,6 +18,7 @@ import DashBoardSubPageHeader from "./DashBoardSubPageHeader";
 import DashBoardNavigationItemGroup from "./DashBoardNavigationItemGroup";
 import {useProfilePicture} from "@/lib/hooks/useProfilePicture";
 import {InertiaSharedProps} from "@/types/inertia";
+import {DashBoardMenuItems} from "@/types/dashboard_page";
 
 type DashBoardLayoutProps = {
     activePage: DashBoardMenuItems; // Current active page, must be any key from `siteConfig.dashboard.pages`

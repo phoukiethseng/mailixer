@@ -35,6 +35,7 @@ import dataUrlToBlob from "dataurl-to-blob";
 
 import {Switch} from "@/Components/Switch";
 import {InertiaSharedProps} from "@/types/inertia";
+import NewDashBoardLayout from "@/Layouts/NewDashBoardLayout";
 
 const SubscribePageCustomizationFormSchema = z.object({
     showProfilePicture: z.boolean(),
@@ -368,7 +369,7 @@ const Page = ({
 };
 
 Page.layout = (page: React.ReactNode) => (
-    <DashBoardLayout activePage="CustomizePage">{page}</DashBoardLayout>
+    <NewDashBoardLayout activeSubPageName={"CustomizePage"}>{page}</NewDashBoardLayout>
 );
 
 export default Page;

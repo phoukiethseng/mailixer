@@ -4,6 +4,7 @@ import {Subscriber} from "../../../types/DTO";
 import {useMessageToast} from "../../../lib/hooks/useMessageToast";
 import BlacklistedSubscribersTable from "../../../Components/SubscriberTable/BlacklistedSubscribersTable";
 import {InertiaSharedProps} from "@/types/inertia";
+import NewDashBoardLayout from "@/Layouts/NewDashBoardLayout";
 
 type BlacklistedSubscribersPageProps = {
     subscribers: {
@@ -25,9 +26,9 @@ const BlacklistedSubscribers = (props: BlacklistedSubscribersPageProps) => {
     )
 }
 BlacklistedSubscribers.layout = (page: React.ReactNode) => (
-    <DashBoardLayout activePage={"BlacklistedSubscribers"}>
+    <NewDashBoardLayout activeSubPageName={"BlacklistedSubscribers"}>
         {page}
-    </DashBoardLayout>
+    </NewDashBoardLayout>
 )
 
 export default BlacklistedSubscribers;

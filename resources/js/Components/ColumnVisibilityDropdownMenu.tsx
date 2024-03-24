@@ -9,13 +9,16 @@ import {
 import {Button} from "@/Components/Button";
 import {Icons} from "@/Components/Icons";
 import React from "react";
+import {cn} from "@/lib/utils";
 
-export function ColumnVisibilityDropdownMenu(props: {
+type ColumnVisibilityDropdownMenuProps = {
     table: Table<Subscriber>,
-}) {
-    return <DropdownMenu>
+} & React.ComponentPropsWithoutRef<"button">
+
+export function ColumnVisibilityDropdownMenu(props: ColumnVisibilityDropdownMenuProps) {
+    return <DropdownMenu >
         <DropdownMenuTrigger asChild>
-            <Button variant={"outline"} size={"icon"} >
+            <Button variant={"outline"} size={"icon"} className={cn("", props.className)}>
                 <Icons.Columns strokeWidth={1.5} size={14}/>
             </Button>
         </DropdownMenuTrigger>

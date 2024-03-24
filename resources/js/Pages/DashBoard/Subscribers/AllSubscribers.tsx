@@ -9,6 +9,8 @@ import {Subscriber} from "@/types/DTO";
 import WhitelistedSubscriberTable from "@/Components/SubscriberTable/WhitelistedSubscriberTable";
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/Components/Resizable";
 import {InertiaSharedProps} from "@/types/inertia";
+import NewDashBoardLayout from "@/Layouts/NewDashBoardLayout";
+import {dashboardPageGroups} from "@/config/site";
 
 export type SubscribersPageProps = {
     subscribers: Subscriber[];
@@ -35,7 +37,7 @@ const SubscribersPage = ({
     );
     return (
         <ResizablePanelGroup direction={"horizontal"} className={"gap-2 w-full h-full"}>
-            <ResizablePanel minSize={20} maxSize={50} defaultSize={20} className={""}>
+            <ResizablePanel minSize={20} maxSize={50} defaultSize={30} className={""}>
                 <div className={"w-full flex flex-row justify-center items-start flex-wrap gap-4"}>
                     <div className={"flex flex-row gap-3 flex-wrap justify-stretch"}>
                         <Card>
@@ -129,7 +131,7 @@ const SubscribersPage = ({
 };
 
 SubscribersPage.layout = (page: React.ReactNode) => (
-    <DashBoardLayout activePage="Subscribers">{page}</DashBoardLayout>
+    <NewDashBoardLayout activeSubPageName={"Subscribers"}>{page}</NewDashBoardLayout>
 );
 
 export default SubscribersPage;

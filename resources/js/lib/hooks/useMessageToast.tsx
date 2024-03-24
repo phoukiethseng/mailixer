@@ -1,6 +1,7 @@
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {useToast} from "@/Components/use-toast";
 import {InertiaSharedProps, ResponseMessage} from "@/types/inertia";
+import {ToastAction, ToastActionElement} from "@/Components/Toast";
 
 type UseMessageToastProps = ResponseMessage;
 
@@ -18,11 +19,14 @@ export function useMessageToast(
                 title: "Uh Oh",
                 description: errors.message,
                 variant: "destructive",
+                action: <ToastAction altText={"close"} onClick={() => messageToast.dismiss()}>Dismiss</ToastAction>
             });
         }
         if (message) {
             messageToast = toast({
+                title: "Success",
                 description: message,
+                action: <ToastAction altText={"close"} onClick={() => messageToast.dismiss()}>Dismiss</ToastAction>
             });
         }
 

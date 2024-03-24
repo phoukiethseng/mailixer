@@ -6,6 +6,7 @@ import {useMessageToast} from "@/lib/hooks/useMessageToast";
 import {ComposeNewsletter} from "@/types/DTO";
 import ComposeNewsletterTextEditor from "@/Components/ComposeNewsletterTextEditor";
 import {InertiaSharedProps} from "@/types/inertia";
+import NewDashBoardLayout from "@/Layouts/NewDashBoardLayout";
 
 type NewsletterPageProps = {} & InertiaSharedProps;
 
@@ -38,7 +39,7 @@ const ComposeNewsletterPage = ({auth, ...props}: NewsletterPageProps) => {
 };
 
 ComposeNewsletterPage.layout = (page: React.ReactNode) => (
-    <DashBoardLayout activePage="ComposeNewsletter">{page}</DashBoardLayout>
+    <NewDashBoardLayout activeSubPageName="ComposeNewsletter">{page}</NewDashBoardLayout>
 );
 
 export default ComposeNewsletterPage;

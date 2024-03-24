@@ -1,9 +1,9 @@
 import React from "react";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger,} from "@/Components/Collapsible";
 import DashBoardNavigationItem from "@/Layouts/DashBoardNavigationItem";
-import siteConfig, {DashBoardMenuItems} from "@/config/site";
+import siteConfig from "@/config/site";
 import {cn} from "@/lib/utils";
-import {DashBoardPageDescription} from "@/types/dashboard_page";
+import {DashBoardMenuItems, DashBoardPageDescription} from "@/types/dashboard_page";
 
 type DashBoardNavigationItemGroupProps = {
     groupName: string;

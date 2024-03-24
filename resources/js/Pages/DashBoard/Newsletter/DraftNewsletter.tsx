@@ -9,6 +9,7 @@ import {cn, htmlToText} from "@/lib/utils";
 import {Icons} from "@/Components/Icons";
 import {router} from "@inertiajs/react";
 import {InertiaSharedProps} from "@/types/inertia";
+import NewDashBoardLayout from "@/Layouts/NewDashBoardLayout";
 
 export type DraftNewsletterProps = {
     newsletters: NewsletterWithStatus[];
@@ -109,7 +110,7 @@ const DraftNewsletter = ({
 };
 
 DraftNewsletter.layout = (page: React.ReactNode) => (
-    <DashBoardLayout activePage="DraftNewsletter">{page}</DashBoardLayout>
+    <NewDashBoardLayout activeSubPageName="DraftNewsletter">{page}</NewDashBoardLayout>
 );
 
 export default DraftNewsletter;

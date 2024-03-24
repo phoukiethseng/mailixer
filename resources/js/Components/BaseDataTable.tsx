@@ -13,7 +13,7 @@ export function BaseDataTable<TData, TValue>({
                                                  table, className, columns
                                              }: DataTableProps<TData, TValue>) {
     return (
-        <div className={cn("rounded-xl border text-foreground", className)}>
+        <div className={cn("rounded-xl border text-card-foreground bg-card", className)}>
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (

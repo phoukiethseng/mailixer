@@ -11,6 +11,7 @@ import axios from "axios";
 import {ScrollArea} from "@/Components/ScrollArea";
 import {HashLoader} from "react-spinners";
 import dateTimeFormater from "date-format";
+import NewDashBoardLayout from "@/Layouts/NewDashBoardLayout";
 
 type NewsletterStatusPageProps = {
     newsletters: NewsletterSendResult[]
@@ -170,7 +171,7 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
 }
 
 NewsletterStatus.layout = (page: React.ReactNode) => (
-    <DashBoardLayout activePage="NewsletterStatus">{page}</DashBoardLayout>
+    <NewDashBoardLayout activeSubPageName="NewsletterStatus">{page}</NewDashBoardLayout>
 );
 
 export default NewsletterStatus;

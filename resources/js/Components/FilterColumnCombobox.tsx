@@ -5,12 +5,15 @@ import {Icons} from "@/Components/Icons";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/Components/Command";
 import {filterColumnList} from "@/Components/SubscriberTable/WhitelistedSubscribersColumns";
 import {FilterColumnDef} from "@/types/util";
+import {cn} from "@/lib/utils";
 
-export function FilterColumnCombobox(props: {
+type FilterColumnComboboxProps = {
     filterColumn: FilterColumnDef | undefined,
     onFilterColumnChange: (column: FilterColumnDef) => any;
     filterColumnList: FilterColumnDef[],
-}) {
+} & React.ComponentPropsWithoutRef<"button">
+
+export function FilterColumnCombobox(props: FilterColumnComboboxProps) {
     const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
 
     return <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
@@ -18,7 +21,7 @@ export function FilterColumnCombobox(props: {
             <Button
                 role={"combobox"}
                 variant={"outline"}
-                className={"min-w-[100px] w-[200px] flex flex-row justify-between"}
+                className={cn("min-w-[100px] w-[200px] flex flex-row justify-between", props.className)}
             >
                             <span className={"text-muted-foreground"}>
                                 {

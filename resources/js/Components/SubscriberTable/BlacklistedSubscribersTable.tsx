@@ -42,12 +42,14 @@ const BlacklistedSubscribersTable = ({data}: BlacklistedSubscribersTableProps) =
     return (
         <div className={"flex flex-col items-start gap-2"}>
             <div className={"flex flex-row gap-2 justify-start"}>
-                <ColumnVisibilityDropdownMenu table={table}/>
+                <ColumnVisibilityDropdownMenu table={table} className={"text-card-foreground bg-card"}/>
                 <FilterColumnCombobox filterColumn={currentFilterColumn}
                                       onFilterColumnChange={setCurrentFilterColumn}
-                                      filterColumnList={filterColumnList}/>
+                                      filterColumnList={filterColumnList}
+                                      className={"text-card-foreground bg-card"}
+                />
                 <Input disabled={!Boolean(currentFilterColumn)} placeholder={"Search"}
-                       className={"w-[350px]"}
+                       className={"w-[350px] text-card-foreground bg-card"}
                        onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
                            const searchText = e.target.value;
                            table.getColumn(currentFilterColumn?.value ?? "")?.setFilterValue(searchText);

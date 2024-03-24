@@ -84,7 +84,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
 });
 
 Route::middleware('auth')->prefix('user')->group(function () {
-    Route::get('settings', [SettingsController::class, 'AccountSettingsPage']);
+    Route::get('settings', [SettingsController::class, 'AccountSettingsPage'])->name("setting.account");
     Route::post('profile', [AccountController::class, 'editProfile']);
     Route::post('account', [AccountController::class, 'editAccount']);
     Route::get('profilePicture/{userId}', [ProfileResourceController::class, 'getProfilePicture'])->name('user.profile');

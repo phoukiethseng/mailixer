@@ -44,7 +44,7 @@ const siteConfig = {
                 description: "Account Settings"
             },
             NewsletterStatus: {
-                displayName: "Newsletter Status",
+                displayName: "Status",
                 url: "/dashboard/newsletter_status_page",
                 icon: Icons.Send,
                 description: "List of newsletter status"
@@ -54,16 +54,19 @@ const siteConfig = {
 };
 
 // Defining a grouping of dashboard sub pages
-export const dashboardPageGroups: DashBoardPageGroupDescription = {
+export const dashboardPageGroups: {[key: string]: DashBoardPageGroupDescription } = {
     "Subscribe Page": {
+        displayName: "Subscribe Page",
         icon: Icons.Layout,
         pages: ["CustomizePage"],
     },
     Subscribers: {
+        displayName: "Subscribers",
         icon: Icons.UserCheck,
         pages: ["Subscribers", "BlacklistedSubscribers"],
     },
     Newsletter: {
+        displayName: "Newsletter",
         icon: Icons.Newspaper,
         pages: ["ComposeNewsletter", "DraftNewsletter", "NewsletterStatus"],
     },
@@ -78,4 +81,3 @@ export const QRCodeConversionOptions: QRCodeToDataURLOptions = {
 
 
 export default siteConfig;
-export type DashBoardMenuItems = keyof typeof siteConfig.dashboard.pages;
