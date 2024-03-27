@@ -16,6 +16,7 @@ import {route} from "../../../../../vendor/tightenco/ziggy";
 import useLoader from "@/lib/hooks/useLoader";
 import {getSubscriberGainCountHistory, getSubscriberLossHistory} from "@/lib/analytics/subscriber";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/Components/Tabs";
+import {Skeleton} from "@/Components/Skeleton";
 
 type SubscriberOverviewPageProps = {
     subscribersCount: number;
@@ -141,59 +142,69 @@ const SubscriberOverviewPage = (props: SubscriberOverviewPageProps) => {
                                         />
                                     </PopoverContent>
                                 </Popover>
-                                <Line
-                                    curve={"monotoneX"}
-                                    lineWidth={3}
-                                    useMesh={true}
-                                    enablePoints={false}
-                                    enableGridY={true}
-                                    enableArea={true}
-                                    yScale={{
-                                        type: "linear",
-                                        min:0,
-                                        max: 'auto'
-                                    }}
-                                    xScale={{
-                                        type: "time",
-                                        format: "%Y-%m-%dT%H:%M:%S.%L%Z"
-                                    }}
-                                    margin={{
-                                        top: 20,
-                                        bottom: 70,
-                                        left: 50,
-                                        right: 50
-                                    }}
-                                    xFormat={value => new Date(value).toDateString()}
-                                    axisLeft={{
-                                        tickValues: 2,
-                                        legend: "Count",
-                                        legendOffset: -40,
-                                        legendPosition: "middle",
-                                    }}
-                                    axisBottom={{
-                                        format: '%b %d',
-                                        tickValues: 'every 3 days',
-                                    }}
-                                    legends={[
-                                        {
-                                            anchor: "bottom",
-                                            direction: "row",
-                                            itemDirection: "left-to-right",
-                                            itemWidth: 130,
-                                            itemHeight: 0,
-                                            translateY: 50
-                                        }
-                                    ]}
-                                    data={[
-                                        {
-                                            id: "Subscriber Gained",
-                                            data: subscriberGainHistory
-                                        },
-                                        {
-                                            id: "Subscriber Loss",
-                                            data: subscriberLossHistory
-                                        }
-                                    ]}/>
+                                {
+                                    isLoading &&
+                                    <div className={"w-full h-full space-y-3 p-5"}>
+                                        <Skeleton className={"w-full h-[75%]"}></Skeleton>
+                                        <Skeleton className={"w-full h-[30px]"}></Skeleton>
+                                    </div>
+                                }
+                                {
+                                    !isLoading &&
+                                    <Line
+                                        curve={"monotoneX"}
+                                        lineWidth={3}
+                                        useMesh={true}
+                                        enablePoints={false}
+                                        enableGridY={true}
+                                        enableArea={true}
+                                        yScale={{
+                                            type: "linear",
+                                            min:0,
+                                            max: 'auto'
+                                        }}
+                                        xScale={{
+                                            type: "time",
+                                            format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+                                        }}
+                                        margin={{
+                                            top: 20,
+                                            bottom: 70,
+                                            left: 50,
+                                            right: 50
+                                        }}
+                                        xFormat={value => new Date(value).toDateString()}
+                                        axisLeft={{
+                                            tickValues: 2,
+                                            legend: "Count",
+                                            legendOffset: -40,
+                                            legendPosition: "middle",
+                                        }}
+                                        axisBottom={{
+                                            format: '%b %d',
+                                            tickValues: 'every 3 days',
+                                        }}
+                                        legends={[
+                                            {
+                                                anchor: "bottom",
+                                                direction: "row",
+                                                itemDirection: "left-to-right",
+                                                itemWidth: 130,
+                                                itemHeight: 0,
+                                                translateY: 50
+                                            }
+                                        ]}
+                                        data={[
+                                            {
+                                                id: "Subscriber Gained",
+                                                data: subscriberGainHistory
+                                            },
+                                            {
+                                                id: "Subscriber Loss",
+                                                data: subscriberLossHistory
+                                            }
+                                        ]}/>
+                                }
                             </CardContent>
                             <CardFooter></CardFooter>
                         </Card>
