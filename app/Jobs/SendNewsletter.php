@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\NewsletterStatus;
 use App\Mail\NewsletterEmail;
 use App\Models\Newsletter;
 use App\Models\Subscriber;
@@ -42,6 +43,8 @@ class SendNewsletter implements ShouldQueue
             if ($message) {
                 $messageId = $message->getMessageId();
                 Log::debug('messageId', ['messageId' => $messageId]);
+                App::get(NewsletterService::class)->createSendSuccessResult($this->newsletter->id, $this->subscriber->id, $messageId);
+                App::get(NewsletterService::class)->setNewsletterStatus($this->newsletter->id, NewsletterStatus::SENT);
             }
         } catch (\Throwable $e) {
             Log::debug('send newsletters job failed', ['exeception' => $e->getMessage(), 'trace' => $e->getTrace()]);

@@ -25,11 +25,19 @@ class CreateSuccessSendResult
         $messageHeaders = $event->message->getHeaders();
         Log::debug('message headers', ['headers' => $messageHeaders]);
 
-        if ($messageHeaders->has('X-Message-ID') && $messageHeaders->has('X-Mailixer-Newsletter')) {
+        if (($messageHeaders->has('X-Message-ID') || $messageHeaders->has('Message-ID'))
+            && $messageHeaders->has('X-Mailixer-Newsletter')) {
+
             $newsletterId = $event->data['newsletterId'];
             $subscriberId = $event->data['subscriberId'];
-            Log::debug('setting message id', ['messageId' => $messageHeaders->get('X-Message-ID')->getBody()]);
-            $messageId = $messageHeaders->get('X-Message-ID')->getBody();
+
+            $messageId = match(true) {
+                $messageHeaders->has('Message-ID') => $messageHeaders->get('Message-ID')->getBody(),
+                $messageHeaders->has('X-Message-ID') => $messageHeaders->get('X-Message-ID')->getBody(),
+            };
+
+            Log::debug('setting message id', ['messageId' => $messageId]);
+
             $this->newsletterService->createSendSuccessResult($newsletterId, $subscriberId, $messageId);
             $this->newsletterService->setNewsletterStatus($newsletterId, NewsletterStatus::SENT);
         }

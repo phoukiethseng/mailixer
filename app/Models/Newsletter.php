@@ -31,6 +31,6 @@ class Newsletter extends Model
 
     public function sendResults(): BelongsToMany
     {
-        return $this->belongsToMany(Subscriber::class, 'newsletter_send_results');
+        return $this->belongsToMany(Subscriber::class, 'email_send_results');
     }
 }

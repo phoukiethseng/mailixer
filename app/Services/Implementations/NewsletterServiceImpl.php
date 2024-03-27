@@ -145,7 +145,7 @@ class NewsletterServiceImpl implements NewsletterService
     {
         return $this->find($newsletterId)->sendResults()
             ->as('send_result')
-            ->withPivot(['subscriber_id', 'newsletter_id', 'is_success'])
+            ->withPivot(['subscriber_id', 'newsletter_id', 'is_success', 'status_id'])
             ->withTimestamps()
             ->get()
             ->map(function (Subscriber $subscriber) {

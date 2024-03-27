@@ -24,7 +24,7 @@ class EventServiceProvider extends ServiceProvider
             CreateProfilePicture::class,
         ],
         MessageSent::class => [
-            CreateSuccessSendResult::class
+//            CreateSuccessSendResult::class
         ],
     ];
 

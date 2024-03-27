@@ -22,3 +22,4 @@ yarn-error.log
 /smtp/haraka/config/dkim/*
 !/smtp/haraka/config/dkim/dkim_key_gen.sh
 /smtp/haraka/config/auth_flat_file.ini
+/smtp/haraka/queue/
