@@ -70,6 +70,11 @@ class SubscribePageServiceImpl implements SubscribePageService
         $user->subscribePage()->save($newSubscribePage);
         $this->subscribePageRepository->save($newSubscribePage);
 
+        Log::debug('creating new subscribe page for new user', [
+            'user' => $user,
+            'subscribePage' => $newSubscribePage
+        ]);
+
         return $newSubscribePage;
 
     }

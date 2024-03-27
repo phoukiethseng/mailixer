@@ -9,7 +9,7 @@ class NewsletterStatusDTO extends NewsletterDTO
 {
 
     /**
-     * @var "DRAFT" | "PENDING" | "SENT" | "FAILED"
+     * @var "DRAFT" | "PENDING" | "SENT"
      */
     public $status;
 
