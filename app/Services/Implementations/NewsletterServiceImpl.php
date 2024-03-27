@@ -8,6 +8,7 @@ use App\Exceptions\ServiceException;
 use App\Jobs\SendNewsletter;
 use App\Mail\NewsletterEmail;
 use App\Models\Newsletter;
+use App\Models\Subscriber;
 use App\Models\User;
 use App\Repositories\Interfaces\NewsletterRepository;
 use App\Repositories\Interfaces\SubscriberRepository;
@@ -143,8 +144,12 @@ class NewsletterServiceImpl implements NewsletterService
     public function getAllSendResultsForNewsletterId($newsletterId)
     {
         return $this->find($newsletterId)->sendResults()
-            ->as('sendResult')
+            ->as('send_result')
             ->withPivot(['subscriber_id', 'newsletter_id', 'is_success'])
-            ->get();
+            ->withTimestamps()
+            ->get()
+            ->map(function (Subscriber $subscriber) {
+                return $subscriber->send_result;
+            });
     }
 }

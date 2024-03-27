@@ -9,6 +9,7 @@ import {
 } from "@/Components/NavigationMenu";
 import {Button} from "@/Components/Button";
 import {cn} from "@/lib/utils";
+import {Link} from "@inertiajs/react";
 
 const HomePage = () => {
     return (
@@ -34,11 +35,11 @@ const HomePage = () => {
                         </NavigationMenu>
                     </nav>
                     <div>
-                        <a href={"/register"}>
+                        <Link href={"/register"}>
                             <Button size={"lg"} variant={"outline"}
                                     className={"rounded-xl border-primary text-primary hover:text-primary font-semibold"}>Sign
                                 Up</Button>
-                        </a>
+                        </Link>
                     </div>
                 </section>
 
@@ -60,12 +61,12 @@ const HomePage = () => {
                     newsletter to your subscribers with ease. </h2>
 
                 <div className={"mt-7 flex flex-row gap-4 justify-center items-center"}>
-                    <a href={"/login"}>
+                    <Link href={"/login"}>
                         <Button size={"lg"} variant={"default"} className={"rounded-xl"}>Get Started</Button>
-                    </a>
-                    <a href={"/docs"}>
+                    </Link>
+                    <Link href={"/docs"}>
                         <Button size={"lg"} variant={"secondary"} className={"rounded-xl"}>Learn More</Button>
-                    </a>
+                    </Link>
                 </div>
             </main>
         </div>

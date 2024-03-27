@@ -48,6 +48,12 @@ const siteConfig = {
                 url: "/dashboard/newsletter_status_page",
                 icon: Icons.Send,
                 description: "List of newsletter status"
+            },
+            SubscriberOverview: {
+                displayName: "Overview",
+                url: "/dashboard/subscriber_overview_page",
+                icon: Icons.BarChartBig,
+                description: "Overview of subscription list"
             }
         } satisfies { [key: string]: DashBoardPageDescription },
     },
@@ -63,7 +69,7 @@ export const dashboardPageGroups: {[key: string]: DashBoardPageGroupDescription 
     Subscribers: {
         displayName: "Subscribers",
         icon: Icons.UserCheck,
-        pages: ["Subscribers", "BlacklistedSubscribers"],
+        pages: ["SubscriberOverview","Subscribers", "BlacklistedSubscribers"],
     },
     Newsletter: {
         displayName: "Newsletter",

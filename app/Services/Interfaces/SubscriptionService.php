@@ -19,4 +19,5 @@ interface SubscriptionService
     public function whitelistById($subscriberId);
 
     public function getBlacklistedCount($userId);
+    public function getSubscriptionRecordsForUser($userId, \DateTime $from, \DateTime $to);
 }

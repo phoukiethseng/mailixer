@@ -10,9 +10,9 @@ class SendResultDTO extends BaseDTO
     public int $subscriberId;
     public bool $isSuccess;
 
-    public DateTime $timestamp;
+    public string | null $timestamp;
 
-    public function __construct(NewsletterSendResult $sendResult)
+    public function __construct($sendResult)
     {
         $this->subscriberId = $sendResult['subscriber_id'];
         $this->isSuccess = $sendResult['is_success'];

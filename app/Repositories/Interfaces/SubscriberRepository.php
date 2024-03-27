@@ -13,21 +13,42 @@ use App\Repositories\Interfaces\CRUDRepository;
 interface SubscriberRepository extends CRUDRepository
 {
     /**
+     * Return a single subscriber record that match given email
      * @param string $email
-     * @return Subscriber|null
+     * @return Subscriber | null
      */
-    public function findByEmail($email): Subscriber | null;
+    public function findByEmail($email);
     /**
+     * Return a single subscriber record that match given unsubscribe token.
      * @param string $unsubscribeToken
      * @return Subscriber|null
      */
-    public function findByUnsubscribeToken($unsubscribeToken): Subscriber | null;
+    public function findByUnsubscribeToken($unsubscribeToken);
     /**
+     * Return all subscriber records belong to user by user's id.
      * @param int $userId
-     * @return Collection<User>
+     * @return Collection<Subscriber>
      */
-    public function findAllByUserId($userId): Collection;
+    public function findAllByUserId($userId);
+
+    /**
+     * Return blacklisted subscriber records that belong to user by user's id.
+     * @param $userId
+     * @return Collection<Subscriber>
+     */
     public function findAllBlacklistedByUserId($userId);
+
+    /**
+     * Return whitelisted subscriber records that belong to user by user's id.
+     * @param $userId
+     * @return Collection<Subscriber>
+     */
     public function findAllWhitelistedByUserId($userId);
+
+    /**
+     * @param $userId
+     * @return Collection<Subscriber>
+     */
+    public function findAllSubscriptionRecordsByUserId($userId);
 
 }

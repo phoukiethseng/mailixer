@@ -1,6 +1,6 @@
 import React from "react";
 import {Button} from "@/Components/Button";
-import {router, usePage} from "@inertiajs/react";
+import {Link, router, usePage} from "@inertiajs/react";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/Components/Card";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
@@ -103,7 +103,7 @@ export default function LoginPage() {
                     )}
                 </CardContent>
                 <CardFooter>
-                    <p className={"text-xs text-muted-foreground"}>Don't have account yet? <a className={"text-primary font-semibold"} href={"/register"}>Sign Up</a></p>
+                    <p className={"text-xs text-muted-foreground"}>Don't have account yet? <Link className={"text-primary font-semibold"} href={"/register"}>Sign Up</Link></p>
                 </CardFooter>
             </Card>
         </div>

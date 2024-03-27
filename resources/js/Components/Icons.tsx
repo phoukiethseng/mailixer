@@ -37,7 +37,9 @@ import {
     Lock,
     Clock4,
     CircleEllipsis,
-    ChevronRight
+    ChevronRight,
+    BarChartBig,
+    Calendar
 } from "lucide-react";
 
 const Icons = {
@@ -79,7 +81,9 @@ const Icons = {
     Lock: Lock,
     Clock4: Clock4,
     CircleEllipsis: CircleEllipsis,
-    ChevronRight: ChevronRight
+    ChevronRight: ChevronRight,
+    BarChartBig: BarChartBig,
+    Calendar: Calendar
 };
 
 export {Icons};

@@ -8,6 +8,7 @@ use App\Services\Interfaces\SubscribePageService;
 use App\Services\Interfaces\SubscriptionService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use App\DTOs\SubscriberDTO;
@@ -28,12 +29,8 @@ class DashboardPageController extends Controller
             // We only return whitelisted subscribers since now
             // we have a dedicated blacklisted subscribers page
             $subscribers = $this->subscriptionService->getAllWhitelistedSubscribersByUserId($user->id);
-            $SubscriberCount = $this->subscriptionService->getSubscribersCount($user->id);
-            $blacklistedSubscribersCount = $this->subscriptionService->getBlacklistedCount($user->id);
             return Inertia::render('DashBoard/Subscribers/AllSubscribers', [
                 'subscribers' => $subscribers->mapInto(SubscriberDTO::class),
-                'subscribersCount' => $SubscriberCount,
-                'blacklistedSubscribersCount' => $blacklistedSubscribersCount
             ]);
         } catch (Exception) {
             return back()->withErrors(
@@ -82,6 +79,16 @@ class DashboardPageController extends Controller
         ]);
     }
 
+    public function subscriberOverviewPage(Request $request)
+    {
+        $user = $this->userRepository->findById($request->user()->id);
+        $SubscriberCount = $this->subscriptionService->getSubscribersCount($user->id);
+        $blacklistedSubscribersCount = $this->subscriptionService->getBlacklistedCount($user->id);
+        return Inertia::render("DashBoard/Subscribers/Overview", [
+            'subscribersCount' => $SubscriberCount,
+            'blacklistedSubscribersCount' => $blacklistedSubscribersCount,
+        ]);
+    }
 
 }
 

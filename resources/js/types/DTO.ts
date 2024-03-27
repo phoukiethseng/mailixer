@@ -29,7 +29,11 @@ export type User = HasId & HasName & HasEmail & HasCreationDate & {
 };
 export type Subscriber = HasId &
     HasEmail &
-    HasTimestamp & { unsubscribeToken: string };
+    HasCreationDate & { unsubscribeToken: string };
+
+export type SubscriptionRecord = HasId & HasEmail
+    & { createdAt: string; unsubscribedAt: string }
+
 export type Newsletter = HasId & {
     subject: string;
     content: string;
@@ -44,7 +48,7 @@ export type NewsletterSendResult = NewsletterWithStatus & {
     sendResults: {
         subscriberId: number;
         isSuccess: boolean;
-        timestamp: Date
+        createdAt: string | null
     }[]
 }
 

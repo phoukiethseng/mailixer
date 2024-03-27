@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthActionController;
 use App\Http\Controllers\AuthPageController;
 use App\Http\Controllers\DashboardActionController;
+use App\Http\Controllers\DashboardAnalyticsController;
 use App\Http\Controllers\DashboardPageController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\NewsletterActionController;
@@ -66,6 +67,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/draft_newsletter_page', [NewsletterPageController::class, 'draftNewsletterPage'])->name('dashboard.draftNewsletter');
     Route::get('/blacklisted_subscribers', [DashboardPageController::class, 'blacklistedSubscribersPage']);
     Route::get('/newsletter_status_page', [NewsletterPageController::class, 'newsletterStatusPage']);
+    Route::get('/subscriber_overview_page', [DashboardPageController::class, 'subscriberOverviewPage']);
 
     // Dashboard actions
     Route::post('/subscribePage', [DashboardActionController::class, 'editSubscribePage']);
@@ -81,6 +83,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/previewNewsletter/{newsletterId}', [NewsletterPageController::class, 'previewNewsletter']);
     Route::delete('/batchUnsubscribe', [DashboardActionController::class, 'batchUnsubscribe'])->name('dashboard.batch.unsubscribe');
     Route::post('/batchBlacklist', [DashboardActionController::class, 'batchBlacklist'])->name('dashboard.batch.blacklist');
+    Route::get('/getSubscriptionRecords/{from}/{to}', [DashboardAnalyticsController::class, 'getSubscriptionRecords'])->name('dashboard.subscription.records');
 });
 
 Route::middleware('auth')->prefix('user')->group(function () {

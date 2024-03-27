@@ -14,23 +14,28 @@ class EloquentSubscriberRepository implements SubscriberRepository
         $this->modelClassName = Subscriber::class;
     }
 
-    public function findByEmail($email): Subscriber | null{
-        return Subscriber::where("email", $email)->first();
+    public function findByEmail($email) {
+        return Subscriber::where("email", $email)->whereNull("unsubscribed_at")->first();
     }
-    public function findAllByUserId($userId): Collection{
-        return Subscriber::where("user_id", $userId)->get();
+    public function findAllByUserId($userId) {
+        return Subscriber::where("user_id", $userId)->whereNull("unsubscribed_at")->get();
     }
-    public function findByUnsubscribeToken($unsubscribeToken): Subscriber | null {
+    public function findByUnsubscribeToken($unsubscribeToken) {
         return Subscriber::where("unsubscribe_token", $unsubscribeToken)->first();
     }
 
     public function findAllBlacklistedByUserId($userId)
     {
-        return Subscriber::where("is_blacklisted", true)->where("user_id", $userId)->get();
+        return Subscriber::where("is_blacklisted", true)->where("user_id", $userId)->whereNull("unsubscribed_at")->get();
     }
 
     public function findAllWhitelistedByUserId($userId)
     {
-        return Subscriber::where("is_blacklisted", false)->where("user_id", $userId)->get();
+        return Subscriber::where("is_blacklisted", false)->where("user_id", $userId)->whereNull("unsubscribed_at")->get();
+    }
+
+    public function findAllSubscriptionRecordsByUserId($userId)
+    {
+        return Subscriber::whereRelation('user', 'id', $userId)->orderBy('created_at', 'asc')->get();
     }
 }

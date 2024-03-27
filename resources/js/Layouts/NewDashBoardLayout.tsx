@@ -1,5 +1,5 @@
 import React from "react";
-import {router, usePage} from "@inertiajs/react";
+import {Link, router, usePage} from "@inertiajs/react";
 import {InertiaSharedProps} from "@/types/inertia";
 import LogoText from "@/Components/LogoText";
 import {Avatar, AvatarFallback, AvatarImage} from "@/Components/Avatar";
@@ -94,7 +94,7 @@ const NewDashBoardLayout = ({children, activeSubPageName}: NewDashBoardLayoutPro
                             const Icon = pageDescription?.icon ?? Icons.List;
                             const isActive = activeSubPageName === page;
                             return (
-                                <a href={pageDescription?.url ?? ""} key={index} className={"h-full flex flex-col justify-center items-center relative"}>
+                                <Link href={pageDescription?.url ?? ""} key={index} className={"h-full flex flex-col justify-center items-center relative"}>
                                     <div className={cn("flex flex-row justify-center items-center gap-3 px-5", isActive && "text-primary")}>
                                         <Icon strokeWidth={1.5} size={19}/>
                                         <span className={"font-semibold text-sm"}>{pageDescription?.displayName}</span>
@@ -103,7 +103,7 @@ const NewDashBoardLayout = ({children, activeSubPageName}: NewDashBoardLayoutPro
                                         isActive &&
                                         <span className={"w-full bg-primary h-[3px] absolute bottom-0"}/>
                                     }
-                                </a>
+                                </Link>
                             )
                         })
                     }
@@ -131,10 +131,10 @@ const NewDashBoardLayout = ({children, activeSubPageName}: NewDashBoardLayoutPro
                                     const redirectUrl = getPageDescriptionFor(pageGroup.pages[0])?.url ?? "";
                                     return (
                                         <li key={index}>
-                                            <a href={redirectUrl} className={cn("flex flex-row gap-2 font-bold p-3 rounded-lg", isActive && "text-primary bg-slate-100")}>
+                                            <Link href={redirectUrl} className={cn("flex flex-row gap-2 font-bold p-3 rounded-lg", isActive && "text-primary bg-slate-100")}>
                                                 <Icon strokeWidth={2.5} size={20}/>
                                                 <span>{pageGroup.displayName}</span>
-                                            </a>
+                                            </Link>
                                         </li>
                                     )
                                 })
@@ -143,11 +143,8 @@ const NewDashBoardLayout = ({children, activeSubPageName}: NewDashBoardLayoutPro
                     </nav>
 
                 </aside>
-                <div className={"bg-muted w-full flex flex-col justify-start items-center"}>
-                    <div className={"w-full flex flex-row justify-start pl-6 items-center mt-3"}>
-
-                    </div>
-                    <main className={"mt-5 min-h-[80vh] w-full xl:max-w-[1100px] overflow-x-auto"}>
+                <div className={"bg-muted w-full pb-5 flex flex-col justify-start items-center"}>
+                    <main className={"mt-5 px-5 2xl:px-0 min-h-[80vh] w-full xl:max-w-[1100px] overflow-x-auto"}>
                         {children}
                     </main>
                 </div>

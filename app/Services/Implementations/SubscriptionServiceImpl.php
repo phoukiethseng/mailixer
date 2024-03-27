@@ -2,15 +2,14 @@
 
 namespace App\Services\Implementations;
 
-use App\Models\User;
-
+use App\Exceptions\ServiceException;
+use App\Models\Subscriber;
 use App\Repositories\Interfaces\SubscriberRepository;
 use App\Repositories\Interfaces\UserRepository;
-use App\Services\Interfaces\SubscriptionService;
 use App\Services\Interfaces\StringRandomGenerator;
+use App\Services\Interfaces\SubscriptionService;
+use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class SubscriptionServiceImpl implements SubscriptionService
 {
@@ -19,18 +18,32 @@ class SubscriptionServiceImpl implements SubscriptionService
 
     }
 
+    private function unsubscribe(Subscriber $subscriber)
+    {
+        $subscriber->unsubscribed_at = \Illuminate\Support\Carbon::now("UTC");
+    }
+
+    private function isUnsubscribed(Subscriber $subscriber)
+    {
+        return isset($subscriber->unsubscribed_at);
+    }
+
     public function subscribe($userId, $email)
     {
         // Check if user exist
-        $user = $this->userRepository->findById($userId);
+        try {
+            $user = $this->userRepository->findById($userId);
+        } catch (Exception $e) {
+            throw new ServiceException("Error while querying for user", $e);
+        }
 
         if (!$user) {
-            throw new Exception("User does not exist");
+            throw new ServiceException("User does not exist");
         }
 
         // Check for existing subscriber
         if ($this->subscriberRepository->findByEmail($email) != null) {
-            throw new Exception("Email is already subscribed");
+            throw new ServiceException("Email is already subscribed");
         }
 
         // Add new Subscriber record
@@ -43,39 +56,63 @@ class SubscriptionServiceImpl implements SubscriptionService
 
     public function getAllSubscribersByUserId($userId)
     {
-        $subscribers = $this->subscriberRepository->findAllByUserId($userId);
+        try {
+            $subscribers = $this->subscriberRepository->findAllByUserId($userId);
+        } catch (Exception $e) {
+            throw new ServiceException("Error while querying for all author's subscribers", $e);
+        }
 
         return $subscribers;
     }
 
     public function unsubscribeById($subscriberId)
     {
-        $subscriber = $this->subscriberRepository->findById($subscriberId);
+        try {
+            $subscriber = $this->subscriberRepository->findById($subscriberId);
+        } catch (Exception $e) {
+            throw new ServiceException("Error while query for subscriber", $e);
+        }
+
         if (!$subscriber) {
             throw new Exception("Couldn't find subscriber");
         }
-        $this->subscriberRepository->delete($subscriber);
-    }
 
-    public function getSubscriber($subscriberId)
-    {
-        return $this->subscriberRepository->findById($subscriberId);
+        if ($this->isUnsubscribed($subscriber)) {
+            throw new ServiceException("Subscriber is already unsubscribed");
+        }
+
+        $this->unsubscribe($subscriber);
+        $this->subscriberRepository->save($subscriber);
     }
 
     public function getSubscribersCount($userId)
     {
-        $count = $this->subscriberRepository->findAllByUserId($userId)->count();
+        try {
+            $count = $this->subscriberRepository->findAllByUserId($userId)->count();
+        } catch (Exception $e) {
+            throw new ServiceException("Error while query for subscriber count", $e);
+        }
         return $count;
     }
 
     public function unsusbscribeByToken($unsubscribeToken)
     {
-        $subscriberId = $this->subscriberRepository->findByUnsubscribeToken($unsubscribeToken)->id;
-        if ($subscriberId) {
-            $this->unsubscribeById($subscriberId);
-        } else {
-            throw new Exception('Invalid unsubscribe token');
+        try {
+            $subscriber = $this->subscriberRepository->findByUnsubscribeToken($unsubscribeToken);
+        } catch (Exception $e) {
+            throw new ServiceException("Cannot find subscriber", $e);
         }
+
+        if (!$subscriber) {
+            throw new ServiceException("Invalid unsubscribe token");
+        }
+
+        if ($this->isUnsubscribed($subscriber)) {
+            throw new ServiceException("Subscriber is already unsubscribed");
+        }
+
+        $this->unsubscribe($subscriber);
+        $this->subscriberRepository->save($subscriber);
     }
 
     public function getSubscriberById($subscriberId)
@@ -83,60 +120,92 @@ class SubscriptionServiceImpl implements SubscriptionService
         return $this->subscriberRepository->findById($subscriberId);
     }
 
-    public function getSubscriberAuthorByUnsubscribeToken($unsubscribeToken): User
+    public function getSubscriberAuthorByUnsubscribeToken($unsubscribeToken)
     {
-        $subscriber = $this->subscriberRepository->findByUnsubscribeToken($unsubscribeToken);
-        if ($subscriber) {
-            $userId = $subscriber->user_id;
-            $user = $this->userRepository->findById($userId);
-            return $user;
-        } else {
-            throw new Exception('Subscriber is not found');
+        try {
+            $subscriber = $this->subscriberRepository->findByUnsubscribeToken($unsubscribeToken);
+        } catch (Exception $e) {
+            throw new ServiceException("Error while querying for subscriber", $e);
         }
+
+        if (!$subscriber) {
+            throw new ServiceException("Cannot find subscriber");
+        }
+
+        $userId = $subscriber->user_id;
+
+        try {
+            $user = $this->userRepository->findById($userId);
+        } catch (Exception $e) {
+            throw new ServiceException("Cannot find author of given subscriber", $e);
+        }
+
+        return $user;
     }
 
     public function getUnsubscribeTokenById($subscriberId)
     {
-        return $this->subscriberRepository->findById($subscriberId)->unsubscribe_token;
+        try {
+            $subscriber = $this->subscriberRepository->findById($subscriberId);
+        } catch (Exception $e) {
+            throw new ServiceException("Error while querying for subscriber", $e);
+        }
+
+        if (!$subscriber) {
+            throw new ServiceException("Cannot find subscriber");
+        }
+
+        return $subscriber->unsubscribe_token;
     }
 
     public function blacklistById($subscriberId)
     {
-        $subscriber = $this->subscriberRepository->findById($subscriberId);
-        if ($subscriber) {
-            $subscriber->is_blacklisted = true;
-            $subscriber->save();
-        } else {
-            throw new Exception('Subscriber is not found');
+        try {
+            $subscriber = $this->subscriberRepository->findById($subscriberId);
+        } catch (Exception $e) {
+            throw new ServiceException("Error while querying for blacklisted subscriber", $e);
         }
+
+        if (!$subscriber) {
+            throw new ServiceException("Cannot find subscriber");
+        }
+
+        $subscriber->is_blacklisted = true;
+        $this->subscriberRepository->save($subscriber);
     }
 
     public function getAllBlacklistedSubscribersByUserId($userId)
     {
         try {
-            $blacklistedSubscribers = $this->subscriberRepository->findAllBlacklistedByUserId($userId);
-            return $blacklistedSubscribers;
+            return $this->subscriberRepository->findAllBlacklistedByUserId($userId);
         } catch (Exception $e) {
-            throw new Exception('Error while querying for blacklisted subscribers');
+            throw new ServiceException('Error while querying for blacklisted subscribers', $e);
         }
     }
 
     public function getAllWhitelistedSubscribersByUserId($userId)
     {
-        return $this->subscriberRepository->findAllWhitelistedByUserId($userId);
+        try {
+            return $this->subscriberRepository->findAllWhitelistedByUserId($userId);
+        } catch (Exception $e) {
+            throw new ServiceException('Error while querying for whitelisted subscribers', $e);
+        }
     }
 
     public function whitelistById($subscriberId)
     {
         try {
             $subscriber = $this->subscriberRepository->findById($subscriberId);
-            if ($subscriber) {
-                $subscriber->is_blacklisted = false;
-                $subscriber->save();
-            }
-        } catch(Exception $e) {
-            throw new Exception("Error while performing whitelist subscriber action");
+        } catch (Exception $e) {
+            throw new ServiceException("Error while performing whitelist subscriber action", $e);
         }
+
+        if (!$subscriber) {
+            throw new ServiceException("Cannot find subscriber");
+        }
+
+        $subscriber->is_blacklisted = false;
+        $this->subscriberRepository->save($subscriber);
     }
 
     public function getBlacklistedCount($userId)
@@ -144,7 +213,29 @@ class SubscriptionServiceImpl implements SubscriptionService
         try {
             return $this->subscriberRepository->findAllBlacklistedByUserId($userId)->count();
         } catch (Exception $e) {
-            throw new Exception("Error while performing counting whitelisted subscribers");
+            throw new ServiceException("Error while performing counting whitelisted subscribers", $e);
         }
+    }
+
+    public function getSubscriptionRecordsForUser($userId, \DateTime $from, \DateTime $to)
+    {
+        $subscribers = $this->subscriberRepository->findAllSubscriptionRecordsByUserId($userId);
+        $fromCarbon = Carbon::instance($from);
+        $toCarbon = Carbon::instance($to);
+        return $subscribers->filter(function (Subscriber $subscriber) use ($fromCarbon, $toCarbon) {
+            $createdAt = Carbon::instance($subscriber->created_at);
+            if ($createdAt->gte($fromCarbon) && $createdAt->lte($toCarbon)) {
+                return true;
+            }
+
+            if ($subscriber->unsubscribed_at) {
+                $unsubscribedAt = Carbon::parse($subscriber->unsubscribed_at);
+                if ($unsubscribedAt->gte($fromCarbon) && $unsubscribedAt->lte($toCarbon)) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
     }
 }

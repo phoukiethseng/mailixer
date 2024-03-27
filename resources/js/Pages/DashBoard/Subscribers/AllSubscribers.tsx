@@ -1,8 +1,6 @@
 import React from "react";
-import DashBoardLayout from "@/Layouts/DashBoardLayout";
 import {useMessageToast} from "@/lib/hooks/useMessageToast";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/Components/Card";
-import {Icons} from "@/Components/Icons";
 import PieChart from "@/Components/Charts/Pie";
 import {getSubscriberESP} from "@/lib/analytics/subscriber";
 import {Subscriber} from "@/types/DTO";
@@ -10,7 +8,6 @@ import WhitelistedSubscriberTable from "@/Components/SubscriberTable/Whitelisted
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/Components/Resizable";
 import {InertiaSharedProps} from "@/types/inertia";
 import NewDashBoardLayout from "@/Layouts/NewDashBoardLayout";
-import {dashboardPageGroups} from "@/config/site";
 
 export type SubscribersPageProps = {
     subscribers: Subscriber[];
@@ -40,35 +37,8 @@ const SubscribersPage = ({
             <ResizablePanel minSize={20} maxSize={50} defaultSize={30} className={""}>
                 <div className={"w-full flex flex-row justify-center items-start flex-wrap gap-4"}>
                     <div className={"flex flex-row gap-3 flex-wrap justify-stretch"}>
-                        <Card>
-                            <CardHeader className="flex flex-row justify-between items-center gap-4">
-                                <CardTitle className="leading-5">
-                                    Subscribers
-                                </CardTitle>
-                                <Icons.UserCheck
-                                    size={16}
-                                    strokeWidth={1.5}
-                                    className="hidden lg:flex"
-                                />
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-3xl font-bold">
-                                    {subscribersCount}
-                                </p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row justify-between items-center gap-4">
-                                <CardTitle className="leading-5">Blacklisted</CardTitle>
-                                <Icons.UserX
-                                    size={16}
-                                    strokeWidth={1.5}
-                                    className="hidden lg:flex"/>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-3xl font-bold">{blacklistedSubscribersCount}</p>
-                            </CardContent>
-                        </Card>
+
+
                     </div>
                     <Card>
                         <CardHeader>

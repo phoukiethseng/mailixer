@@ -12,6 +12,7 @@ import {ScrollArea} from "@/Components/ScrollArea";
 import {HashLoader} from "react-spinners";
 import dateTimeFormater from "date-format";
 import NewDashBoardLayout from "@/Layouts/NewDashBoardLayout";
+import {AspectRatio} from "@/Components/AspectRatio";
 
 type NewsletterStatusPageProps = {
     newsletters: NewsletterSendResult[]
@@ -69,8 +70,9 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
                                             {item.value.subject}
                                         </CardTitle>
                                         <div className={"flex flex-row gap-2 justify-start items-center"}>
-                                            <Icons.Clock4 strokeWidth={1.5} size={12} />
-                                            <span className={"text-xs text-muted-foreground"}>{dateTimeFormater('yyyy/MM/dd hh:mm', new Date())}</span>
+                                            <Icons.Clock4 strokeWidth={1.5} size={12}/>
+                                            <span
+                                                className={"text-xs text-muted-foreground"}>{dateTimeFormater('yyyy/MM/dd hh:mm', new Date())}</span>
                                         </div>
                                     </CardHeader>
                                     {/*<CardContent>*/}
@@ -79,7 +81,8 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
                                     <CardFooter>
                                         <div className={"flex flex-row gap-2 justify-between w-full"}>
                                             <Badge variant={"outline"}>{item.value.status}</Badge>
-                                            <div className={cn("flex flex-row justify-between gap-2", (item.value.status === "PENDING") && "hidden")}>
+                                            <div
+                                                className={cn("flex flex-row justify-between gap-2", (item.value.status === "PENDING") && "hidden")}>
                                                 <div
                                                     className={"flex flex-row gap-1.5 justify-between items-center rounded-lg px-2 py-1 bg-muted"}>
 
@@ -153,9 +156,12 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
                                 </CardContent>
                             </Card>
                         </div>
-                        <iframe srcDoc={previewHTML} height={720} width={1280}
-                                className={"mt-3 max-w-[900px]"}
-                                sandbox={"allow-scripts allow-forms"}/>
+                        <Card className={"w-[300px] lg:w-[500px] xl:w-[700px] 2xl:w-[800px] p-4"}>
+                            <AspectRatio ratio={16 / 9}>
+                                <iframe srcDoc={previewHTML} width={"100%"} height={"100%"}
+                                        sandbox={"allow-scripts allow-forms"}/>
+                            </AspectRatio>
+                        </Card>
                     </div>
                 }
                 {

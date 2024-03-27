@@ -42,9 +42,9 @@ class NewsletterActionController extends Controller
             $user = $this->userRepository->findById($request->user()->id);
             $newsletter = $this->createNewsletter($data, $user);
             $this->newsletterService->sendNewsletter($newsletter);
-            return back()->with([
-                $this->responseMessageWithData('Successfully sent newsletter')
-            ]);
+            return back()->with(
+                $this->responseMessage('Successfully sent newsletter')
+            );
         } catch (ServiceException $e) {
             return back()->withErrors(
                 $this->responseMessage('Failed to send newsletter. An error occurred')
