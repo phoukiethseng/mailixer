@@ -1,0 +1,7 @@
+# We only need three plugins for out-bounce server
+
+tls
+
+auth/flat_file
+
+dkim_sign

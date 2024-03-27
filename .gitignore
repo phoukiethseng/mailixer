@@ -18,3 +18,7 @@ yarn-error.log
 /.idea
 /.vscode
 .vs
+
+/smtp/haraka/config/dkim/*
+!/smtp/haraka/config/dkim/dkim_key_gen.sh
+/smtp/haraka/config/auth_flat_file.ini

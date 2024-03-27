@@ -44,7 +44,7 @@ class SendNewsletter implements ShouldQueue
                 Log::debug('messageId', ['messageId' => $messageId]);
             }
         } catch (\Throwable $e) {
-            Log::debug('send newsletters job failed', ['exeception' => $e->getMessage()]);
+            Log::debug('send newsletters job failed', ['exeception' => $e->getMessage(), 'trace' => $e->getTrace()]);
             App::get(NewsletterService::class)->createSendFailedResult($this->newsletter->id, $this->subscriber->id);
         }
     }

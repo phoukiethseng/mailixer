@@ -57,6 +57,20 @@ services:
         networks:
             - mailixer-net
 
+    haraka:
+        hostname: haraka
+        image: instrumentisto/haraka:latest
+        restart: always
+        volumes:
+            -   type: bind
+                source: ./smtp/haraka
+                target: /etc/haraka
+        networks:
+            - mailixer-net
+        ports:
+            - 8080:8080
+
+
 networks:
     mailixer-net:
 
