@@ -3,62 +3,122 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'Avenir Next';
-    font-display: swap;
-    font-weight: bold;
-    font-style: normal;
-    src: url(https://designerup.co/assets/AvenirNext-Bold-813b0cce2e56f1fbc75dec976f0e5fa2da5a5d76bcbb5ec9f9066719d8acc6f0.eot);
-    src: local("Avenir Next Bold"), local("AvenirNextBold"), url(https://designerup.co/assets/AvenirNext-Bold-813b0cce2e56f1fbc75dec976f0e5fa2da5a5d76bcbb5ec9f9066719d8acc6f0.eot?#iefix) format("embedded-opentype"), url(https://designerup.co/assets/AvenirNext-Bold-d8ff3b059d20d8ab555e0a4aa7d299868bd67e0e737548f6da83b2c7d62b706d.woff2) format("woff2"), url(https://designerup.co/assets/AvenirNext-Bold-7323de6869ab2b16c8e5ca9674b859fa9d6141e8f35c14d46668f24c363fa80e.woff) format("woff"), url(https://designerup.co/assets/AvenirNext-Bold-be2514f18111cbfba32f36d9e2a67e53751326364b2de8e1792827bd36445633.ttf) format("truetype")
+  font-family: 'Avenir Next';
+  font-display: swap;
+  font-weight: bold;
+  font-style: normal;
+  src: url(https://designerup.co/assets/AvenirNext-Bold-813b0cce2e56f1fbc75dec976f0e5fa2da5a5d76bcbb5ec9f9066719d8acc6f0.eot);
+  src:
+    local('Avenir Next Bold'),
+    local('AvenirNextBold'),
+    url(https://designerup.co/assets/AvenirNext-Bold-813b0cce2e56f1fbc75dec976f0e5fa2da5a5d76bcbb5ec9f9066719d8acc6f0.eot?#iefix)
+      format('embedded-opentype'),
+    url(https://designerup.co/assets/AvenirNext-Bold-d8ff3b059d20d8ab555e0a4aa7d299868bd67e0e737548f6da83b2c7d62b706d.woff2)
+      format('woff2'),
+    url(https://designerup.co/assets/AvenirNext-Bold-7323de6869ab2b16c8e5ca9674b859fa9d6141e8f35c14d46668f24c363fa80e.woff)
+      format('woff'),
+    url(https://designerup.co/assets/AvenirNext-Bold-be2514f18111cbfba32f36d9e2a67e53751326364b2de8e1792827bd36445633.ttf)
+      format('truetype');
 }
 
 @font-face {
-    font-family: 'Avenir Next';
-    font-display: swap;
-    font-weight: 600;
-    font-style: normal;
-    src: url(https://designerup.co/assets/AvenirNext-DemiBold-551cd502ada17e6e6aa70b1459eb895833e63bd503e6aea54e391c1f42cdbc8e.eot);
-    src: local("Avenir Next Demi Bold"), local("AvenirNextDemiBold"), url(https://designerup.co/assets/AvenirNext-DemiBold-551cd502ada17e6e6aa70b1459eb895833e63bd503e6aea54e391c1f42cdbc8e.eot?#iefix) format("embedded-opentype"), url(https://designerup.co/assets/AvenirNext-DemiBold-ab59ce9f5972ead5adb5d6f99d79c257ae4585f85bd6d75581ceb1658a8c23b1.woff2) format("woff2"), url(https://designerup.co/assets/AvenirNext-DemiBold-6b80f4967ea0bf6ebff8f7b33b2a9ff47f4686c8b4c67c764ae912c9fd3844f2.woff) format("woff"), url(https://designerup.co/assets/AvenirNext-DemiBold-32501cc8121c610a82362fb7983c424b368d892bc142d12ab88fcd853a211d51.ttf) format("truetype")
+  font-family: 'Avenir Next';
+  font-display: swap;
+  font-weight: 600;
+  font-style: normal;
+  src: url(https://designerup.co/assets/AvenirNext-DemiBold-551cd502ada17e6e6aa70b1459eb895833e63bd503e6aea54e391c1f42cdbc8e.eot);
+  src:
+    local('Avenir Next Demi Bold'),
+    local('AvenirNextDemiBold'),
+    url(https://designerup.co/assets/AvenirNext-DemiBold-551cd502ada17e6e6aa70b1459eb895833e63bd503e6aea54e391c1f42cdbc8e.eot?#iefix)
+      format('embedded-opentype'),
+    url(https://designerup.co/assets/AvenirNext-DemiBold-ab59ce9f5972ead5adb5d6f99d79c257ae4585f85bd6d75581ceb1658a8c23b1.woff2)
+      format('woff2'),
+    url(https://designerup.co/assets/AvenirNext-DemiBold-6b80f4967ea0bf6ebff8f7b33b2a9ff47f4686c8b4c67c764ae912c9fd3844f2.woff)
+      format('woff'),
+    url(https://designerup.co/assets/AvenirNext-DemiBold-32501cc8121c610a82362fb7983c424b368d892bc142d12ab88fcd853a211d51.ttf)
+      format('truetype');
 }
 
 @font-face {
-    font-family: 'Avenir Next';
-    font-display: swap;
-    font-weight: 500;
-    font-style: normal;
-    src: url(https://designerup.co/assets/AvenirNext-Medium-0d226e126fef3c34a5e2b6e89f4ab76e20d0740deabfe3ce504e569fdf1fdd70.eot);
-    src: local("Avenir Next Medium"), local("AvenirNextMedium"), url(https://designerup.co/assets/AvenirNext-Medium-0d226e126fef3c34a5e2b6e89f4ab76e20d0740deabfe3ce504e569fdf1fdd70.eot?#iefix) format("embedded-opentype"), url(https://designerup.co/assets/AvenirNext-Medium-ca5d5159e66e182a6a59db857adcd5bab5d2da1c7942f33b50f1ac0ac3a1be4f.woff2) format("woff2"), url(https://designerup.co/assets/AvenirNext-Medium-4389edd40fa0fd3e307257761bede3a772689f72175f76eb8f4c408ffcf0bd3f.woff) format("woff"), url(https://designerup.co/assets/AvenirNext-Medium-42545d5ba017c1f7487720ffa0526a16496242dddb0c9c9aeaf9a2379992b668.ttf) format("truetype")
+  font-family: 'Avenir Next';
+  font-display: swap;
+  font-weight: 500;
+  font-style: normal;
+  src: url(https://designerup.co/assets/AvenirNext-Medium-0d226e126fef3c34a5e2b6e89f4ab76e20d0740deabfe3ce504e569fdf1fdd70.eot);
+  src:
+    local('Avenir Next Medium'),
+    local('AvenirNextMedium'),
+    url(https://designerup.co/assets/AvenirNext-Medium-0d226e126fef3c34a5e2b6e89f4ab76e20d0740deabfe3ce504e569fdf1fdd70.eot?#iefix)
+      format('embedded-opentype'),
+    url(https://designerup.co/assets/AvenirNext-Medium-ca5d5159e66e182a6a59db857adcd5bab5d2da1c7942f33b50f1ac0ac3a1be4f.woff2)
+      format('woff2'),
+    url(https://designerup.co/assets/AvenirNext-Medium-4389edd40fa0fd3e307257761bede3a772689f72175f76eb8f4c408ffcf0bd3f.woff)
+      format('woff'),
+    url(https://designerup.co/assets/AvenirNext-Medium-42545d5ba017c1f7487720ffa0526a16496242dddb0c9c9aeaf9a2379992b668.ttf)
+      format('truetype');
 }
 
 @font-face {
-    font-family: 'Avenir Next';
-    font-display: swap;
-    font-weight: normal;
-    font-style: normal;
-    src: url(https://designerup.co/assets/AvenirNext-Regular-130da6158594c07a3ad08703aac07021990250e216131386f151d379671c945a.eot);
-    src: local("Avenir Next Regular"), local("AvenirNextRegular"), url(https://designerup.co/assets/AvenirNext-Regular-130da6158594c07a3ad08703aac07021990250e216131386f151d379671c945a.eot?#iefix) format("embedded-opentype"), url(https://designerup.co/assets/AvenirNext-Regular-49a534a75bda7542595f324d46a848241cd15d648e67f328d1b835437be6ab80.woff2) format("woff2"), url(https://designerup.co/assets/AvenirNext-Regular-08f2a544a2b927479ddab1d18e84a09e1ab6b64856b36872713d04ecd1e97bf9.woff) format("woff"), url(https://designerup.co/assets/AvenirNext-Regular-dc888d1aac1573584125beacd9c878ff6dd6418c529f573ec68412966d0b4674.ttf) format("truetype")
+  font-family: 'Avenir Next';
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+  src: url(https://designerup.co/assets/AvenirNext-Regular-130da6158594c07a3ad08703aac07021990250e216131386f151d379671c945a.eot);
+  src:
+    local('Avenir Next Regular'),
+    local('AvenirNextRegular'),
+    url(https://designerup.co/assets/AvenirNext-Regular-130da6158594c07a3ad08703aac07021990250e216131386f151d379671c945a.eot?#iefix)
+      format('embedded-opentype'),
+    url(https://designerup.co/assets/AvenirNext-Regular-49a534a75bda7542595f324d46a848241cd15d648e67f328d1b835437be6ab80.woff2)
+      format('woff2'),
+    url(https://designerup.co/assets/AvenirNext-Regular-08f2a544a2b927479ddab1d18e84a09e1ab6b64856b36872713d04ecd1e97bf9.woff)
+      format('woff'),
+    url(https://designerup.co/assets/AvenirNext-Regular-dc888d1aac1573584125beacd9c878ff6dd6418c529f573ec68412966d0b4674.ttf)
+      format('truetype');
 }
 
 @font-face {
-    font-family: 'futura-pt';
-    font-display: swap;
-    font-style: normal;
-    font-weight: normal;
-    src: url(https://designerup.co/assets/FTN45__W-53a5d3f1391c26874ee49f5f93055506799f14ad345ec3a6dfa3e203b3389404.eot);
-    src: local("Futura PT Web Book"), local("FuturaPTWebBook"), url(https://designerup.co/assets/FTN45__W-53a5d3f1391c26874ee49f5f93055506799f14ad345ec3a6dfa3e203b3389404.eot?#iefix) format("embedded-opentype"), url(https://designerup.co/assets/FTN45__W-88de361f6852c951eef20514aaf9d2176354f6ac0e4fcf88bb01145301ac77e9.woff) format("woff"), url(https://designerup.co/assets/FTN45__W-cba6388363cf01ab53ccd249ab868dde78c5e681272e0fed6308818ff1e41424.ttf) format("truetype"), url(https://designerup.co/assets/FTN45__W-d2883226c05ba3df207ab48544a639ee9e246070d6d121d8994fa18b500e6a74.svg#OpenSans) format("svg")
+  font-family: 'futura-pt';
+  font-display: swap;
+  font-style: normal;
+  font-weight: normal;
+  src: url(https://designerup.co/assets/FTN45__W-53a5d3f1391c26874ee49f5f93055506799f14ad345ec3a6dfa3e203b3389404.eot);
+  src:
+    local('Futura PT Web Book'),
+    local('FuturaPTWebBook'),
+    url(https://designerup.co/assets/FTN45__W-53a5d3f1391c26874ee49f5f93055506799f14ad345ec3a6dfa3e203b3389404.eot?#iefix)
+      format('embedded-opentype'),
+    url(https://designerup.co/assets/FTN45__W-88de361f6852c951eef20514aaf9d2176354f6ac0e4fcf88bb01145301ac77e9.woff)
+      format('woff'),
+    url(https://designerup.co/assets/FTN45__W-cba6388363cf01ab53ccd249ab868dde78c5e681272e0fed6308818ff1e41424.ttf)
+      format('truetype'),
+    url(https://designerup.co/assets/FTN45__W-d2883226c05ba3df207ab48544a639ee9e246070d6d121d8994fa18b500e6a74.svg#OpenSans)
+      format('svg');
 }
 
 @font-face {
-    font-family: 'futura-pt';
-    font-display: swap;
-    font-style: normal;
-    font-weight: 700;
-    src: url(https://designerup.co/assets/FTN75__W-2424d77b99ff9c250f7ecc14fdc1a0256acb08bf51961d270a3c882afd1f6d28.eot);
-    src: local("Futura PT Web Heavy"), local("FuturaPTWebHeavy"), url(https://designerup.co/assets/FTN75__W-2424d77b99ff9c250f7ecc14fdc1a0256acb08bf51961d270a3c882afd1f6d28.eot?#iefix) format("embedded-opentype"), url(https://designerup.co/assets/FTN75__W-d1af4470b328faa8783bc16837f3b66c71d200575b0c8b8504eb7e855e44ed98.woff) format("woff"), url(https://designerup.co/assets/FTN75__W-641b6ac21e933c2bbe020759bb3af0c87a3a235f0552d71d5d61012ac5570bab.ttf) format("truetype"), url(https://designerup.co/assets/FTN75__W-f5fd050f36183dac47dce5ba5827f8f7bd475c392ab1032440674b3732d6d398.svg#OpenSans) format("svg")
+  font-family: 'futura-pt';
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+  src: url(https://designerup.co/assets/FTN75__W-2424d77b99ff9c250f7ecc14fdc1a0256acb08bf51961d270a3c882afd1f6d28.eot);
+  src:
+    local('Futura PT Web Heavy'),
+    local('FuturaPTWebHeavy'),
+    url(https://designerup.co/assets/FTN75__W-2424d77b99ff9c250f7ecc14fdc1a0256acb08bf51961d270a3c882afd1f6d28.eot?#iefix)
+      format('embedded-opentype'),
+    url(https://designerup.co/assets/FTN75__W-d1af4470b328faa8783bc16837f3b66c71d200575b0c8b8504eb7e855e44ed98.woff)
+      format('woff'),
+    url(https://designerup.co/assets/FTN75__W-641b6ac21e933c2bbe020759bb3af0c87a3a235f0552d71d5d61012ac5570bab.ttf)
+      format('truetype'),
+    url(https://designerup.co/assets/FTN75__W-f5fd050f36183dac47dce5ba5827f8f7bd475c392ab1032440674b3732d6d398.svg#OpenSans)
+      format('svg');
 }
 
 @font-face {
-    font-family: "Gabarito";
-    src: url("/Gabarito.ttf");
+  font-family: 'Gabarito';
+  src: url('/Gabarito.ttf');
 }
 
 /*@font-face {*/
@@ -67,52 +127,55 @@
 /*}*/
 
 @layer base {
-    :root {
-        --background: 0 0% 100%;
-        --foreground: 240 10% 3.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 240 10% 3.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 240 10% 3.9%;
-        --primary: 142.1 76.2% 36.3%;
-        --primary-foreground: 355.7 100% 97.3%;
-        --secondary: 240 4.8% 95.9%;
-        --secondary-foreground: 240 5.9% 10%;
-        --muted: 240 4.8% 95.9%;
-        --muted-foreground: 240 3.8% 46.1%;
-        --accent: 240 4.8% 95.9%;
-        --accent-foreground: 240 5.9% 10%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 240 5.9% 90%;
-        --input: 240 5.9% 90%;
-        --ring: 142.1 76.2% 36.3%;
-        --radius: 0.5rem;
-    }
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 142.1 76.2% 36.3%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 142.1 76.2% 36.3%;
+    --radius: 0.5rem;
+  }
 
-    .dark {
-        --background: 20 14.3% 4.1%;
-        --foreground: 0 0% 95%;
-        --card: 24 9.8% 10%;
-        --card-foreground: 0 0% 95%;
-        --popover: 0 0% 9%;
-        --popover-foreground: 0 0% 95%;
-        --primary: 142.1 70.6% 45.3%;
-        --primary-foreground: 144.9 80.4% 10%;
-        --secondary: 240 3.7% 15.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 0 0% 15%;
-        --muted-foreground: 240 5% 64.9%;
-        --accent: 12 6.5% 15.1%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 85.7% 97.3%;
-        --border: 240 3.7% 15.9%;
-        --input: 240 3.7% 15.9%;
-        --ring: 142.4 71.8% 29.2%;
-    }
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 0 0% 95%;
+    --card: 24 9.8% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 142.1 70.6% 45.3%;
+    --primary-foreground: 144.9 80.4% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 142.4 71.8% 29.2%;
+  }
 }
 
 html {
-    font-family: Inter, Gabarito system-ui, sans-serif;
+  font-family:
+    Inter,
+    Gabarito system-ui,
+    sans-serif;
 }

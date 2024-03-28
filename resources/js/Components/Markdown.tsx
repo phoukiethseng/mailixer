@@ -1,5 +1,5 @@
-import RemarkJsMarkdown from "react-markdown";
+import RemarkJsMarkdown from 'react-markdown'
 
-const Markdown = RemarkJsMarkdown;
+const Markdown = RemarkJsMarkdown
 
-export { Markdown };
+export { Markdown }

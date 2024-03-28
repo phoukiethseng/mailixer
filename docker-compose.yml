@@ -1,79 +1,77 @@
 services:
-    postgres:
-        hostname: postgres
-        image: postgres
-        environment:
-            POSTGRES_PASSWORD: example
-            POSTGRES_USER: app
-            POSTGRES_DB: mailixer
-        volumes:
-            - type: volume
-              source: db-data
-              target: /var/lib/postgresql/data
-              volume:
-                  nocopy: true
-        networks:
-            - mailixer-net
-    app:
-        depends_on:
-            -   ui
-            -   postgres
-        hostname: app
-        build:
-            context: .
-        restart: always
-        entrypoint: ["php", "artisan", "serve", "--host=app"]
-        ports:
-            - 80:8000
-        volumes:
-            -   type: bind
-                source: .
-                target: /app
-        networks:
-            - mailixer-net
-    ui:
-        hostname: ui
-        image: node:14.21.3-bullseye
-        restart: always
-        working_dir: /app
-        command: [ "npm", "run", "dev" ]
-        ports:
-            - 5173:5173
-        volumes:
-            -   type: bind
-                source: .
-                target: /app
+  postgres:
+    hostname: postgres
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: app
+      POSTGRES_DB: mailixer
+    volumes:
+      - type: volume
+        source: db-data
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
+    networks:
+      - mailixer-net
+  app:
+    depends_on:
+      - ui
+      - postgres
+    hostname: app
+    build:
+      context: .
+    restart: always
+    entrypoint: ['php', 'artisan', 'serve', '--host=app']
+    ports:
+      - 80:8000
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    networks:
+      - mailixer-net
+  ui:
+    hostname: ui
+    image: node:14.21.3-bullseye
+    restart: always
+    working_dir: /app
+    command: ['npm', 'run', 'dev']
+    ports:
+      - 5173:5173
+    volumes:
+      - type: bind
+        source: .
+        target: /app
 
-    queue-worker:
-        build:
-            context: .
-        restart: always
-        working_dir: /app
-        entrypoint: [ "php", "artisan", "queue:listen" ]
-        volumes:
-            -   type: bind
-                source: ./
-                target: /app
-        networks:
-            - mailixer-net
+  queue-worker:
+    build:
+      context: .
+    restart: always
+    working_dir: /app
+    entrypoint: ['php', 'artisan', 'queue:listen']
+    volumes:
+      - type: bind
+        source: ./
+        target: /app
+    networks:
+      - mailixer-net
 
-    haraka:
-        hostname: haraka
-        image: instrumentisto/haraka:latest
-        restart: always
-        volumes:
-            -   type: bind
-                source: ./smtp/haraka
-                target: /etc/haraka
-        networks:
-            - mailixer-net
-        ports:
-            - 8080:8080
-
+  haraka:
+    hostname: haraka
+    image: instrumentisto/haraka:latest
+    restart: always
+    volumes:
+      - type: bind
+        source: ./smtp/haraka
+        target: /etc/haraka
+    networks:
+      - mailixer-net
+    ports:
+      - 8080:8080
 
 networks:
-    mailixer-net:
+  mailixer-net:
 
 volumes:
-    db-data:
-
+  db-data:

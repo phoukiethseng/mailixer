@@ -1,21 +1,21 @@
 {
-    "compilerOptions": {
-        "lib": ["es2017", "dom"],
-        "isolatedModules": true,
-        "target": "es2017",
-        "module": "commonjs",
-        "jsx": "react",
-        "strict": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "noImplicitThis": true,
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true,
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["./resources/js/*"]
-        }
+  "compilerOptions": {
+    "lib": ["es2017", "dom"],
+    "isolatedModules": true,
+    "target": "es2017",
+    "module": "commonjs",
+    "jsx": "react",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitThis": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./resources/js/*"]
     }
+  }
 }

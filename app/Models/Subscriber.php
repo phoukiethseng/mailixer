@@ -12,6 +12,8 @@ class Subscriber extends Model
 
     protected $guarded = [];
 
+    protected $dateFormat = ['unsubscribed_at'];
+
     protected $table = 'subscribers';
 
     public function user(): BelongsTo {
