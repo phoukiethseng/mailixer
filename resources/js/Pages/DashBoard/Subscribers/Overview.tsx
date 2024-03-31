@@ -40,13 +40,10 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   PaginationState,
-  PaginationTableState,
   useReactTable,
 } from '@tanstack/react-table'
 import { Badge } from '@/Components/Badge'
 import { DataTableColumnHeader } from '@/Components/Table/ColumnHeader'
-import { DropdownMenu, DropdownMenuContent } from '@/Components/DropDownMenu'
-import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import {
   Select,
   SelectContent,

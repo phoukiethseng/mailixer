@@ -41,6 +41,7 @@ import {
   BarChartBig,
   Calendar,
   ChevronLeft,
+  Search,
 } from 'lucide-react'
 
 const Icons = {
@@ -86,6 +87,7 @@ const Icons = {
   BarChartBig: BarChartBig,
   Calendar: Calendar,
   ChevronLeft: ChevronLeft,
+  Search: Search,
 }
 
 export { Icons }

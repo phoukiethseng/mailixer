@@ -208,7 +208,7 @@ const NewDashBoardLayout = ({
           onCollapse={() => setSideBarCollasped(true)}
           onExpand={() => setSideBarCollasped(false)}
           collapsible
-          collapsedSize={3}
+          collapsedSize={5}
           minSize={15}
           defaultSize={15}
           maxSize={40}
