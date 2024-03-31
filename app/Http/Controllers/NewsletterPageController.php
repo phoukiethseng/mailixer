@@ -38,8 +38,11 @@ class NewsletterPageController extends Controller
     {
         $user = $this->userRepository->findById($request->user()->id);
         $newsletters = $this->newsletterService->getAllNewsletterForAuthorUser($user);
-        $newsletterSendResultsDTOs = $newsletters->map(function ($newsletter) {
-            $sendResults = App::get(NewsletterService::class)->getAllSendResultsForNewsletterId($newsletter->id);
+
+        $newsletterService = $this->newsletterService;
+
+        $newsletterSendResultsDTOs = $newsletters->map(function ($newsletter) use ($newsletterService) {
+            $sendResults = $newsletterService->getAllSendResultsForNewsletterId($newsletter->id);
             Log::debug("newsletter send results", ['sendResults' => $sendResults]);
             return new NewsletterWithSendResultsDTO($newsletter, $sendResults);
         });

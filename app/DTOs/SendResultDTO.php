@@ -2,8 +2,7 @@
 
 namespace App\DTOs;
 
-use App\Models\EmailSendResult;
-use DateTime;
+use App\Enums\EmailStatus;
 
 class SendResultDTO extends BaseDTO
 {
@@ -18,7 +17,7 @@ class SendResultDTO extends BaseDTO
         $this->subscriberId = $sendResult['subscriber_id'];
         $this->isSuccess = $sendResult['is_success'];
         $this->timestamp = $sendResult['created_at'];
-        $this->status = EmailSendResult::getStatus($sendResult['status_id']);
+        $this->status = EmailStatus::from($sendResult['status_id'])->name;
     }
 
 }

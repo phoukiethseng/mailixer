@@ -26,14 +26,6 @@ class Newsletter extends Model
         return $this->belongsTo(NewsletterContentType::class);
     }
 
-//    public function status(): Attribute
-//    {
-//        return Attribute::make(
-//            get: fn ($value, $attributes) => \App\Enums\NewsletterStatus::tryFrom($attributes['status_id'])->name,
-//            set: fn (\App\Enums\NewsletterStatus $status, $attributes) => $attributes['status_id'] = $status->value
-//        );
-//    }
-
     public function getStatusAttribute()
     {
         return \App\Enums\NewsletterStatus::tryFrom($this->attributes['status_id'])->name;
@@ -43,7 +35,7 @@ class Newsletter extends Model
         $this->attributes['status_id'] = $status->value;
     }
 
-    public function sendResults(): BelongsToMany
+    public function sentSubscribers(): BelongsToMany
     {
         return $this->belongsToMany(Subscriber::class, 'email_send_results');
     }

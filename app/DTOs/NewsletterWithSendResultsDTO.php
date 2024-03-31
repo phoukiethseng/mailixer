@@ -3,7 +3,7 @@
 namespace App\DTOs;
 
 use App\Models\Newsletter;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class NewsletterWithSendResultsDTO extends NewsletterStatusDTO
 {
@@ -12,11 +12,10 @@ class NewsletterWithSendResultsDTO extends NewsletterStatusDTO
      */
     public $sendResults;
 
-    public function __construct(Newsletter $newsletter, Collection $sentSubscribers)
+    public function __construct(Newsletter $newsletter, Collection $sentResults)
     {
         parent::__construct($newsletter);
-        $this->sendResults = $sentSubscribers
-            ->mapInto(SendResultDTO::class)
-            ->toArray();
+        $this->sendResults = $sentResults
+            ->mapInto(SendResultDTO::class);
     }
 }

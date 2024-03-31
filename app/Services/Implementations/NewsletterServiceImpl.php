@@ -8,6 +8,7 @@ use App\Enums\SubscriptionStatus;
 use App\Exceptions\ServiceException;
 use App\Jobs\SendNewsletter;
 use App\Mail\NewsletterEmail;
+use App\Models\EmailSendResult;
 use App\Models\Newsletter;
 use App\Models\Subscriber;
 use App\Models\User;
@@ -16,6 +17,7 @@ use App\Repositories\Interfaces\SubscriberRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\NewsletterService;
 use App\Services\Interfaces\SubscriptionService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
 
@@ -109,7 +111,7 @@ class NewsletterServiceImpl implements NewsletterService
         $newsletter = $this->find($newsletterId);
         $subscriber = $this->subscriberRepository->findById($subscriberId);
 
-        $newsletter->sendResults()->save($subscriber, [
+        $newsletter->sentSubscribers()->save($subscriber, [
             'is_success' => true,
             'message_id' => $messageId
         ]);
@@ -138,7 +140,7 @@ class NewsletterServiceImpl implements NewsletterService
         $newsletter = $this->find($newsletterId);
         $subscriber = $this->subscriberRepository->findById($subscriberId);
 
-        $newsletter->sendResults()->save($subscriber, [
+        $newsletter->sentSubscribers()->save($subscriber, [
             'is_success' => false
         ]);
 
@@ -147,13 +149,13 @@ class NewsletterServiceImpl implements NewsletterService
 
     public function getAllSendResultsForNewsletterId($newsletterId)
     {
-        return $this->find($newsletterId)->sendResults()
-            ->as('send_result')
-            ->withPivot(['subscriber_id', 'newsletter_id', 'is_success', 'status_id'])
+        return $this->find($newsletterId)->sentSubscribers()
+            ->as('send_results')
+            ->withPivot(['is_success', 'status_id'])
             ->withTimestamps()
             ->get()
             ->map(function (Subscriber $subscriber) {
-                return $subscriber->send_result;
+                return $subscriber->send_results;
             });
     }
 }
