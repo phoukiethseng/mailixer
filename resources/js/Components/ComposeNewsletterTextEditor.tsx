@@ -16,6 +16,7 @@ function ComposeNewsletterTextEditor(props: {
 }) {
   const subjectInputRef = useRef<HTMLInputElement | null>(null)
   const newsletterContent = props?.newsletter?.content ?? ''
+  const newsletterSubject = props?.newsletter?.subject ?? ''
   const textEditor = useEditor({
     extensions: EditorExtensionList,
     editorProps: {
@@ -26,10 +27,12 @@ function ComposeNewsletterTextEditor(props: {
   })
 
   useEffect(() => {
-    if (newsletterContent && textEditor) {
+    if (newsletterContent && textEditor && newsletterSubject) {
       textEditor.chain().setContent(newsletterContent).run()
+      if (subjectInputRef.current)
+        subjectInputRef.current.value = newsletterSubject
     }
-  }, [newsletterContent, textEditor])
+  }, [newsletterContent, textEditor, newsletterSubject])
 
   function getData(): ComposeNewsletter {
     return {
