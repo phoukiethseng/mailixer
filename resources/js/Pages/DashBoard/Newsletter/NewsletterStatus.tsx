@@ -116,16 +116,6 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
               >
                 <CardHeader>
                   <CardTitle>{item.value.subject}</CardTitle>
-                  <CardDescription
-                    className={'flex flex-row gap-2 justify-start items-center'}
-                  >
-                    <Icons.Clock4
-                      className={'text-muted-foreground'}
-                      strokeWidth={1.5}
-                      size={12}
-                    />
-                    <span className={'text-xs text-muted-foreground'}>{}</span>
-                  </CardDescription>
                 </CardHeader>
                 {/*<CardContent>*/}
                 {/*    <p>{newsletter.content}</p>*/}

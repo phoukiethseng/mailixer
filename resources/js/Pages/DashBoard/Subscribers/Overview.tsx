@@ -363,8 +363,8 @@ const SubscriberOverviewPage = (props: SubscriberOverviewPageProps) => {
                     margin={{
                       bottom: 90,
                       top: 0,
-                      left: 80,
-                      right: 80,
+                      left: 50,
+                      right: 50,
                     }}
                     legends={[
                       {
@@ -476,7 +476,7 @@ const SubscriberOverviewPage = (props: SubscriberOverviewPageProps) => {
                       top: 20,
                       bottom: 70,
                       left: 50,
-                      right: 50,
+                      right: 80,
                     }}
                     xFormat={(value) => new Date(value).toDateString()}
                     axisLeft={{
@@ -589,7 +589,7 @@ const SubscriberOverviewPage = (props: SubscriberOverviewPageProps) => {
                       top: 20,
                       bottom: 70,
                       left: 50,
-                      right: 50,
+                      right: 80,
                     }}
                     xFormat={(value) => new Date(value).toDateString()}
                     axisLeft={{
