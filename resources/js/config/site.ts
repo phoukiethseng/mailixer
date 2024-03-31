@@ -15,9 +15,9 @@ const siteConfig = {
         icon: Icons.Layout,
         description: 'Your own subscribe page',
       },
-      Subscribers: {
-        displayName: 'All Subscribers',
-        url: '/dashboard/all_subscribers_page',
+      WhitelistedSubscribers: {
+        displayName: 'Whitelisted',
+        url: '/dashboard/whitelisted_subscribers',
         icon: Icons.TwoUsers,
         description: 'People who subscribed to your newsletter',
       },
@@ -73,7 +73,11 @@ export const dashboardPageGroups: {
   Subscribers: {
     displayName: 'Subscribers',
     icon: Icons.UserCheck,
-    pages: ['SubscriberOverview', 'Subscribers', 'BlacklistedSubscribers'],
+    pages: [
+      'SubscriberOverview',
+      'WhitelistedSubscribers',
+      'BlacklistedSubscribers',
+    ],
   },
   Newsletter: {
     displayName: 'Newsletter',

@@ -62,7 +62,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     // Dashboard pages
     Route::get('/', [DashboardPageController::class, 'indexPage'])->name('dashboard.index');
     Route::get('/customize_page', [DashboardPageController::class, 'customizationPage'])->name('dashboard.customization');
-    Route::get('/all_subscribers_page', [DashboardPageController::class, 'allSubscribersPage'])->name('dashboard.subscribers');
+    Route::get('/whitelisted_subscribers', [DashboardPageController::class, 'whitelistedSubscribersPage'])->name('dashboard.subscribers');
     Route::get('/compose_newsletter_page', [NewsletterPageController::class, 'composeNewsletterPage'])->name('dashboard.composeNewsletter');
     Route::get('/draft_newsletter_page', [NewsletterPageController::class, 'draftNewsletterPage'])->name('dashboard.draftNewsletter');
     Route::get('/blacklisted_subscribers', [DashboardPageController::class, 'blacklistedSubscribersPage']);

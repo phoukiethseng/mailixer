@@ -1,4 +1,4 @@
-import { SubscriptionRecord } from '@/types/DTO'
+import { SubscriptionRecord } from '@/types/dto'
 import { addDays, differenceInDays, isSameDay } from 'date-fns'
 
 const emailDomainRegex = /.+@(.+)\..+/

@@ -16,6 +16,6 @@ class NewsletterStatusDTO extends NewsletterDTO
     public function __construct(Newsletter $newsletter)
     {
         parent::__construct($newsletter);
-        $this->status = NewsletterStatus::from($newsletter->status_id)->name;
+        $this->status = $newsletter->status;
     }
 }

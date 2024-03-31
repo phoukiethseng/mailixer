@@ -1,8 +1,8 @@
 export type HasId = { id: number }
 export type HasName = { name: string }
 export type HasEmail = { email: string }
-export type HasCreationDate = { createdAt: Date }
-export type HasUpdateDate = { updatedAt: Date }
+export type HasCreationDate = { createdAt: string }
+export type HasUpdateDate = { updatedAt: string }
 export type HasTimestamp = HasUpdateDate & HasCreationDate
 
 /*
@@ -17,6 +17,7 @@ export const NEWSLETTER_CONTENT_TYPE = [
 ] as const
 
 export const NEWSLETTER_STATUS = ['DRAFT', 'SENT', 'PENDING', 'FAILED']
+export const SUBSCRIPTION_STATUS = ['SUBSCRIBED', 'UNSUBSCRIBED']
 
 // TODO: change this to union of mime string, we use catch-all string type for now
 export type MIME_TYPE = string
@@ -25,6 +26,7 @@ export type URL = string
 
 export type NewsletterStatus = (typeof NEWSLETTER_STATUS)[number]
 export type NewsletterContentType = (typeof NEWSLETTER_CONTENT_TYPE)[number]
+export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUS)[number]
 
 export type User = HasId &
   HasName &
@@ -35,10 +37,17 @@ export type User = HasId &
   }
 export type Subscriber = HasId &
   HasEmail &
-  HasCreationDate & { unsubscribeToken: string }
+  HasCreationDate & {
+    unsubscribeToken: string
+    status: SubscriptionStatus
+  }
 
 export type SubscriptionRecord = HasId &
-  HasEmail & { createdAt: string; unsubscribedAt: string }
+  HasEmail & {
+    createdAt: string
+    unsubscribedAt: string
+    status: SubscriptionStatus
+  }
 
 export type Newsletter = HasId & {
   subject: string

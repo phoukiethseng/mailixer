@@ -128,10 +128,7 @@ const TextEditorFixedMenu = ({
       <Separator orientation={'vertical'} className={'h-5'} />
       <Dialog open={isImageDialogOpen} onOpenChange={setIsImageDialogOpen}>
         <DialogTrigger asChild>
-          <Button
-            variant={editor.isActive('strike') ? 'default' : 'ghost'}
-            size={'icon'}
-          >
+          <Button variant={'ghost'} size={'icon'}>
             <Icons.Image size={iconSize} strokeWidth={iconStrokeWidth} />
           </Button>
         </DialogTrigger>

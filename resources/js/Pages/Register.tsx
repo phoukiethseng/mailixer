@@ -20,7 +20,7 @@ import {
 import { Input } from '@/Components/Input'
 import { Button } from '@/Components/Button'
 import { Avatar, AvatarImage } from '@/Components/Avatar'
-import { BASE64, MIME_TYPE } from '@/types/DTO'
+import { BASE64, MIME_TYPE } from '@/types/dto'
 import { Dialog, DialogContent, DialogTrigger } from '@/Components/Dialog'
 import { UploadImage } from '@/Components/UploadImage'
 import imageCompression from 'browser-image-compression'

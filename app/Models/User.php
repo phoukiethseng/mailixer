@@ -13,8 +13,6 @@ class User extends BaseUser implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
-
-
     public function subscribers(): HasMany {
         return $this->hasMany(Subscriber::class);
     }

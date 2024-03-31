@@ -22,14 +22,14 @@ class DashboardPageController extends Controller
 
     }
 
-    public function allSubscribersPage(Request $request)
+    public function whitelistedSubscribersPage(Request $request)
     {
         $user = $this->userRepository->findById($request->user()->id);
         try {
             // We only return whitelisted subscribers since now
             // we have a dedicated blacklisted subscribers page
             $subscribers = $this->subscriptionService->getAllWhitelistedSubscribersByUserId($user->id);
-            return Inertia::render('DashBoard/Subscribers/AllSubscribers', [
+            return Inertia::render('DashBoard/Subscribers/WhitelistedSubscribers', [
                 'subscribers' => $subscribers->mapInto(SubscriberDTO::class),
             ]);
         } catch (Exception) {
@@ -84,7 +84,9 @@ class DashboardPageController extends Controller
         $user = $this->userRepository->findById($request->user()->id);
         $SubscriberCount = $this->subscriptionService->getSubscribersCount($user->id);
         $blacklistedSubscribersCount = $this->subscriptionService->getBlacklistedCount($user->id);
+        $subscriptionRecords = $this->subscriptionService->getAllSubscriptionRecordsForUser($user->id);
         return Inertia::render("DashBoard/Subscribers/Overview", [
+            'allSubscriptionRecords' => $subscriptionRecords,
             'subscribersCount' => $SubscriberCount,
             'blacklistedSubscribersCount' => $blacklistedSubscribersCount,
         ]);

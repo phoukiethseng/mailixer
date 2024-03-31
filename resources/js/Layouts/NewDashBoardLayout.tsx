@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, router, usePage } from '@inertiajs/react'
 import { InertiaSharedProps } from '@/types/inertia'
 import LogoText from '@/Components/LogoText'
@@ -30,6 +30,12 @@ import {
   DialogHeader,
   DialogTrigger,
 } from '@/Components/Dialog'
+import { ScrollArea } from '@/Components/ScrollArea'
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from '@/Components/Resizable'
 
 type NewDashBoardLayoutProps = {
   activeSubPageName: DashBoardMenuItems
@@ -67,11 +73,13 @@ const NewDashBoardLayout = ({
 
   const currentPageGroup = getPageGroupDescriptionFor(activeSubPageName)
 
+  const [sideBarCollasped, setSideBarCollasped] = useState<boolean>(false)
+
   return (
-    <div className={'flex flex-col w-full h-screen'}>
+    <div className={'flex flex-col w-full h-screen overflow-hidden'}>
       <div
         className={
-          'w-full h-14 px-4 flex flex-row items-center justify-between border-b border-neutral-200'
+          'w-full min-h-14 px-4 flex flex-row items-center justify-between border-b border-neutral-200'
         }
       >
         <article className={'flex flex-row justify-start items-center'}>
@@ -192,51 +200,90 @@ const NewDashBoardLayout = ({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className={'w-ful h-full flex flex-row'}>
-        <aside className={'min-w-60 mt-7'}>
-          <nav className={'w-full h-full'}>
-            <ul
-              className={
-                'w-full h-full flex flex-col justify-start items-stretch px-4 gap-2'
-              }
-            >
-              {Object.values(dashboardPageGroups).map((pageGroup, index) => {
-                const Icon = (pageGroup?.icon ?? Icons.List) as LucideIcon
-                const isActive = pageGroup === currentPageGroup
-                const redirectUrl =
-                  getPageDescriptionFor(pageGroup.pages[0])?.url ?? ''
-                return (
-                  <li key={index}>
-                    <Link
-                      href={redirectUrl}
-                      className={cn(
-                        'flex flex-row gap-2 font-bold p-3 rounded-lg',
-                        isActive && 'text-primary bg-slate-100'
-                      )}
-                    >
-                      <Icon strokeWidth={2.5} size={20} />
-                      <span>{pageGroup.displayName}</span>
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
-          </nav>
-        </aside>
-        <div
-          className={
-            'bg-muted w-full pb-5 flex flex-col justify-start items-center'
-          }
+      <ResizablePanelGroup
+        direction={'horizontal'}
+        className={'w-full h-full flex flex-row'}
+      >
+        <ResizablePanel
+          onCollapse={() => setSideBarCollasped(true)}
+          onExpand={() => setSideBarCollasped(false)}
+          collapsible
+          collapsedSize={3}
+          minSize={15}
+          defaultSize={15}
+          maxSize={40}
         >
-          <main
+          <aside className={'mt-7'}>
+            <nav className={'w-full h-full'}>
+              <ul
+                className={cn(
+                  'w-full h-full flex flex-col gap-2',
+                  sideBarCollasped && 'px-1 justify-center items-center',
+                  !sideBarCollasped && 'px-3 justify-start items-stretch'
+                )}
+              >
+                {sideBarCollasped &&
+                  Object.values(dashboardPageGroups).map((pageGroup, index) => {
+                    const Icon = (pageGroup?.icon ?? Icons.List) as LucideIcon
+                    const isActive = pageGroup === currentPageGroup
+                    const redirectUrl =
+                      getPageDescriptionFor(pageGroup.pages[0])?.url ?? ''
+                    return (
+                      <li key={index}>
+                        <Link
+                          href={redirectUrl}
+                          className={cn(
+                            'flex flex-row gap-2 font-bold p-3 rounded-lg',
+                            isActive && 'text-primary bg-slate-100'
+                          )}
+                        >
+                          <Icon strokeWidth={2.5} size={20} />
+                        </Link>
+                      </li>
+                    )
+                  })}
+                {!sideBarCollasped &&
+                  Object.values(dashboardPageGroups).map((pageGroup, index) => {
+                    const Icon = (pageGroup?.icon ?? Icons.List) as LucideIcon
+                    const isActive = pageGroup === currentPageGroup
+                    const redirectUrl =
+                      getPageDescriptionFor(pageGroup.pages[0])?.url ?? ''
+                    return (
+                      <li key={index}>
+                        <Link
+                          href={redirectUrl}
+                          className={cn(
+                            'flex flex-row gap-2 font-bold p-3 rounded-lg',
+                            isActive && 'text-primary bg-slate-100'
+                          )}
+                        >
+                          <Icon strokeWidth={2.5} size={20} />
+                          <span>{pageGroup.displayName}</span>
+                        </Link>
+                      </li>
+                    )
+                  })}
+              </ul>
+            </nav>
+          </aside>
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel>
+          <div
             className={
-              'mt-5 px-5 2xl:px-0 min-h-[80vh] w-full xl:max-w-[1100px] overflow-x-auto'
+              'bg-muted h-full w-full pb-5 flex flex-col justify-start items-center'
             }
           >
-            {children}
-          </main>
-        </div>
-      </div>
+            <main
+              className={
+                'mt-5 px-5 2xl:px-0 w-full xl:max-w-[90%] overflow-auto'
+              }
+            >
+              {children}
+            </main>
+          </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </div>
   )
 }

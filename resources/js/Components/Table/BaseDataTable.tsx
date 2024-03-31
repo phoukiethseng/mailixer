@@ -20,7 +20,7 @@ type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData>[]
 } & React.ComponentPropsWithoutRef<'div'>
 
-export function BaseDataTable<TData, TValue>({
+export function BaseDataTable<TData, TValue = unknown>({
   table,
   className,
   columns,

@@ -157,14 +157,13 @@ const Page = ({
 
   return (
     <div className="flex flex-col justify-start items-center w-full gap-2 pt-4">
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3 items-start max-w-[1300px]">
-        <Card className="self-start">
+      <div className="flex flex-col justify-start items-stretch w-full gap-5 max-w-[1000px]">
+        <Card>
           <CardHeader>
             <CardTitle>Customize</CardTitle>
             <CardDescription>Personalize your subscribe page</CardDescription>
           </CardHeader>
-          <Separator />
-          <CardContent className="flex flex-col gap-2 justify-start items-stretch pt-4">
+          <CardContent className="flex flex-col gap-2 justify-start items-stretch pt-2">
             <Form {...customizationForm}>
               <form
                 className={'flex flex-col gap-4'}
@@ -173,37 +172,36 @@ const Page = ({
                   handleDescriptionFormSubmit
                 )}
               >
-                <Card>
-                  <CardContent className={'pt-2'}>
-                    <FormField
-                      name={'showProfilePicture'}
-                      render={({ field }) => {
-                        return (
-                          <FormItem
-                            className={'flex flex-row gap-4 items-center'}
+                <div className={'pt-2'}>
+                  <FormField
+                    name={'showProfilePicture'}
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                          className={'flex flex-row gap-4 items-center'}
+                        >
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            className={''}
+                          />
+                          <div
+                            className={
+                              'flex flex-col justify-start items-start gap-1'
+                            }
                           >
-                            <Switch
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                              className={''}
-                            />
-                            <div
-                              className={
-                                'flex flex-col justify-start items-start gap-1'
-                              }
-                            >
-                              <FormLabel>Show Profile Picture</FormLabel>
-                              <FormDescription>
-                                Decide whether or not you want to show picture
-                                of your profile in subscribe page
-                              </FormDescription>
-                            </div>
-                          </FormItem>
-                        )
-                      }}
-                    />
-                  </CardContent>
-                </Card>
+                            <FormLabel>Show Profile Picture</FormLabel>
+                            <FormDescription>
+                              Decide whether or not you want to show picture of
+                              your profile in subscribe page
+                            </FormDescription>
+                          </div>
+                        </FormItem>
+                      )
+                    }}
+                  />
+                </div>
+                <Separator />
                 <FormField
                   name="description"
                   control={customizationForm.control}
@@ -267,8 +265,7 @@ const Page = ({
               What will you subscribe page looks like
             </CardDescription>
           </CardHeader>
-          <Separator />
-          <CardContent className="flex justify-center items-center pt-5">
+          <CardContent className="flex justify-center items-center p-4">
             <SubscribeCard
               user={{
                 name: auth.user.name ?? 'Unknown',
@@ -289,10 +286,9 @@ const Page = ({
               Send this link your potential subscriber
             </CardDescription>
           </CardHeader>
-          <Separator />
           <CardContent>
             <div className={'flex flex-col justify-center items-stretch gap-3'}>
-              <div className="mt-4 flex flex-row gap-2 justify-between items-center">
+              <div className="mt-2 flex flex-row gap-2 justify-between items-center">
                 <Input
                   type="text"
                   readOnly
@@ -325,66 +321,77 @@ const Page = ({
                 {viewLiveQRCodeImage !== '' && (
                   <img src={viewLiveQRCodeImage} alt={'View Live QR Code'} />
                 )}
-                <Dialog
-                  open={isSaveQRCodeDialogOpen}
-                  onOpenChange={setIsSaveQRCodeDialogOpen}
-                >
-                  <DialogTrigger>
-                    <Button variant={'secondary'}>Save as Image</Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Save Image</DialogTitle>
-                      <DialogDescription>
-                        Send this image to your potential subscriber
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div
-                      className={
-                        'w-full h-full p-3 gap-4 flex flex-col justify-start items-center bg-background'
-                      }
-                    >
-                      <div
-                        ref={conversionDOMRef}
-                        className="min-w-[400px] max-h-[600px] bg-primary py-7 flex flex-col justify-stretch items-center"
-                      >
-                        <div className="rounded-xl w-[85%] bg-amber-50 flex flex-col items-center justify-start pb-5">
-                          <h1 className="font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#00B88F] to-[#0092D2] text-4xl pt-5">
-                            Mailixer
-                          </h1>
-
-                          <img
-                            className="object-center object-cover self-center my-5"
-                            src={viewLiveQRCodeImage}
-                          />
-
-                          <p className="text-slate-600 font-semibold text-lg">
-                            Subscribe to {auth.user.name} newsletter
-                          </p>
-                        </div>
-                      </div>
-                      <Button
-                        disabled={reactToPngConversionState.isLoading}
-                        onClick={() => {
-                          // Start react to image conversion
-                          convertReactToPng()
-                        }}
-                      >
-                        {!reactToPngConversionState.isLoading && 'Download'}
-                        {reactToPngConversionState.isLoading && (
-                          <Icons.Loader2
-                            size={20}
-                            strokeWidth={2}
-                            className={'animate-spin'}
-                          />
-                        )}
-                      </Button>
-                    </div>
-                  </DialogContent>
-                </Dialog>
               </div>
             </div>
           </CardContent>
+          <Separator />
+          <CardFooter>
+            <div className={'w-full h-full mt-4 flex flex-row justify-center'}>
+              <Dialog
+                open={isSaveQRCodeDialogOpen}
+                onOpenChange={setIsSaveQRCodeDialogOpen}
+              >
+                <DialogTrigger>
+                  <Button
+                    size={'lg'}
+                    className={'mx-auto'}
+                    variant={'secondary'}
+                  >
+                    Save
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Save Image</DialogTitle>
+                    <DialogDescription>
+                      Send this image to your potential subscriber
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div
+                    className={
+                      'w-full h-full p-3 gap-4 flex flex-col justify-start items-center bg-background'
+                    }
+                  >
+                    <div
+                      ref={conversionDOMRef}
+                      className="min-w-[400px] max-h-[600px] bg-primary py-7 flex flex-col justify-stretch items-center"
+                    >
+                      <div className="rounded-xl w-[85%] bg-amber-50 flex flex-col items-center justify-start pb-5">
+                        <h1 className="font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#00B88F] to-[#0092D2] text-4xl pt-5">
+                          Mailixer
+                        </h1>
+
+                        <img
+                          className="object-center object-cover self-center my-5"
+                          src={viewLiveQRCodeImage}
+                        />
+
+                        <p className="text-slate-600 font-semibold text-lg">
+                          Subscribe to {auth.user.name} newsletter
+                        </p>
+                      </div>
+                    </div>
+                    <Button
+                      disabled={reactToPngConversionState.isLoading}
+                      onClick={() => {
+                        // Start react to image conversion
+                        convertReactToPng()
+                      }}
+                    >
+                      {!reactToPngConversionState.isLoading && 'Download'}
+                      {reactToPngConversionState.isLoading && (
+                        <Icons.Loader2
+                          size={20}
+                          strokeWidth={2}
+                          className={'animate-spin'}
+                        />
+                      )}
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </CardFooter>
         </Card>
       </div>
     </div>

@@ -31,6 +31,14 @@ interface SubscriberRepository extends CRUDRepository
      */
     public function findAllByUserId($userId);
 
+    public function findAllSubscribedByUserId($userId);
+
+    /**
+     * @param $userId
+     * @return Collection<Subscriber>
+     */
+    public function findCurrentlyBlacklistedByUserId($userId);
+
     /**
      * Return blacklisted subscriber records that belong to user by user's id.
      * @param $userId
@@ -50,5 +58,7 @@ interface SubscriberRepository extends CRUDRepository
      * @return Collection<Subscriber>
      */
     public function findAllSubscriptionRecordsByUserId($userId);
+
+    public function findCurrentlyWhitelistedByUserId($userId);
 
 }

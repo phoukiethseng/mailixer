@@ -4,6 +4,7 @@ namespace App\Services\Implementations;
 
 use App\Enums\NewsletterContentType;
 use App\Enums\NewsletterStatus;
+use App\Enums\SubscriptionStatus;
 use App\Exceptions\ServiceException;
 use App\Jobs\SendNewsletter;
 use App\Mail\NewsletterEmail;
@@ -38,6 +39,9 @@ class NewsletterServiceImpl implements NewsletterService
         }
 
         foreach ($whitelistedSubscribers as $subscriber) {
+
+            if ($subscriber->status == SubscriptionStatus::UNSUBSCRIBED) continue;
+
             // FYI: Laravel docs recommend that we should use new instance of mailable for each of subscribers
             $unsubscribeUrl = URL::signedRoute('unsubscribe', ['unsubscribeToken' => $subscriber->unsubscribe_token]);
             $mail = new NewsletterEmail($newsletter, $author, $subscriber, $unsubscribeUrl);
@@ -45,8 +49,8 @@ class NewsletterServiceImpl implements NewsletterService
 //            Mail::send(new NewsletterEmail($newsletter, $author, $subscriber, URL::signedRoute('unsubscribe', ['unsubscribeToken' => $subscriber->unsubscribe_token])));
         }
         // Mark newsletter as Pending
-        $newsletter->status()->disassociate();
-        $newsletter->status()->associate(\App\Models\NewsletterStatus::find(NewsletterStatus::PENDING->value));
+//        $newsletter->status()->disassociate();
+        $newsletter->status = NewsletterStatus::PENDING;
 
         $this->newsletterRepository->save($newsletter);
     }
@@ -61,7 +65,7 @@ class NewsletterServiceImpl implements NewsletterService
         $draftNewsletter = $this->newsletterRepository->getNewInstance($data);
         $draftNewsletter->user()->associate($author);
         $draftNewsletter->contentType()->associate(\App\Models\NewsletterContentType::find($contentType->value));
-        $draftNewsletter->status()->associate(\App\Models\NewsletterStatus::find(NewsletterStatus::DRAFT->value));
+        $draftNewsletter->status = NewsletterStatus::DRAFT;
 
         $draftNewsletter = $this->newsletterRepository->save($draftNewsletter);
         return $draftNewsletter;
@@ -116,7 +120,7 @@ class NewsletterServiceImpl implements NewsletterService
     public function setNewsletterStatus($newsletterId, NewsletterStatus $newsletterStatusEnum)
     {
         $newsletter = $this->find($newsletterId);
-        $newsletter->status()->associate(\App\Models\NewsletterStatus::find($newsletterStatusEnum->value));
+        $newsletter->status = $newsletterStatusEnum;
         $this->newsletterRepository->save($newsletter);
     }
 

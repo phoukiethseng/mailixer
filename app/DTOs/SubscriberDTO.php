@@ -12,6 +12,7 @@ class SubscriberDTO extends BaseDTO
 
     public $unsubscribeToken;
     public $createdAt;
+    public $status;
 
     public function __construct(Subscriber $subscriber)
     {
@@ -19,5 +20,6 @@ class SubscriberDTO extends BaseDTO
         $this->email = $subscriber->email;
         $this->createdAt = $subscriber->created_at;
         $this->unsubscribeToken = $subscriber->unsubscribe_token;
+        $this->status = $subscriber->status->name;
     }
 }

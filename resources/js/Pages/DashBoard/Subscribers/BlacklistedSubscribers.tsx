@@ -1,6 +1,6 @@
 import React from 'react'
 import DashBoardLayout from '../../../Layouts/DashBoardLayout'
-import { Subscriber } from '../../../types/DTO'
+import { Subscriber } from '../../../types/dto'
 import { useMessageToast } from '../../../lib/hooks/useMessageToast'
 import BlacklistedSubscribersTable from '../../../Components/SubscriberTable/BlacklistedSubscribersTable'
 import { InertiaSharedProps } from '@/types/inertia'

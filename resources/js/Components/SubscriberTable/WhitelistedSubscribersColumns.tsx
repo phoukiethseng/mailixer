@@ -23,8 +23,10 @@ import { useToast } from '../use-toast'
 import axios from 'axios'
 import { Checkbox } from '../Checkbox'
 import React from 'react'
-import { type Subscriber } from '@/types/DTO'
+import { type Subscriber } from '@/types/dto'
 import { FilterColumnDef } from '@/types/util'
+import { Badge } from '@/Components/Badge'
+import { SortableTableHeader } from '@/Components/SortableTableHeader'
 
 export const columns: ColumnDef<Subscriber>[] = [
   {
@@ -47,14 +49,11 @@ export const columns: ColumnDef<Subscriber>[] = [
     accessorKey: 'id',
     header: ({ column }) => {
       return (
-        <Button
-          variant={'ghost'}
-          className={'flex justify-between gap-1'}
+        <SortableTableHeader
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           ID
-          <Icons.ChevronsUpDown strokeWidth={1.5} size={14} />
-        </Button>
+        </SortableTableHeader>
       )
     },
   },
@@ -74,17 +73,33 @@ export const columns: ColumnDef<Subscriber>[] = [
     },
   },
   {
+    accessorKey: 'status',
+    header: ({ column }) => {
+      return (
+        <SortableTableHeader
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Status
+        </SortableTableHeader>
+      )
+    },
+    cell: ({ row }) => {
+      if (row.getValue('status') === 'SUBSCRIBED') {
+        return <Badge variant={'default'}>Subscribed</Badge>
+      } else {
+        return <Badge variant={'destructive'}>Unsubscribed</Badge>
+      }
+    },
+  },
+  {
     accessorKey: 'createdAt',
     header: ({ column }) => {
       return (
-        <Button
-          variant={'ghost'}
-          className={'flex justify-between gap-1'}
+        <SortableTableHeader
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Since
-          <Icons.ChevronsUpDown strokeWidth={1.5} size={14} />
-        </Button>
+        </SortableTableHeader>
       )
     },
     cell: ({ row }) => {
@@ -97,14 +112,11 @@ export const columns: ColumnDef<Subscriber>[] = [
     accessorKey: 'unsubscribeToken',
     header: ({ column }) => {
       return (
-        <Button
-          variant={'ghost'}
-          className={'flex justify-between gap-1'}
+        <SortableTableHeader
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Unsubscribe Token
-          <Icons.ChevronsUpDown strokeWidth={1.5} size={14} />
-        </Button>
+        </SortableTableHeader>
       )
     },
     cell: ({ row }) => {
@@ -192,41 +204,43 @@ export const columns: ColumnDef<Subscriber>[] = [
                 </AlertDialogContent>
               </AlertDialog>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant={'ghost'}
-                    className="flex flex-row justify-between gap-3"
-                  >
-                    <Icons.UserMinus size={14} className="text-destructive" />
-                    <span className="text-destructive">Unsubscribe</span>
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action will permanently delete subscriber
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter className="flex flex-row justify-between gap-2">
-                    <AlertDialogCancel asChild>
-                      <Button variant={'ghost'}>Cancel</Button>
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() =>
-                        router.delete(
-                          `/dashboard/subscriber/${row.getValue('id')}`
-                        )
-                      }
+            {row.getValue('status') === 'SUBSCRIBED' && (
+              <DropdownMenuItem asChild>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant={'ghost'}
+                      className="flex flex-row justify-between gap-3"
                     >
-                      Confirm
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </DropdownMenuItem>
+                      <Icons.UserMinus size={14} className="text-destructive" />
+                      <span className="text-destructive">Unsubscribe</span>
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action will permanently unsubscribe subscriber
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter className="flex flex-row justify-between gap-2">
+                      <AlertDialogCancel asChild>
+                        <Button variant={'ghost'}>Cancel</Button>
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() =>
+                          router.delete(
+                            `/dashboard/subscriber/${row.getValue('id')}`
+                          )
+                        }
+                      >
+                        Confirm
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       )

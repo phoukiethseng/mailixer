@@ -1,5 +1,5 @@
 import type { Table } from '@tanstack/react-table'
-import { Subscriber } from '@/types/DTO'
+import { Subscriber } from '@/types/dto'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -24,7 +24,7 @@ export function ColumnVisibilityDropdownMenu(
         <Button
           variant={'outline'}
           size={'icon'}
-          className={cn('', props.className)}
+          className={cn('min-w-9', props.className)}
         >
           <Icons.Columns strokeWidth={1.5} size={14} />
         </Button>

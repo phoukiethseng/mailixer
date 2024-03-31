@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { NewsletterSendResult } from '@/types/DTO'
-import DashBoardLayout from '@/Layouts/DashBoardLayout'
+import { NewsletterSendResult } from '@/types/dto'
 import {
   ResizableHandle,
   ResizablePanel,
@@ -9,6 +8,7 @@ import {
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -20,9 +20,11 @@ import { cn } from '@/lib/utils'
 import axios from 'axios'
 import { ScrollArea } from '@/Components/ScrollArea'
 import { HashLoader } from 'react-spinners'
-import dateTimeFormater from 'date-format'
+// @ts-ignore
 import NewDashBoardLayout from '@/Layouts/NewDashBoardLayout'
 import { AspectRatio } from '@/Components/AspectRatio'
+import useLoader from '@/lib/hooks/useLoader'
+import { Input } from '@/Components/Input'
 
 type NewsletterStatusPageProps = {
   newsletters: NewsletterSendResult[]
@@ -30,7 +32,7 @@ type NewsletterStatusPageProps = {
 
 const NewsletterStatus = (props: NewsletterStatusPageProps) => {
   const [previewHTML, setPreviewHTML] = useState('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { isLoading, load } = useLoader()
   const newsletters = useMemo(() => {
     return props.newsletters.filter((v) => v.status !== 'DRAFT')
   }, [props.newsletters])
@@ -43,15 +45,15 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
 
   useEffect(() => {
     if (currentNewsletter) {
-      setIsLoading(true)
-      axios
-        .get(`/dashboard/previewNewsletter/${currentNewsletter.value.id}`)
-        .then((res) => {
-          if (res.status === 200) {
-            setPreviewHTML(res.data.html)
-          }
-        })
-        .finally(() => setIsLoading(false))
+      load(() =>
+        axios
+          .get(`/dashboard/previewNewsletter/${currentNewsletter.value.id}`)
+          .then((res) => {
+            if (res.status === 200) {
+              setPreviewHTML(res.data.html)
+            }
+          })
+      )
     }
     return () => {}
   }, [currentNewsletter])
@@ -68,9 +70,13 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
           unselect()
         }}
       >
-        <ScrollArea>
-          <div
-            className={'w-full h-full flex flex-col gap-3 justify-stretch pr-4'}
+        <div className={'flex flex-col gap-3 justify-start items-stretch pr-3'}>
+          <Input type={'text'} className={'bg-background min-w-[20px]'} />
+          <ScrollArea
+            className={'w-full h-[85vh]'}
+            innerContainerClassName={
+              'flex flex-col justify-start items-stretch gap-3 pb-4'
+            }
           >
             {Array.from(list.values()).map((item) => (
               <Card
@@ -87,22 +93,22 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
                 }}
               >
                 <CardHeader>
-                  <CardTitle className={'text-lg'}>
-                    {item.value.subject}
-                  </CardTitle>
-                  <div
+                  <CardTitle>{item.value.subject}</CardTitle>
+                  <CardDescription
                     className={'flex flex-row gap-2 justify-start items-center'}
                   >
-                    <Icons.Clock4 strokeWidth={1.5} size={12} />
-                    <span className={'text-xs text-muted-foreground'}>
-                      {dateTimeFormater('yyyy/MM/dd hh:mm', new Date())}
-                    </span>
-                  </div>
+                    <Icons.Clock4
+                      className={'text-muted-foreground'}
+                      strokeWidth={1.5}
+                      size={12}
+                    />
+                    <span className={'text-xs text-muted-foreground'}>{}</span>
+                  </CardDescription>
                 </CardHeader>
                 {/*<CardContent>*/}
                 {/*    <p>{newsletter.content}</p>*/}
                 {/*</CardContent>*/}
-                <CardFooter>
+                <CardContent>
                   <div className={'flex flex-row gap-2 justify-between w-full'}>
                     <Badge variant={'outline'}>{item.value.status}</Badge>
                     <div
@@ -149,85 +155,97 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
                       </div>
                     </div>
                   </div>
-                </CardFooter>
+                </CardContent>
               </Card>
             ))}
-          </div>
-        </ScrollArea>
+          </ScrollArea>
+        </div>
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel>
-        {isLoading && (
-          <div className={'w-full h-full flex justify-center items-center'}>
-            {/*<Icons.Loader2 strokeWidth={1.5} size={50} className={"animate-spin text-muted-foreground"}/>*/}
-            <HashLoader size={80} color={'#16a34a'} />
-          </div>
-        )}
-        {!isLoading && currentNewsletter && (
-          <div className={'w-full flex flex-col justify-start items-center'}>
-            <div
-              className={
-                'flex flex-row gap-4 justify-center items-center w-full h-full mb-5'
-              }
-            >
-              <Card className={'w-36 h-32'}>
-                <CardHeader
-                  className={'flex flex-row justify-between gap-4 items-center'}
-                >
-                  <CardTitle>Delivered</CardTitle>
-                  <Icons.UserCheck strokeWidth={1.5} size={17} />
+        <ScrollArea
+          className={'h-[80vh] w-full pl-3'}
+          innerContainerClassName={'flex flex-col justify-center items-center'}
+        >
+          {isLoading && <HashLoader size={80} color={'#16a34a'} />}
+          {!isLoading && currentNewsletter && (
+            <div className={'w-full flex flex-col justify-start items-center'}>
+              <div
+                className={
+                  'flex flex-row gap-4 justify-center items-center w-full h-full mb-5'
+                }
+              >
+                <Card className={'w-36 h-32'}>
+                  <CardHeader
+                    className={
+                      'flex flex-row justify-between gap-4 items-center'
+                    }
+                  >
+                    <CardTitle>Delivered</CardTitle>
+                    <Icons.UserCheck strokeWidth={1.5} size={17} />
+                  </CardHeader>
+                  <CardContent>
+                    <p className={'text-5xl font-bold text-center'}>
+                      {
+                        currentNewsletter.value.sendResults.filter(
+                          (result) => result.isSuccess
+                        ).length
+                      }
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className={'w-36 h-32 text-destructive'}>
+                  <CardHeader
+                    className={
+                      'flex flex-row justify-between gap-4 items-center'
+                    }
+                  >
+                    <CardTitle>Failed</CardTitle>
+                    <Icons.UserCheck strokeWidth={1.5} size={17} />
+                  </CardHeader>
+                  <CardContent>
+                    <p className={'text-5xl font-bold text-center'}>
+                      {
+                        currentNewsletter.value.sendResults.filter(
+                          (result) => !result.isSuccess
+                        ).length
+                      }
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+              <Card
+                className={
+                  'min-w-[300px] sm:w-[350px] md:w-[500px] xl:w-[700px] 2xl:w-[800px]'
+                }
+              >
+                <CardHeader>
+                  <CardTitle>Newsletter Content</CardTitle>
+                  <CardDescription>Content of sent newsletter</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className={'text-5xl font-bold text-center'}>
-                    {
-                      currentNewsletter.value.sendResults.filter(
-                        (result) => result.isSuccess
-                      ).length
-                    }
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className={'w-36 h-32 text-destructive'}>
-                <CardHeader
-                  className={'flex flex-row justify-between gap-4 items-center'}
-                >
-                  <CardTitle>Failed</CardTitle>
-                  <Icons.UserCheck strokeWidth={1.5} size={17} />
-                </CardHeader>
-                <CardContent>
-                  <p className={'text-5xl font-bold text-center'}>
-                    {
-                      currentNewsletter.value.sendResults.filter(
-                        (result) => !result.isSuccess
-                      ).length
-                    }
-                  </p>
+                  <AspectRatio ratio={16 / 9}>
+                    <iframe
+                      srcDoc={previewHTML}
+                      width={'100%'}
+                      height={'100%'}
+                      sandbox={'allow-scripts allow-forms'}
+                    />
+                  </AspectRatio>
                 </CardContent>
               </Card>
             </div>
-            <Card
-              className={
-                'w-[300px] lg:w-[500px] xl:w-[700px] 2xl:w-[800px] p-4'
-              }
+          )}
+          {!currentNewsletter && !isLoading && (
+            <div
+              className={'w-full min-h-[70vh] flex justify-center items-center'}
             >
-              <AspectRatio ratio={16 / 9}>
-                <iframe
-                  srcDoc={previewHTML}
-                  width={'100%'}
-                  height={'100%'}
-                  sandbox={'allow-scripts allow-forms'}
-                />
-              </AspectRatio>
-            </Card>
-          </div>
-        )}
-        {!currentNewsletter && !isLoading && (
-          <div className={'w-full h-full flex justify-center items-center'}>
-            <span className={'text-muted-foreground'}>
-              No newsletter selected
-            </span>
-          </div>
-        )}
+              <span className={'text-muted-foreground'}>
+                No newsletter selected
+              </span>
+            </div>
+          )}
+        </ScrollArea>
       </ResizablePanel>
     </ResizablePanelGroup>
   )

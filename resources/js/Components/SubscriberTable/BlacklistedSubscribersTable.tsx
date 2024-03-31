@@ -8,16 +8,17 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import React, { useState } from 'react'
-import { Subscriber } from '@/types/DTO'
+import { Subscriber } from '@/types/dto'
 import {
   columns,
   filterColumnList,
 } from '@/Components/SubscriberTable/BlacklistedSubscribersColumn'
-import { BaseDataTable } from '@/Components/BaseDataTable'
+import { BaseDataTable } from '@/Components/Table/BaseDataTable'
 import { FilterColumnCombobox } from '@/Components/FilterColumnCombobox'
 import { Input } from '@/Components/Input'
 import { ColumnVisibilityDropdownMenu } from '@/Components/ColumnVisibilityDropdownMenu'
 import { FilterColumnDef } from '@/types/util'
+import { DataTablePagination } from '@/Components/Table/Pagination'
 
 type BlacklistedSubscribersTableProps = {
   data: Subscriber[]
@@ -46,7 +47,7 @@ const BlacklistedSubscribersTable = ({
     },
   })
   return (
-    <div className={'flex flex-col items-start gap-2'}>
+    <div className={'flex flex-col items-stretch gap-2 pb-3'}>
       <div className={'flex flex-row gap-2 justify-start'}>
         <ColumnVisibilityDropdownMenu
           table={table}
@@ -70,9 +71,8 @@ const BlacklistedSubscribersTable = ({
           }}
         />
       </div>
-      <div className={'w-full'}>
-        <BaseDataTable table={table} columns={columns} />
-      </div>
+      <BaseDataTable table={table} columns={columns} />
+      <DataTablePagination table={table} />
     </div>
   )
 }

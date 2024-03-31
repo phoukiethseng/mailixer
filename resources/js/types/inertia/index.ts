@@ -1,4 +1,4 @@
-import { User } from '@/types/DTO'
+import { User } from '@/types/dto'
 
 export type ResponseMessage<TFormValidationErrorBag = {}> = {
   message?: string

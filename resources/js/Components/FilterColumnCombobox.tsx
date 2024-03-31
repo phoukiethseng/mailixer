@@ -29,7 +29,7 @@ export function FilterColumnCombobox(props: FilterColumnComboboxProps) {
           role={'combobox'}
           variant={'outline'}
           className={cn(
-            'min-w-[100px] w-[200px] flex flex-row justify-between',
+            'min-w-[80px] w-[130px] max-w-[180px] flex flex-row justify-between',
             props.className
           )}
         >

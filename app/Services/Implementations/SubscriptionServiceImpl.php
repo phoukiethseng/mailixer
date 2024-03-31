@@ -2,6 +2,7 @@
 
 namespace App\Services\Implementations;
 
+use App\Enums\SubscriptionStatus;
 use App\Exceptions\ServiceException;
 use App\Models\Subscriber;
 use App\Repositories\Interfaces\SubscriberRepository;
@@ -20,12 +21,12 @@ class SubscriptionServiceImpl implements SubscriptionService
 
     private function unsubscribe(Subscriber $subscriber)
     {
-        $subscriber->unsubscribed_at = \Illuminate\Support\Carbon::now("UTC");
+        $subscriber->status = SubscriptionStatus::UNSUBSCRIBED;
     }
 
     private function isUnsubscribed(Subscriber $subscriber)
     {
-        return isset($subscriber->unsubscribed_at);
+        return $subscriber->status == SubscriptionStatus::UNSUBSCRIBED;
     }
 
     public function subscribe($userId, $email)
@@ -54,17 +55,6 @@ class SubscriptionServiceImpl implements SubscriptionService
         $this->subscriberRepository->save($subscriber);
     }
 
-    public function getAllSubscribersByUserId($userId)
-    {
-        try {
-            $subscribers = $this->subscriberRepository->findAllByUserId($userId);
-        } catch (Exception $e) {
-            throw new ServiceException("Error while querying for all author's subscribers", $e);
-        }
-
-        return $subscribers;
-    }
-
     public function unsubscribeById($subscriberId)
     {
         try {
@@ -88,7 +78,7 @@ class SubscriptionServiceImpl implements SubscriptionService
     public function getSubscribersCount($userId)
     {
         try {
-            $count = $this->subscriberRepository->findAllByUserId($userId)->count();
+            $count = $this->subscriberRepository->findAllSubscribedByUserId($userId)->count();
         } catch (Exception $e) {
             throw new ServiceException("Error while query for subscriber count", $e);
         }
@@ -211,7 +201,7 @@ class SubscriptionServiceImpl implements SubscriptionService
     public function getBlacklistedCount($userId)
     {
         try {
-            return $this->subscriberRepository->findAllBlacklistedByUserId($userId)->count();
+            return $this->subscriberRepository->findCurrentlyBlacklistedByUserId($userId)->count();
         } catch (Exception $e) {
             throw new ServiceException("Error while performing counting whitelisted subscribers", $e);
         }
@@ -228,8 +218,8 @@ class SubscriptionServiceImpl implements SubscriptionService
                 return true;
             }
 
-            if ($subscriber->unsubscribed_at) {
-                $unsubscribedAt = Carbon::parse($subscriber->unsubscribed_at);
+            if ($subscriber->status == SubscriptionStatus::UNSUBSCRIBED) {
+                $unsubscribedAt = $subscriber->unsubscribed_at;
                 if ($unsubscribedAt->gte($fromCarbon) && $unsubscribedAt->lte($toCarbon)) {
                     return true;
                 }
@@ -237,5 +227,10 @@ class SubscriptionServiceImpl implements SubscriptionService
 
             return false;
         });
+    }
+
+    public function getAllSubscriptionRecordsForUser($userId)
+    {
+        return $this->subscriberRepository->findAllSubscriptionRecordsByUserId($userId);
     }
 }

@@ -3,7 +3,7 @@ import DashBoardLayout from '@/Layouts/DashBoardLayout'
 
 import { router } from '@inertiajs/react'
 import { useMessageToast } from '@/lib/hooks/useMessageToast'
-import { ComposeNewsletter } from '@/types/DTO'
+import { ComposeNewsletter } from '@/types/dto'
 import ComposeNewsletterTextEditor from '@/Components/ComposeNewsletterTextEditor'
 import { InertiaSharedProps } from '@/types/inertia'
 import NewDashBoardLayout from '@/Layouts/NewDashBoardLayout'

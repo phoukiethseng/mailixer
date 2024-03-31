@@ -10,7 +10,7 @@ import {
 import { Separator } from './Separator'
 import Markdown from 'react-markdown'
 import { cn } from '@/lib/utils'
-import { NewsletterContentType } from '@/types/DTO'
+import { NewsletterContentType } from '@/types/dto'
 import { InertiaSharedProps } from '@/types/inertia'
 
 type NewsletterPreviewProps = {

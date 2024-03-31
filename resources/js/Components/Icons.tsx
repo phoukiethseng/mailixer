@@ -40,6 +40,7 @@ import {
   ChevronRight,
   BarChartBig,
   Calendar,
+  ChevronLeft,
 } from 'lucide-react'
 
 const Icons = {
@@ -84,6 +85,7 @@ const Icons = {
   ChevronRight: ChevronRight,
   BarChartBig: BarChartBig,
   Calendar: Calendar,
+  ChevronLeft: ChevronLeft,
 }
 
 export { Icons }

@@ -54,8 +54,8 @@ export default function LoginPage() {
     <div className="w-screen min-h-screen flex flex-col justify-center items-center gap-6">
       <LogoText />
       <Card className="min-w-[350px]">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Welcome Back!</CardTitle>
+        <CardHeader className="text-center flex flex-col justify-start items-start">
+          <CardTitle>Welcome Back!</CardTitle>
           <CardDescription>Sign in to continue</CardDescription>
         </CardHeader>
         <CardContent>

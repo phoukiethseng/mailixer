@@ -8,7 +8,6 @@ interface SubscriptionService
     public function unsubscribeById($subscriberId);
     public function unsusbscribeByToken($unsubscribeToken);
     public function getUnsubscribeTokenById($subscriberId);
-    public function getAllSubscribersByUserId($userId);
     public function getSubscribersCount($userId);
     public function getSubscriberById($subscriberId);
     public function getSubscriberAuthorByUnsubscribeToken($unsubscribeToken);
@@ -20,4 +19,6 @@ interface SubscriptionService
 
     public function getBlacklistedCount($userId);
     public function getSubscriptionRecordsForUser($userId, \DateTime $from, \DateTime $to);
+
+    public function getAllSubscriptionRecordsForUser($userId);
 }

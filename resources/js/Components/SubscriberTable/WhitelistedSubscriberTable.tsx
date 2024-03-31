@@ -3,6 +3,7 @@ import {
   ColumnFiltersState,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   SortingState,
   type Table,
@@ -12,8 +13,8 @@ import {
   columns,
   filterColumnList,
 } from '@/Components/SubscriberTable/WhitelistedSubscribersColumns'
-import { Subscriber } from '@/types/DTO'
-import { BaseDataTable } from '@/Components/BaseDataTable'
+import { Subscriber } from '@/types/dto'
+import { BaseDataTable } from '@/Components/Table/BaseDataTable'
 import { Input } from '@/Components/Input'
 import { FilterColumnCombobox } from '@/Components/FilterColumnCombobox'
 import { ColumnVisibilityDropdownMenu } from '@/Components/ColumnVisibilityDropdownMenu'
@@ -28,13 +29,16 @@ import {
   DropdownMenuTrigger,
 } from '@/Components/DropDownMenu'
 import { Icons } from '@/Components/Icons'
+import { cn } from '@/lib/utils'
+import { DataTablePagination } from '@/Components/Table/Pagination'
 
 type WhitelistedSubscriberTableProps = {
   data: Subscriber[]
-}
+} & React.ComponentPropsWithoutRef<'div'>
 
 const WhitelistedSubscriberTable = ({
   data,
+  ...props
 }: WhitelistedSubscriberTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -48,6 +52,7 @@ const WhitelistedSubscriberTable = ({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     state: {
@@ -62,8 +67,13 @@ const WhitelistedSubscriberTable = ({
     table.getIsSomeRowsSelected() || table.getIsAllRowsSelected()
 
   return (
-    <div className={'flex flex-col gap-2 justify-start items-stretch'}>
-      <div className={'flex flex-row gap-2 justify-start w-full'}>
+    <div
+      className={cn(
+        'flex flex-col gap-2 justify-start items-stretch pb-3',
+        props.className
+      )}
+    >
+      <div className={'flex flex-row gap-2 justify-start w-full p-0.5'}>
         <ColumnVisibilityDropdownMenu
           table={table}
           className={'bg-card text-card-foreground'}
@@ -76,7 +86,7 @@ const WhitelistedSubscriberTable = ({
         />
         <Input
           disabled={!Boolean(currentFilterColumn)}
-          className={'w-[300px] bg-card text-card-foreground'}
+          className={'min-w-[50px] max-w-[300px] bg-card text-card-foreground'}
           placeholder={'Search'}
           onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
             const searchText = e.target.value
@@ -88,7 +98,11 @@ const WhitelistedSubscriberTable = ({
         {isAnyRowSelected && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant={'outline'} className={'ml-auto'} size={'icon'}>
+              <Button
+                variant={'outline'}
+                className={'ml-auto min-w-9'}
+                size={'icon'}
+              >
                 <Icons.CircleEllipsis strokeWidth={1.5} size={15} />
               </Button>
             </DropdownMenuTrigger>
@@ -134,6 +148,7 @@ const WhitelistedSubscriberTable = ({
         )}
       </div>
       <BaseDataTable table={table} columns={columns} />
+      <DataTablePagination table={table} />
     </div>
   )
 }

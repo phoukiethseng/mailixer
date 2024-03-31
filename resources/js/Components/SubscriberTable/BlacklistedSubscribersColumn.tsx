@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { Subscriber } from '@/types/DTO'
+import { Subscriber } from '@/types/dto'
 import React from 'react'
 import { Checkbox } from '@/Components/Checkbox'
 import {
@@ -19,9 +19,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '../../Components/AlertDialog'
+} from '@/Components/AlertDialog'
 import { AlertDialogCancel } from '@radix-ui/react-alert-dialog'
 import { router } from '@inertiajs/react'
+import { SortableTableHeader } from '@/Components/SortableTableHeader'
+import { Badge } from '@/Components/Badge'
 
 export const filterColumnList = [
   {
@@ -58,14 +60,11 @@ export const columns: ColumnDef<Subscriber>[] = [
     accessorKey: 'id',
     header: ({ column }) => {
       return (
-        <Button
-          variant={'ghost'}
+        <SortableTableHeader
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className={'flex flex-row justify-between gap-3'}
         >
           ID
-          <Icons.ChevronsUpDown strokeWidth={1.5} size={14} />
-        </Button>
+        </SortableTableHeader>
       )
     },
   },
@@ -73,15 +72,31 @@ export const columns: ColumnDef<Subscriber>[] = [
     accessorKey: 'email',
     header: ({ column }) => {
       return (
-        <Button
-          variant={'ghost'}
+        <SortableTableHeader
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className={'flex flex-row justify-between gap-3'}
         >
           Email
-          <Icons.ChevronsUpDown strokeWidth={1.5} size={14} />
-        </Button>
+        </SortableTableHeader>
       )
+    },
+  },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => {
+      return (
+        <SortableTableHeader
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Status
+        </SortableTableHeader>
+      )
+    },
+    cell: ({ row }) => {
+      if (row.getValue('status') === 'SUBSCRIBED') {
+        return <Badge variant={'default'}>Subscribed</Badge>
+      } else {
+        return <Badge variant={'destructive'}>Unsubscribed</Badge>
+      }
     },
   },
   {
@@ -94,44 +109,46 @@ export const columns: ColumnDef<Subscriber>[] = [
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent sideOffset={8} align="end">
-          <DropdownMenuItem asChild>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant={'ghost'}
-                  className="flex flex-row justify-start w-full gap-3"
-                >
-                  <Icons.UserMinus size={14} className="text-destructive" />
-                  <span className="text-destructive">Unsubscribe</span>
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action will permanently delete subscriber
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter className="flex flex-row justify-between gap-2">
-                  <AlertDialogCancel asChild>
-                    <Button variant={'ghost'}>Cancel</Button>
-                  </AlertDialogCancel>
-                  <AlertDialogAction
-                    // TODO: Fix typescript error
-                    //@ts-ignore
-                    onClick={(event: MouseEvent) => {
-                      event.stopPropagation()
-                      // TODO: Fix row.getValue returning undefined -_-
-                      const id = row.getValue('id')
-                      router.delete(`/dashboard/subscriber/${id}`)
-                    }}
+          {row.getValue('status') === 'SUBSCRIBED' && (
+            <DropdownMenuItem asChild>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant={'ghost'}
+                    className="flex flex-row justify-start w-full gap-3"
                   >
-                    Confirm
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </DropdownMenuItem>
+                    <Icons.UserMinus size={14} className="text-destructive" />
+                    <span className="text-destructive">Unsubscribe</span>
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action will permanently unsubscribe subscriber
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter className="flex flex-row justify-between gap-2">
+                    <AlertDialogCancel asChild>
+                      <Button variant={'ghost'}>Cancel</Button>
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      // TODO: Fix typescript error
+                      //@ts-ignore
+                      onClick={(event: MouseEvent) => {
+                        event.stopPropagation()
+                        // TODO: Fix row.getValue returning undefined -_-
+                        const id = row.getValue('id')
+                        router.delete(`/dashboard/subscriber/${id}`)
+                      }}
+                    >
+                      Confirm
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem asChild>
             <AlertDialog>
               <AlertDialogTrigger asChild>

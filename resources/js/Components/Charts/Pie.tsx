@@ -12,12 +12,12 @@ type PieChartProps = {
   className: string
 } & CommonPieProps<DefaultRawDatum>
 
-const PieChart = (props: PieChartProps) => {
-  const defaultProsp: Partial<CommonPieProps<DefaultRawDatum>> = {
+const PieChart = (props: Partial<PieChartProps>) => {
+  const defaultProps: Partial<CommonPieProps<DefaultRawDatum>> = {
     // @ts-ignore
     theme: defaultTheme,
     innerRadius: 0.35,
-    activeOuterRadiusOffset: 5,
+    activeOuterRadiusOffset: 7,
     borderWidth: 1,
     padAngle: 4,
     cornerRadius: 4,
@@ -28,8 +28,7 @@ const PieChart = (props: PieChartProps) => {
       modifiers: [['darker', 0.5]],
     },
   }
-
-  const finalProps = { ...defaultProsp, ...props }
+  const finalProps = { ...defaultProps, ...props }
   return <ResponsivePie {...finalProps} />
 }
 export default PieChart

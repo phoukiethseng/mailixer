@@ -1,7 +1,7 @@
 import DashBoardLayout from '@/Layouts/DashBoardLayout'
 import React, { useEffect, useState } from 'react'
 import { useMessageToast } from '@/lib/hooks/useMessageToast'
-import { NewsletterWithStatus } from '@/types/DTO'
+import { NewsletterWithStatus } from '@/types/dto'
 import ComposeNewsletterTextEditor from '@/Components/ComposeNewsletterTextEditor'
 import {
   ResizableHandle,

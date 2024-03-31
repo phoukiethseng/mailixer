@@ -19,7 +19,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/Components/Alert'
 import { Icons } from '@/Components/Icons'
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/Avatar'
-import { User } from '@/types/DTO'
+import { User } from '@/types/dto'
 import { useProfilePicture } from '@/lib/hooks/useProfilePicture'
 
 const emailFormSchema = z.object({
