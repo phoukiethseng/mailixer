@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Password;
 
 class AccountServiceImpl implements AccountService
 {
@@ -39,7 +38,6 @@ class AccountServiceImpl implements AccountService
         $profile = $user->profilePicture;
         if ($profile) {
             $profile->base64_data = $base64Image;
-//            $profile->save();
             $user->profilePicture()->save($profile);
         } else {
             $newProfile = ProfilePicture::factory()->makeOne([
@@ -47,7 +45,6 @@ class AccountServiceImpl implements AccountService
                 'mime_type' => $mimeType
             ]);
             $user->profilePicture()->save($newProfile);
-//            $newProfile->save();
         }
         $this->userRepository->save($user);
 

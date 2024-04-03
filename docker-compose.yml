@@ -44,7 +44,9 @@ services:
         source: .
         target: /app
 
-  queue-worker:
+  send-queue-worker:
+    depends_on:
+      - rabbitmq
     build:
       context: .
     restart: always
@@ -57,10 +59,30 @@ services:
     networks:
       - mailixer-net
 
+  feedback-queue-worker:
+    build:
+      context: .
+    restart: always
+    volumes:
+      - type: bind
+        source: ./
+        target: /app
+    working_dir: /app
+    networks:
+      - mailixer-net
+    entrypoint:
+      [
+        'php',
+        'artisan',
+        'queue:work',
+        '--queue=mailixer-feedback-queue',
+        'rabbitmq',
+      ]
+
   haraka:
     hostname: haraka
     image: instrumentisto/haraka:latest
-    restart: always
+    restart: no
     volumes:
       - type: bind
         source: ./smtp/haraka
@@ -68,10 +90,28 @@ services:
     networks:
       - mailixer-net
     ports:
-      - 8080:8080
+      - 8081:587
+
+  rabbitmq:
+    hostname: rabbitmq # RabbitMQ node name is same as hostname
+    image: rabbitmq:3-management
+    environment: # Make sure to delete rabbitmq-data volume everytime these two env variable change
+      RABBITMQ_DEFAULT_USER: foo
+      RABBITMQ_DEFAULT_PASS: example
+    volumes:
+      - type: volume
+        source: rabbitmq-data
+        target: /var/lib/rabbitmq # RabbitMQ database directory
+        volume:
+          nocopy: true
+    ports:
+      - 8080:15672
+    networks:
+      - mailixer-net
 
 networks:
   mailixer-net:
 
 volumes:
   db-data:
+  rabbitmq-data:

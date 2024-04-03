@@ -16,11 +16,12 @@ const IconInput = React.forwardRef<HTMLInputElement, IconInputProps>(
       strokeWidth: 1.5,
       size: 19,
     }
+    const { className, ...propsWithoutClassname } = props
     return (
       <div
         className={cn(
           'w-full flex flex-row justify-start items-center bg-background border border-input rounded-md p-0 m-0 pl-2',
-          props.className
+          className
         )}
       >
         <Icon {...iconProps} className={'text-muted-foreground'} />
@@ -32,7 +33,7 @@ const IconInput = React.forwardRef<HTMLInputElement, IconInputProps>(
           className={
             'border-none rounded-none shadow-none focus-visible:ring-0'
           }
-          {...props}
+          {...propsWithoutClassname}
           ref={ref}
         />
       </div>

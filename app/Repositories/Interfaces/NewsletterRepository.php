@@ -16,4 +16,5 @@ interface NewsletterRepository extends CRUDRepository
 
     public function getAllSendResults($newsletterId): Collection;
 
+    public function setSendResultStatusIdByMessageId($messageId, $statusId);
 }

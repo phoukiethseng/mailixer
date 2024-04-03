@@ -2,13 +2,13 @@
 
 namespace App\Services\Implementations;
 
+use App\Enums\EmailStatus;
 use App\Enums\NewsletterContentType;
 use App\Enums\NewsletterStatus;
 use App\Enums\SubscriptionStatus;
 use App\Exceptions\ServiceException;
 use App\Jobs\SendNewsletter;
 use App\Mail\NewsletterEmail;
-use App\Models\EmailSendResult;
 use App\Models\Newsletter;
 use App\Models\Subscriber;
 use App\Models\User;
@@ -17,7 +17,6 @@ use App\Repositories\Interfaces\SubscriberRepository;
 use App\Repositories\Interfaces\UserRepository;
 use App\Services\Interfaces\NewsletterService;
 use App\Services\Interfaces\SubscriptionService;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
 
@@ -106,19 +105,6 @@ class NewsletterServiceImpl implements NewsletterService
         }
     }
 
-    public function createSendSuccessResult($newsletterId, $subscriberId, $messageId)
-    {
-        $newsletter = $this->find($newsletterId);
-        $subscriber = $this->subscriberRepository->findById($subscriberId);
-
-        $newsletter->sentSubscribers()->save($subscriber, [
-            'is_success' => true,
-            'message_id' => $messageId
-        ]);
-
-        $this->newsletterRepository->save($newsletter);
-    }
-
     public function setNewsletterStatus($newsletterId, NewsletterStatus $newsletterStatusEnum)
     {
         $newsletter = $this->find($newsletterId);
@@ -135,27 +121,39 @@ class NewsletterServiceImpl implements NewsletterService
         return $this->newsletterRepository->findById($newsletterId);
     }
 
-    public function createSendFailedResult($newsletterId, $subscriberId)
-    {
-        $newsletter = $this->find($newsletterId);
-        $subscriber = $this->subscriberRepository->findById($subscriberId);
-
-        $newsletter->sentSubscribers()->save($subscriber, [
-            'is_success' => false
-        ]);
-
-        $this->newsletterRepository->save($newsletter);
-    }
-
     public function getAllSendResultsForNewsletterId($newsletterId)
     {
         return $this->find($newsletterId)->sentSubscribers()
             ->as('send_results')
-            ->withPivot(['is_success', 'status_id'])
+            ->withPivot(['status_id'])
             ->withTimestamps()
             ->get()
             ->map(function (Subscriber $subscriber) {
                 return $subscriber->send_results;
             });
     }
+
+  public function createEmailSendResult($newsletterId, $subscriberId, EmailStatus $status, $messageId)
+  {
+    $newsletter = $this->newsletterRepository->findById($newsletterId);
+    $subscriber = $this->subscriberRepository->findById($subscriberId);
+    $newsletter->sentSubscribers()->save($subscriber, [
+      'status_id' => $status->value,
+      'message_id' => $messageId
+    ]);
+  }
+
+  public function createFailedEmailSendResult($newsletterId, $subscriberId)
+  {
+    $newsletter = $this->newsletterRepository->findById($newsletterId);
+    $subscriber = $this->subscriberRepository->findById($subscriberId);
+    $newsletter->sentSubscribers()->save($subscriber, [
+      'status_id' => EmailStatus::FAILED->value
+    ]);
+  }
+
+  public function setEmailSendResult($messageId, EmailStatus $status)
+  {
+    $this->newsletterRepository->setSendResultStatusIdByMessageId($messageId, $status->value);
+  }
 }

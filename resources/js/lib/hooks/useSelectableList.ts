@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useState, useTransition } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { Predicate } from '@tiptap/react'
 
-type ListItem<TData> = {
+export type ListItem<TData> = {
   id: ListItemKey
   value: TData
 }
 
-type ListItemKey = string
+export type ListItemKey = string
 
 export function useSelectableList<TData = {}>(props: { list: Array<TData> }) {
   const [currentSelectionKey, setCurrentSelectionKey] = useState<ListItemKey>()

@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState, useTransition } from 'react'
-import { NewsletterSendResult } from '@/types/dto'
+import React, { useEffect, useMemo, useState } from 'react'
+import { EMAIL_STATUS, NewsletterWithSendResult } from '@/types/dto'
 import {
   ResizableHandle,
   ResizablePanel,
@@ -9,13 +9,12 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/Components/Card'
 import { Badge } from '@/Components/Badge'
 import { Icons } from '@/Components/Icons'
-import { useSelectableList } from '@/lib/hooks/useSelectableList'
+import { ListItem, useSelectableList } from '@/lib/hooks/useSelectableList'
 import { cn } from '@/lib/utils'
 import axios from 'axios'
 import { ScrollArea } from '@/Components/ScrollArea'
@@ -24,11 +23,53 @@ import { HashLoader } from 'react-spinners'
 import NewDashBoardLayout from '@/Layouts/NewDashBoardLayout'
 import { AspectRatio } from '@/Components/AspectRatio'
 import useLoader from '@/lib/hooks/useLoader'
-import { Input } from '@/Components/Input'
 import IconInput from '@/Components/IconInput'
+import { LucideIcon } from 'lucide-react'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/Components/Carousel'
 
 type NewsletterStatusPageProps = {
-  newsletters: NewsletterSendResult[]
+  newsletters: NewsletterWithSendResult[]
+}
+
+function SendResultMetric(props: {
+  name: string
+  description: string
+  currentNewsletter: ListItem<NewsletterWithSendResult>
+  predicate: (
+    result: NewsletterWithSendResult['sendResults'][number]
+  ) => boolean
+  icon: LucideIcon
+}) {
+  const Icon = props.icon
+  return (
+    <Card className={'min-w-44'}>
+      <CardHeader
+        className={'flex flex-row justify-between items-center space-y-0'}
+      >
+        <div
+          className={'flex flex-row justify-start items-center gap-1 space-y-0'}
+        >
+          <CardTitle className={'text-md'}>{props.name}</CardTitle>
+        </div>
+        <Icon strokeWidth={1.5} size={18} className={'text-muted-foreground'} />
+      </CardHeader>
+      <CardContent>
+        <p className={'text-5xl font-bold text-center'}>
+          {
+            props.currentNewsletter.value.sendResults.filter(
+              props.predicate as (result: unknown) => boolean
+            ).length
+          }
+        </p>
+      </CardContent>
+    </Card>
+  )
 }
 
 const NewsletterStatus = (props: NewsletterStatusPageProps) => {
@@ -86,6 +127,7 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
       >
         <div className={'flex flex-col gap-3 justify-start items-stretch pr-3'}>
           <IconInput
+            className={'rounded-lg py-0.5 w-[96%]'}
             icon={Icons.Search}
             enableSeparator={false}
             value={searchText}
@@ -121,52 +163,9 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
                 {/*    <p>{newsletter.content}</p>*/}
                 {/*</CardContent>*/}
                 <CardContent>
-                  <div className={'flex flex-row gap-2 justify-between w-full'}>
-                    <Badge variant={'outline'}>{item.value.status}</Badge>
-                    <div
-                      className={cn(
-                        'flex flex-row justify-between gap-2',
-                        item.value.status === 'PENDING' && 'hidden'
-                      )}
-                    >
-                      <div
-                        className={
-                          'flex flex-row gap-1.5 justify-between items-center rounded-lg px-2 py-1 bg-muted'
-                        }
-                      >
-                        <Icons.UserCheck
-                          strokeWidth={2}
-                          size={17}
-                          className={'text-green-600 '}
-                        />
-                        <span className={'text-primary text-sm font-semibold'}>
-                          {
-                            item.value.sendResults.filter((v) => v.isSuccess)
-                              .length
-                          }
-                        </span>
-                      </div>
-                      <div
-                        className={
-                          'flex flex-row gap-1.5 justify-between items-center rounded-lg px-2 py-1 border border-red-200'
-                        }
-                      >
-                        <Icons.UserX
-                          strokeWidth={2}
-                          size={17}
-                          className={'text-destructive'}
-                        />
-                        <span
-                          className={'text-destructive text-sm font-semibold'}
-                        >
-                          {
-                            item.value.sendResults.filter((v) => !v.isSuccess)
-                              .length
-                          }
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  <Badge variant={'outline'} className={'py-1.5'}>
+                    {item.value.status}
+                  </Badge>
                 </CardContent>
               </Card>
             ))}
@@ -182,50 +181,35 @@ const NewsletterStatus = (props: NewsletterStatusPageProps) => {
           {isLoading && <HashLoader size={80} color={'#16a34a'} />}
           {!isLoading && currentNewsletter && (
             <div className={'w-full flex flex-col justify-start items-center'}>
-              <div
-                className={
-                  'flex flex-row gap-4 justify-center items-center w-full h-full mb-5'
-                }
-              >
-                <Card className={'w-36 h-32'}>
-                  <CardHeader
-                    className={
-                      'flex flex-row justify-between gap-4 items-center'
+              <Carousel className={'w-[200px] md:w-[630px] mb-5'}>
+                <CarouselPrevious />
+                <CarouselNext />
+                <CarouselContent>
+                  {EMAIL_STATUS.map((status, index) => {
+                    const icons = {
+                      DELIVERED: Icons.MailCheck,
+                      SENT: Icons.Mail,
+                      FAILED: Icons.MailX,
+                      BOUNCE: Icons.MailMinus,
+                      COMPLAINT: Icons.Trash,
                     }
-                  >
-                    <CardTitle>Delivered</CardTitle>
-                    <Icons.UserCheck strokeWidth={1.5} size={17} />
-                  </CardHeader>
-                  <CardContent>
-                    <p className={'text-5xl font-bold text-center'}>
-                      {
-                        currentNewsletter.value.sendResults.filter(
-                          (result) => result.isSuccess
-                        ).length
-                      }
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card className={'w-36 h-32 text-destructive'}>
-                  <CardHeader
-                    className={
-                      'flex flex-row justify-between gap-4 items-center'
-                    }
-                  >
-                    <CardTitle>Failed</CardTitle>
-                    <Icons.UserCheck strokeWidth={1.5} size={17} />
-                  </CardHeader>
-                  <CardContent>
-                    <p className={'text-5xl font-bold text-center'}>
-                      {
-                        currentNewsletter.value.sendResults.filter(
-                          (result) => !result.isSuccess
-                        ).length
-                      }
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
+                    return (
+                      <CarouselItem
+                        key={index}
+                        className={cn('lg:basis-1/2 xl:basis-1/3')}
+                      >
+                        <SendResultMetric
+                          name={status}
+                          currentNewsletter={currentNewsletter}
+                          predicate={(result) => result.status === status}
+                          // @ts-ignore
+                          icon={icons[status]}
+                        />
+                      </CarouselItem>
+                    )
+                  })}
+                </CarouselContent>
+              </Carousel>
               <Card
                 className={
                   'min-w-[300px] xs:w-[350px] sm:w-[450px] md:w-[600px] xl:w-[750px] 2xl:w-[900px]'

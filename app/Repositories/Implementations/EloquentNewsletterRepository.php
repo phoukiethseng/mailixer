@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Implementations;
 
+use App\Models\EmailSendResult;
 use App\Models\Newsletter;
 use App\Repositories\Interfaces\NewsletterRepository;
 use App\Repositories\Traits\EloquentCRUD;
@@ -30,4 +31,11 @@ class EloquentNewsletterRepository implements NewsletterRepository
     {
         return Newsletter::find($newsletterId)->sendResults();
     }
+
+  public function setSendResultStatusIdByMessageId($messageId, $statusId)
+  {
+    EmailSendResult::where('message_id', '=', $messageId)->update([
+      'status_id' => $statusId
+    ]);
+  }
 }

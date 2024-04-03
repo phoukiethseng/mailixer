@@ -23,3 +23,5 @@ yarn-error.log
 !/smtp/haraka/config/dkim/dkim_key_gen.sh
 /smtp/haraka/config/auth_flat_file.ini
 /smtp/haraka/queue/
+/smtp/haraka/node_modules
+/smtp/haraka/config/mailixer.ini

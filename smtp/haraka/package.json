@@ -2,7 +2,14 @@
   "name": "haraka_local",
   "description": "An SMTP Server",
   "version": "0.0.1",
-  "dependencies": {},
+  "dependencies": {
+    "amqp": "^0.2.7",
+    "haraka-dsn": "^1.0.4",
+    "rabbitmq-client": "^4.5.2"
+  },
   "repository": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {},
+  "scripts": {
+  }
 }

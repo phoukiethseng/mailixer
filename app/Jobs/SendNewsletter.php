@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\EmailStatus;
 use App\Enums\NewsletterStatus;
 use App\Mail\NewsletterEmail;
 use App\Models\Newsletter;
@@ -36,6 +37,11 @@ class SendNewsletter implements ShouldQueue
         // We cannot use failed() method since laravel will create a new instance of Job
         // before invoking failed(), so we would lost reference to the model
 
+      /**
+       * @type NewsletterService $newsletterService
+       */
+        $newsletterService = App::get(NewsletterService::class);
+
         // Another way to solve this is to handle exception ourselves rather than let laravel handle it
         try {
             $message = Mail::send($this->newsletterEmail);
@@ -43,12 +49,12 @@ class SendNewsletter implements ShouldQueue
             if ($message) {
                 $messageId = $message->getMessageId();
                 Log::debug('messageId', ['messageId' => $messageId]);
-                App::get(NewsletterService::class)->createSendSuccessResult($this->newsletter->id, $this->subscriber->id, $messageId);
-                App::get(NewsletterService::class)->setNewsletterStatus($this->newsletter->id, NewsletterStatus::SENT);
+                $newsletterService->createEmailSendResult($this->newsletter->id, $this->subscriber->id, EmailStatus::SENT, $messageId);
+                $newsletterService->setNewsletterStatus($this->newsletter->id, NewsletterStatus::SENT);
             }
         } catch (\Throwable $e) {
             Log::debug('send newsletters job failed', ['exeception' => $e->getMessage(), 'trace' => $e->getTrace()]);
-            App::get(NewsletterService::class)->createSendFailedResult($this->newsletter->id, $this->subscriber->id);
+            $newsletterService->createFailedEmailSendResult($this->newsletter->id, $this->subscriber->id);
         }
     }
 

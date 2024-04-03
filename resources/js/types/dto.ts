@@ -16,8 +16,15 @@ export const NEWSLETTER_CONTENT_TYPE = [
   'PLAINTEXT',
 ] as const
 
-export const NEWSLETTER_STATUS = ['DRAFT', 'SENT', 'PENDING', 'FAILED']
+export const NEWSLETTER_STATUS = ['DRAFT', 'SENT', 'PENDING']
 export const SUBSCRIPTION_STATUS = ['SUBSCRIBED', 'UNSUBSCRIBED']
+export const EMAIL_STATUS = [
+  'SENT',
+  'DELIVERED',
+  'BOUNCE',
+  'COMPLAINT',
+  'FAILED',
+]
 
 // TODO: change this to union of mime string, we use catch-all string type for now
 export type MIME_TYPE = string
@@ -27,6 +34,7 @@ export type URL = string
 export type NewsletterStatus = (typeof NEWSLETTER_STATUS)[number]
 export type NewsletterContentType = (typeof NEWSLETTER_CONTENT_TYPE)[number]
 export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUS)[number]
+export type EmailStatus = (typeof EMAIL_STATUS)[number]
 
 export type User = HasId &
   HasName &
@@ -59,11 +67,11 @@ export type NewsletterWithStatus = Newsletter & {
   status: NewsletterStatus
 }
 
-export type NewsletterSendResult = NewsletterWithStatus & {
+export type NewsletterWithSendResult = NewsletterWithStatus & {
   sendResults: {
     subscriberId: number
-    isSuccess: boolean
     createdAt: string | null
+    status: EmailStatus
   }[]
 }
 

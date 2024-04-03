@@ -5,3 +5,11 @@ tls
 auth/flat_file
 
 dkim_sign
+
+mailixer/message_id_note
+
+mailixer/amqp_conn
+
+mailixer/handle_bounce
+
+mailixer/handle_delivered

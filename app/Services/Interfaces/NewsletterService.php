@@ -2,6 +2,7 @@
 
 namespace App\Services\Interfaces;
 
+use App\Enums\EmailStatus;
 use App\Enums\NewsletterContentType;
 use App\Enums\NewsletterStatus;
 use App\Models\Newsletter;
@@ -12,7 +13,7 @@ interface NewsletterService
 {
     public function sendNewsletter(Newsletter $newsletter);
 
-    public function createNewsletter(NewsletterContentType $content_type, string $subject, string $content, User $author): Newsletter;
+    public function createNewsletter(NewsletterContentType $contentType, string $subject, string $content, User $author): Newsletter;
 
     public function getNewsletterById($id): Newsletter;
 
@@ -26,11 +27,12 @@ interface NewsletterService
 
     public function saveNewsletter($id, $subject, $content, NewsletterContentType $contentType);
 
-    public function createSendSuccessResult($newsletterId, $subscriberId, $messageId);
-
-    public function createSendFailedResult($newsletterId, $subscriberId);
-
     public function getAllSendResultsForNewsletterId($newsletterId);
 
     public function setNewsletterStatus($newsletterId, NewsletterStatus $newsletterStatusEnum);
+
+    public function createEmailSendResult($newsletterId, $subscriberId, EmailStatus $status, $messageId);
+
+    public function createFailedEmailSendResult($newsletterId, $subscriberId);
+    public function setEmailSendResult($messageId, EmailStatus $status);
 }
